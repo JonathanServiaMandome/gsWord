@@ -46,34 +46,34 @@ class Body(object):
 			value = list()
 			if self.first:
 				value.append(
-					'%s<w:p w:rsidR="%s" w:rsidRDefault="%s" w:rsidP="%s">' % (self.get_tab(-2), self.Get_rsidR(),
-																				self.Get_rsidRDefault(),
-																				self.Get_rsidRDefault()))
+					'%s<w:p w:rsidR="%s" w:rsidRDefault="%s" w:rsidP="%s">' % (self.get_tab(-2), self.get__rsidR(),
+																				self.get__rsidRDefault(),
+																				self.get__rsidRDefault()))
 				value.append('%s<w:pPr>' % (self.get_tab(-1)))
 			rsidsection = ''
-			if self.Get_rsidSect():
-				rsidsection = ' w:rsidR="%s"' % self.Get_rsidSect()
-			value.append('%s<w:sectPr w:rsidR="%s%s">' % (self.get_tab(), self.Get_rsidR(), rsidsection))
-			for reference in self.GetHeaderReferences():
+			if self.get__rsidSect():
+				rsidsection = ' w:rsidR="%s"' % self.get__rsidSect()
+			value.append('%s<w:sectPr w:rsidR="%s%s">' % (self.get_tab(), self.get__rsidR(), rsidsection))
+			for reference in self.get_HeaderReferences():
 				value.append(
 					'%s<w:headerReference w:type="%s" r:id="rId%d"/>' % (
-						self.get_tab(1), reference[0], reference[1].GetRId()))
-			for reference in self.GetFooterReferences():
+						self.get_tab(1), reference[0], reference[1].get_RId()))
+			for reference in self.get_FooterReferences():
 				value.append(
 					'%s<w:footerReference w:type="%s" r:id="rId%d"/>' % (
-						self.get_tab(1), reference[0], reference[1].GetRId()))
+						self.get_tab(1), reference[0], reference[1].get_RId()))
 			orient = ''
-			if self.GetOrient():
-				orient = ' w:orient="%s"' % self.GetOrient()
+			if self.get_Orient():
+				orient = ' w:orient="%s"' % self.get_Orient()
 			value.append(
 				'%s<w:pgSz w:w="%d" w:h="%d"%s/>' % (self.get_tab(1), self.get_width(), self.get_height(), orient))
 			value.append('%s<w:pgMar w:top="%d" w:right="%d" w:bottom="%d" w:left="%d" w:header="%d" '
-							'w:footer="%d" w:gutter="%d"/>' % (self.get_tab(1), self.GetMarginTop(), self.get_margin_rigth(),
-															self.GetMarginBottom(), self.get_margin_left(),
-															self.GetMarginHeader(),
-															self.GetMarginFooter(), self.GetMarginGutter()))
-			value.append('%s<w:cols w:space="%d"/>' % (self.get_tab(1), self.GetColsSpace()))
-			value.append('%s<w:docGrid w:linePitch="%d"/>' % (self.get_tab(1), self.GetLinePitch()))
+							'w:footer="%d" w:gutter="%d"/>' % (self.get_tab(1), self.get_MarginTop(), self.get_margin_rigth(),
+															self.get_MarginBottom(), self.get_margin_left(),
+															self.get_MarginHeader(),
+															self.get_MarginFooter(), self.get_MarginGutter()))
+			value.append('%s<w:cols w:space="%d"/>' % (self.get_tab(1), self.get_ColsSpace()))
+			value.append('%s<w:docGrid w:linePitch="%d"/>' % (self.get_tab(1), self.get_LinePitch()))
 			value.append('%s</w:sectPr>' % (self.get_tab()))
 			if self.first:
 				value.append('%s</w:pPr>' % (self.get_tab(-1)))
@@ -84,7 +84,7 @@ class Body(object):
 		def AddPageBreak(self):
 			self.page_break = True
 
-		def GetOrient(self):
+		def get_Orient(self):
 			return self.orient
 
 		def SetHorizontalOrient(self):
@@ -96,10 +96,10 @@ class Body(object):
 		def SetVerticalOrient(self):
 			self.orient = ''
 
-		def GetElements(self):
+		def get_Elements(self):
 			return self.elements
 
-		def Get_rsidSect(self):
+		def get__rsidSect(self):
 			return self.rsidSect
 
 		def Set_rsidSect(self, value):
@@ -111,43 +111,43 @@ class Body(object):
 		def get_separator(self):
 			return self.separator
 
-		def Get_rsidR(self):
+		def get__rsidR(self):
 			return self.rsidR
 
 		def Set_rsidR(self, value):
 			self.rsidR = value
 
-		def Get_rsidRDefault(self):
+		def get__rsidRDefault(self):
 			return self.rsidRDefault
 
 		def Set_rsidRDefault(self, value):
 			self.rsidRDefault = value
 
-		def Get_rsidP(self):
+		def get__rsidP(self):
 			return self.rsidP
 
 		def Set_rsidP(self, value):
 			self.rsidP = value
 
-		def GetHeaderReferences(self):
+		def get_HeaderReferences(self):
 			return self.header_references
 
 		def AddHeaderReference(self, type_reference, part):
 			self.header_references.append([type_reference, part])
 
-		def GetFooterReferences(self):
+		def get_FooterReferences(self):
 			return self.footer_references
 
 		def AddFooterReference(self, type_reference, part):
 			self.footer_references.append([type_reference, part])
 
-		def GetLinePitch(self):
+		def get_LinePitch(self):
 			return self.line_pitch
 
 		def SetLinePitch(self, value):
 			self.line_pitch = value
 
-		def GetColsSpace(self):
+		def get_ColsSpace(self):
 			return self.cols_space
 
 		def SetColsSpace(self, value):
@@ -159,7 +159,7 @@ class Body(object):
 		def SetMarginRigth(self, value):
 			self.margin_rigth = value
 
-		def GetMarginBottom(self):
+		def get_MarginBottom(self):
 			return self.margin_bottom
 
 		def SetMarginBottom(self, value):
@@ -171,25 +171,25 @@ class Body(object):
 		def SetMarginLeft(self, value):
 			self.margin_left = value
 
-		def GetMarginTop(self):
+		def get_MarginTop(self):
 			return self.margin_top
 
 		def SetMarginTop(self, value):
 			self.margin_top = value
 
-		def GetMarginHeader(self):
+		def get_MarginHeader(self):
 			return self.margin_header
 
 		def SetMarginHeader(self, value):
 			self.margin_header = value
 
-		def GetMarginFooter(self):
+		def get_MarginFooter(self):
 			return self.margin_footer
 
 		def SetMarginFooter(self, value):
 			self.margin_footer = value
 
-		def GetMarginGutter(self):
+		def get_MarginGutter(self):
 			return self.margin_gutter
 
 		def SetMarginGutter(self, value):
@@ -243,7 +243,7 @@ class Body(object):
 		def set_height(self, value):
 			self.height = value
 
-		def GetWidthBody(self):
+		def get_WidthBody(self):
 			w = self.get_width()
 
 			w -= self.get_margin_rigth()
@@ -289,7 +289,7 @@ class Body(object):
 			self.sections = [self.AddPrincipalSection()]
 			self.active_section = self.sections[-1]
 
-	def GetXmlHeader(self):
+	def get_XmlHeader(self):
 		return self.xml_header
 
 	def ContentType(self):
@@ -298,7 +298,7 @@ class Body(object):
 	def get_tab(self, number=0):
 		return self.tab * (self.indent + number)
 
-	def GetTag(self):
+	def get_Tag(self):
 		return self.tag
 
 	def get_name(self):
@@ -310,7 +310,7 @@ class Body(object):
 	def get_parent(self):
 		return self.parent
 
-	def GetSections(self):
+	def get_Sections(self):
 		return self.sections
 
 	def get_active_section(self):
@@ -319,16 +319,16 @@ class Body(object):
 	def get_xml(self):
 		value = list()
 
-		value.append(self.GetXmlHeader())
+		value.append(self.get_XmlHeader())
 		value.append('<w:document %s>' % ' '.join(self.attributes))
 
-		value.append('%s<%s>' % (self.get_tab(), self.GetTag()))
+		value.append('%s<%s>' % (self.get_tab(), self.get_Tag()))
 
-		for section in self.GetSections():
-			for element in section.GetElements():
+		for section in self.get_Sections():
+			for element in section.get_Elements():
 				value.append(element.get_xml())
 			value.append(section.get_xml())
-		value.append('%s</%s>' % (self.get_tab(), self.GetTag()))
+		value.append('%s</%s>' % (self.get_tab(), self.get_Tag()))
 		value.append('</w:document>')
 		value.append('')
 
@@ -364,19 +364,19 @@ class Body(object):
 							line_pitch=360, orient=''):
 		section = self.Section(self, width, height, margin_top, margin_rigth, margin_left, margin_bottom, margin_header,
 								margin_footer, margin_gutter, cols_space, line_pitch, orient)
-		parts = self.get_parent().GetParts()
+		parts = self.get_parent().get_Parts()
 
 		for part_name in parts:
 
 			if part_name.startswith('header'):
-				part = self.get_parent().GetPart(part_name)
-				if hasattr(part, 'GetTypeReference'):
-					section.AddHeaderReference(part.GetTypeReference(), part)
+				part = self.get_parent().get_Part(part_name)
+				if hasattr(part, 'get_TypeReference'):
+					section.AddHeaderReference(part.get_TypeReference(), part)
 
 			elif part_name.startswith('footer') and part_name is not 'footernotes':
-				part = self.get_parent().GetPart(part_name)
-				if hasattr(part, 'GetTypeReference'):
-					section.AddFooterReference(part.GetTypeReference(), part)
+				part = self.get_parent().get_Part(part_name)
+				if hasattr(part, 'get_TypeReference'):
+					section.AddFooterReference(part.get_TypeReference(), part)
 
 		return section
 

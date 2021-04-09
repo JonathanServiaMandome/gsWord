@@ -15,7 +15,7 @@ class Theme1:
 		if not self.separator:
 			self.xml_header += '\n'
 
-	def GetRId(self):
+	def get_RId(self):
 		return self.rId
 
 	def SetRId(self, value):
@@ -27,7 +27,7 @@ class Theme1:
 	def get_name(self):
 		return self.name
 
-	def GetTag(self):
+	def get_Tag(self):
 		return self.tag
 
 	def get_parent(self):

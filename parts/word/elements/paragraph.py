@@ -14,7 +14,7 @@ class ImagePart:
 	def SetRId(self, value):
 		self.rId = value
 
-	def GetRId(self):
+	def get_RId(self):
 		return self.rId
 
 	def get_name(self):
@@ -41,7 +41,7 @@ class Properties(object):
 		def get_name(self):
 			return self.name
 
-		def GetLevel(self):
+		def get_Level(self):
 			return self.level
 
 		def get_type(self):
@@ -56,7 +56,7 @@ class Properties(object):
 		def get_xml(self):
 			value = list()
 			value.append('%s<w:%s>' % (self.get_tab(), self.name))
-			value.append('%s <w:ilvl w:val="%s"/>' % (self.get_tab(1), self.GetLevel()))
+			value.append('%s <w:ilvl w:val="%s"/>' % (self.get_tab(1), self.get_Level()))
 			value.append('%s <w:numId w:val="%s"/>' % (self.get_tab(1), self.get_type()))
 			value.append('%s</w:%s>' % (self.get_tab(), self.name))
 
@@ -168,16 +168,16 @@ class Properties(object):
 		def SetFirstLine(self, value):
 			self.firstLine = value
 
-		def GetLeft(self):
+		def get_Left(self):
 			return self.left
 
-		def GetRight(self):
+		def get_Right(self):
 			return self.right
 
-		def GetHanging(self):
+		def get_Hanging(self):
 			return self.hanging
 
-		def GetFirstLine(self):
+		def get_FirstLine(self):
 			return self.firstLine
 
 		def get_parent(self):
@@ -213,7 +213,7 @@ class Properties(object):
 		def SetValue(self, value):
 			self.val = value
 
-		def GetValue(self):
+		def get_Value(self):
 			return self.val
 
 		def get_parent(self):
@@ -299,19 +299,19 @@ class Properties(object):
 			def SetValue(self, value):
 				self.val = value
 
-			def GetColor(self):
+			def get_color(self):
 				return self.color
 
-			def GetShadow(self):
+			def get_Shadow(self):
 				return self.shadow
 
-			def GetSpace(self):
+			def get_Space(self):
 				return self.space
 
-			def GetSize(self):
+			def get_Size(self):
 				return self.sz
 
-			def GetValue(self):
+			def get_Value(self):
 				return self.val
 
 			def get_parent(self):
@@ -412,19 +412,19 @@ class Properties(object):
 		def SetBetween(self, value, sz='', space='', shadow=False, color=''):
 			self.between = self.Element(self, 'between', value, sz, space, shadow, color)
 
-		def GetTop(self):
+		def get_Top(self):
 			return self.top
 
-		def GetBottom(self):
+		def get_Bottom(self):
 			return self.bottom
 
-		def GetLeft(self):
+		def get_Left(self):
 			return self.left
 
-		def GetRight(self):
+		def get_Right(self):
 			return self.right
 
-		def GetBetween(self):
+		def get_Between(self):
 			return self.between
 
 		def get_parent(self):
@@ -495,13 +495,13 @@ class Properties(object):
 		def SetValue(self, value):
 			self.val = value
 
-		def GetValue(self):
+		def get_Value(self):
 			return self.val
 
-		def GetLeader(self):
+		def get_Leader(self):
 			return self.leader
 
-		def GetPosition(self):
+		def get_Position(self):
 			return self.pos
 
 		def get_parent(self):
@@ -590,7 +590,7 @@ class Properties(object):
 			top'''
 		self.textAlignment = ''
 
-	def GetFormatList(self):
+	def get_FormatList(self):
 		return self.numPr
 
 	def SetFormatList(self, level='1', _type='1'):
@@ -645,25 +645,25 @@ class Properties(object):
 	def get_spacing(self):
 		return self.spacing
 
-	def GetKeepLines(self):
+	def get_KeepLines(self):
 		return self.keepLines
 
-	def GetKeepNext(self):
+	def get_KeepNext(self):
 		return self.keepNext
 
 	def get_horizontal_alignment(self):
 		return self.jc
 
-	def GetIndentation(self):
+	def get_Indentation(self):
 		return self.ind
 
-	def GetOutlineLvl(self):
+	def get_OutlineLvl(self):
 		return self.outlineLvl
 
-	def GetBorder(self):
+	def get_Border(self):
 		return self.pBdr
 
-	def GetPStyle(self):
+	def get_PStyle(self):
 		return self.pStyle
 
 	def get_shading(self):
@@ -672,7 +672,7 @@ class Properties(object):
 	def get_tabs(self):
 		return self.tabs
 
-	def GetTextAlignment(self):
+	def get_TextAlignment(self):
 		return self.textAlignment
 
 	def get_name(self):
@@ -794,7 +794,7 @@ class Paragraph(object):
 		document = parent.get_parent()
 		name = path.split('/')[-1]
 		extension = name.split('.')[-1]
-		document.GetContentTypes().AddDefault(extension, 'ContentType="image/%s"' % extension)
+		document.get_ContentTypes().AddDefault(extension, 'ContentType="image/%s"' % extension)
 		img = open(path, 'rb').read()
 
 		if is_body:
@@ -805,13 +805,13 @@ class Paragraph(object):
 			document.AddImage(target, img, rid)
 		else:
 			name_part = parent.get_name().split('/')[-1]
-			rid = parent.GetRelRId()
+			rid = parent.get_RelRId()
 			parent.AddRelRId()
 			target = 'media/image%d.%s' % (rid, extension)
 
-			if name_part not in document.GetParts().keys():
+			if name_part not in document.get_Parts().keys():
 				document.AddPartRel(name_part)
-			rel = document.GetPart(name_part)
+			rel = document.get_Part(name_part)
 			rel.AddPart(target,
 						{"Id": "rId%d" % rid,
 							"Type": "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image"})
@@ -841,7 +841,7 @@ class Paragraph(object):
 	def SetIndent(self, value):
 		self.indent = value
 
-	def GetIndent(self):
+	def get_Indent(self):
 		return self.indent
 
 	def Set_rsidP(self, value):
@@ -865,22 +865,22 @@ class Paragraph(object):
 	def get_id(self):
 		return self.id
 
-	def GetrsidP(self):
+	def get_rsidP(self):
 		return self.rsidP
 
-	def GetrsidR(self):
+	def get_rsidR(self):
 		return self.rsidR
 
-	def GetrsidRPr(self):
+	def get_rsidRPr(self):
 		return self.rsidRPr
 
-	def GetrsidRDefault(self):
+	def get_rsidRDefault(self):
 		return self.rsidRDefault
 
 	def get_texts(self):
 		return self.elements
 
-	def GetText(self, index):
+	def get_Text(self, index):
 		return self.elements[index]
 
 	def add_text(self, txt, font_format='', font_size=10):
@@ -904,7 +904,7 @@ class Paragraph(object):
 
 	def set_font_format(self, font_format):
 		for k in range(len(self.get_texts())):
-			element = self.GetText(k)
+			element = self.get_Text(k)
 			ff = ''
 			if type(font_format) is str:
 				ff = font_format
@@ -914,7 +914,7 @@ class Paragraph(object):
 
 			if isinstance(element, text.Text):
 				if 'b' in ff:
-					element.get_properties().Bold()
+					element.get_properties().bold()
 				if 'i' in ff:
 					element.get_properties().Italic()
 				if 'u' in ff:

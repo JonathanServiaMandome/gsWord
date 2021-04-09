@@ -32,73 +32,73 @@ class Core(object):
 	def ContentType(self):
 		return self.content_type
 
-	def GetXmlnsCp(self):
+	def get_XmlnsCp(self):
 		return self.xmlns_cp
 
 	def SetXmlnsCp(self, value):
 		self.xmlns_cp = value
 
-	def GetXmlnsDc(self):
+	def get_XmlnsDc(self):
 		return self.xmlns_dc
 
 	def SetXmlnsDc(self, value):
 		self.xmlns_dc = value
 
-	def GetDcterms(self):
+	def get_Dcterms(self):
 		return self.dcterms
 
 	def SetDcterms(self, value):
 		self.dcterms = value
 
-	def GetDcmitype(self):
+	def get_Dcmitype(self):
 		return self.dcmitype
 
 	def SetDcmitype(self, value):
 		self.dcmitype = value
 
-	def GetTitle(self):
+	def get_Title(self):
 		return self.title
 
 	def SetTitle(self, value):
 		self.title = value
 
-	def GetSubject(self):
+	def get_Subject(self):
 		return self.subject
 
 	def SetSubject(self, value):
 		self.subject = value
 
-	def GetCreator(self):
+	def get_Creator(self):
 		return self.creator
 
 	def SetCreator(self, value):
 		self.creator = value
 
-	def GetKeywords(self):
+	def get_Keywords(self):
 		return self.keywords
 
 	def SetKeywords(self, value):
 		self.keywords = value
 
-	def GetDescription(self):
+	def get_Description(self):
 		return self.description
 
 	def SetDescription(self, value):
 		self.description = value
 
-	def GetLastModifiedBy(self):
+	def get_LastModifiedBy(self):
 		return self.lastModifiedBy
 
 	def SetLastModifiedBy(self, value):
 		self.lastModifiedBy = value
 
-	def GetRevision(self):
+	def get_Revision(self):
 		return self.revision
 
 	def SetRevision(self, value):
 		self.revision = value
 
-	def GetLastPrinted(self):
+	def get_LastPrinted(self):
 		return self.lastPrinted
 
 	def SetLastPrinted(self, value):
@@ -107,16 +107,16 @@ class Core(object):
 	def SetDctermsCreated(self, value):
 		self.dcterms_created = value
 
-	def GetDctermsCreated(self):
+	def get_DctermsCreated(self):
 		return self.dcterms_created
 
-	def GetDctermsModified(self):
+	def get_DctermsModified(self):
 		return self.dcterms_modified
 
 	def SetDctermsModified(self, value):
 		self.dcterms_modified = value
 
-	def GetXsi(self):
+	def get_Xsi(self):
 		return self.xsi
 
 	def SetXsi(self, value):
@@ -134,7 +134,7 @@ class Core(object):
 	def get_name(self):
 		return self.name
 
-	def GetTag(self):
+	def get_Tag(self):
 		return self.tag
 
 	def DefaultValues(self):
@@ -160,21 +160,21 @@ class Core(object):
 		value = list()
 		value.append(self.get_xmlHeader())
 		value.append('<%s xmlns:cp="%s" xmlns:dc="%s" xmlns:dcterms="%s" xmlns:dcmitype="%s" xmlns:xsi="%s">' % (
-			self.GetTag(), self.GetXmlnsCp(), self.GetXmlnsDc(), self.GetDcterms(), self.GetDcmitype(), self.GetXsi()))
+			self.get_Tag(), self.get_XmlnsCp(), self.get_XmlnsDc(), self.get_Dcterms(), self.get_Dcmitype(), self.get_Xsi()))
 
-		value.append(Value_('dc:title', self.GetTitle()))
-		value.append(Value_('dc:subject', self.GetSubject()))
-		value.append(Value_('dc:creator', self.GetCreator()))
-		value.append(Value_('cp:keywords', self.GetKeywords()))
-		value.append(Value_('dc:description', self.GetDescription()))
-		value.append(Value_('cp:lastModifiedBy', self.GetLastModifiedBy()))
-		value.append(Value_('cp:revision', self.GetRevision()))
-		if self.GetLastPrinted():
-			value.append(Value_('cp:lastPrinted', self.GetLastPrinted()))
+		value.append(Value_('dc:title', self.get_Title()))
+		value.append(Value_('dc:subject', self.get_Subject()))
+		value.append(Value_('dc:creator', self.get_Creator()))
+		value.append(Value_('cp:keywords', self.get_Keywords()))
+		value.append(Value_('dc:description', self.get_Description()))
+		value.append(Value_('cp:lastModifiedBy', self.get_LastModifiedBy()))
+		value.append(Value_('cp:revision', self.get_Revision()))
+		if self.get_LastPrinted():
+			value.append(Value_('cp:lastPrinted', self.get_LastPrinted()))
 		now = datetime.now()
 		value.append(Value_('dcterms:created', now.strftime("%Y-%m-%dT%H:%M:%SZ"), ' xsi:type="dcterms:W3CDTF"'))
 		value.append(Value_('dcterms:modified', now.strftime("%Y-%m-%dT%H:%M:%SZ"), ' xsi:type="dcterms:W3CDTF"'))
 
-		value.append('</%s>' % self.GetTag())
+		value.append('</%s>' % self.get_Tag())
 		value.append('')
 		return self.separator.join(value)

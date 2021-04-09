@@ -18,10 +18,10 @@ class Picture(object):
 				self.name = "Imagen %d" % rid
 				self.description = description
 
-			def GetDescription(self):
+			def get_Description(self):
 				return self.description
 
-			def GetRId(self):
+			def get_RId(self):
 				return self.rId
 
 			def SetRId(self, rid):
@@ -57,11 +57,11 @@ class Picture(object):
 				value.append('%s<pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">' %
 								(self.get_tab(2)))
 				value.append('%s<pic:nvPicPr>' % (self.get_tab(3)))
-				value.append('%s<pic:cNvPr id="%d" name="%s"/>' % (self.get_tab(4), self.GetRId(), self.get_name()))
+				value.append('%s<pic:cNvPr id="%d" name="%s"/>' % (self.get_tab(4), self.get_RId(), self.get_name()))
 				value.append('%s<pic:cNvPicPr/>' % (self.get_tab(4)))
 				value.append('%s</pic:nvPicPr>' % (self.get_tab(3)))
 				value.append('%s<pic:blipFill>' % (self.get_tab(3)))
-				# value.append('%s<a:blip r:embed="rId%d">' % (self.get_tab(4), self.GetRId()))
+				# value.append('%s<a:blip r:embed="rId%d">' % (self.get_tab(4), self.get_RId()))
 				value.append('%s<a:blip r:embed="rId%d">' % (self.get_tab(4), 4))
 				value.append('%s<a:extLst>' % (self.get_tab(5)))
 				value.append('%s<a:ext uri="{28A0092B-C50C-407E-A947-70E740481C1C}">' % (self.get_tab(6)))
@@ -98,12 +98,12 @@ class Picture(object):
 				value.append('%s<pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">' %
 								(self.get_tab(2)))
 				value.append('%s<pic:nvPicPr>' % (self.get_tab(3)))
-				value.append('%s<pic:cNvPr id="%d" name="%s"/>' % (self.get_tab(4), self.GetRId(), self.get_name()))
+				value.append('%s<pic:cNvPr id="%d" name="%s"/>' % (self.get_tab(4), self.get_RId(), self.get_name()))
 				value.append('%s<pic:cNvPicPr/>' % (self.get_tab(4)))
 				value.append('%s</pic:nvPicPr>' % (self.get_tab(3)))
 				value.append('%s<pic:blipFill>' % (self.get_tab(3)))
-				# value.append('%s<a:blip r:embed="rId%d">' % (self.get_tab(4), self.GetRId()))
-				value.append('%s<a:blip r:embed="rId%d">' % (self.get_tab(4), self.GetRId()))
+				# value.append('%s<a:blip r:embed="rId%d">' % (self.get_tab(4), self.get_RId()))
+				value.append('%s<a:blip r:embed="rId%d">' % (self.get_tab(4), self.get_RId()))
 				value.append('%s<a:extLst>' % (self.get_tab(5)))
 				value.append('%s<a:ext uri="{28A0092B-C50C-407E-A947-70E740481C1C}">' % (self.get_tab(6)))
 				value.append(
@@ -146,13 +146,13 @@ class Picture(object):
 				value = list()
 				value.append('%s<%s>' % (self.get_tab(), self.get_name()))
 				attributes = list()
-				if self.GetChangeAspect():
+				if self.get_ChangeAspect():
 					attributes.append('noChangeAspect="1"')
-				if self.GetSelection():
+				if self.get_Selection():
 					attributes.append('noSelect="1"/>')
-				if self.GetRotation():
+				if self.get_Rotation():
 					attributes.append('noRot="1"/>')
-				if self.GetCrop():
+				if self.get_Crop():
 					attributes.append('noCrop="1"/>')
 				t = ' '.join(attributes)
 				if t:
@@ -175,7 +175,7 @@ class Picture(object):
 			def DisableSelection(self):
 				self.no_select = False
 
-			def GetSelection(self):
+			def get_Selection(self):
 				return self.no_rotation
 
 			def EnableRotation(self):
@@ -184,7 +184,7 @@ class Picture(object):
 			def DisableRotation(self):
 				self.no_rotation = False
 
-			def GetRotation(self):
+			def get_Rotation(self):
 				return self.no_rotation
 
 			def EnableCrop(self):
@@ -193,7 +193,7 @@ class Picture(object):
 			def DisableCrop(self):
 				self.no_crop = False
 
-			def GetCrop(self):
+			def get_Crop(self):
 				return self.no_crop
 
 			def EnableChangeAspect(self):
@@ -202,7 +202,7 @@ class Picture(object):
 			def DisableChangeAspect(self):
 				self.no_change_aspect = False
 
-			def GetChangeAspect(self):
+			def get_ChangeAspect(self):
 				return self.no_change_aspect
 
 		class GraphicFramePr(object):
@@ -253,26 +253,26 @@ class Picture(object):
 				else:
 					raise ValueError("La orietacion tiene que ser horizontal o vertical")
 
-			def GetAlign(self):
+			def get_Align(self):
 				return self.align
 
 			def SetAlign(self, align):
 				self.align = align
 
-			def GetPositionOffset(self):
+			def get_PositionOffset(self):
 				return self.position_offset
 
 			def SetPositionOffset(self, position_offset):
 				self.position_offset = position_offset
 
-			def GetOrientation(self):
+			def get_Orientation(self):
 				return self.orientation
 
 			def SetOrientation(self, orientation):
 				self.orientation = orientation
 				self.SetName(orientation)
 
-			def GetRelativeFrom(self):
+			def get_RelativeFrom(self):
 				return self.relative_from
 
 			def SetRelativeFrom(self, relative_from):
@@ -280,11 +280,11 @@ class Picture(object):
 
 			def get_xml(self):
 				value = list()
-				value.append('%s<%s relativeFrom="%s">' % (self.get_tab(), self.get_name(), self.GetRelativeFrom()))
-				if self.GetAlign() is not None:
-					value.append('%s<wp:align>%s</wp:align>' % (self.get_tab(1), self.GetAlign()))
-				if self.GetPositionOffset() is not None:
-					value.append('%s<wp:posOffset>%d</wp:posOffset>' % (self.get_tab(1), self.GetPositionOffset()))
+				value.append('%s<%s relativeFrom="%s">' % (self.get_tab(), self.get_name(), self.get_RelativeFrom()))
+				if self.get_Align() is not None:
+					value.append('%s<wp:align>%s</wp:align>' % (self.get_tab(1), self.get_Align()))
+				if self.get_PositionOffset() is not None:
+					value.append('%s<wp:posOffset>%d</wp:posOffset>' % (self.get_tab(1), self.get_PositionOffset()))
 				value.append('%s</%s>' % (self.get_tab(), self.get_name()))
 				return self.separator.join(value)
 
@@ -314,20 +314,20 @@ class Picture(object):
 				else:
 					raise ValueError("La orietacion tiene que ser horizontal o vertical")
 
-			def GetValue(self):
+			def get_Value(self):
 				return self.value
 
 			def SetValue(self, value):
 				self.value = value
 
-			def GetOrientation(self):
+			def get_Orientation(self):
 				return self.orientation
 
 			def SetOrientation(self, orientation):
 				self.orientation = orientation
 				self.SetName(orientation)
 
-			def GetRelativeFrom(self):
+			def get_RelativeFrom(self):
 				return self.relative_from
 
 			def SetRelativeFrom(self, relative_from):
@@ -335,11 +335,11 @@ class Picture(object):
 
 			def get_xml(self):
 				value = list()
-				value.append('%s<%s relativeFrom="%s">' % (self.get_tab(), self.get_name(), self.GetRelativeFrom()))
-				if self.GetOrientation() is 'horizontal':
-					value.append('%s<wp14:pctWidth>%s</wp14:pctWidth>' % (self.get_tab(1), self.GetValue()))
+				value.append('%s<%s relativeFrom="%s">' % (self.get_tab(), self.get_name(), self.get_RelativeFrom()))
+				if self.get_Orientation() is 'horizontal':
+					value.append('%s<wp14:pctWidth>%s</wp14:pctWidth>' % (self.get_tab(1), self.get_Value()))
 				else:
-					value.append('%s<wp14:pctHeight>%s</wp14:pctHeight>' % (self.get_tab(1), self.GetValue()))
+					value.append('%s<wp14:pctHeight>%s</wp14:pctHeight>' % (self.get_tab(1), self.get_Value()))
 				value.append('%s</%s>' % (self.get_tab(), self.get_name()))
 				return self.separator.join(value)
 
@@ -372,53 +372,53 @@ class Picture(object):
 		def get_xml(self):
 			value = list()
 			t = '%s<wp:anchor ' % (self.get_tab())
-			t += 'distT="%d" distB="%d" ' % (self.GetAnchor()['distT'], self.GetAnchor()['distB'])
-			t += 'distL="%d" distR="%d" ' % (self.GetAnchor()['distL'], self.GetAnchor()['distR'])
+			t += 'distT="%d" distB="%d" ' % (self.get_Anchor()['distT'], self.get_Anchor()['distB'])
+			t += 'distL="%d" distR="%d" ' % (self.get_Anchor()['distL'], self.get_Anchor()['distR'])
 			t += 'simplePos="%d" relativeHeight="%d" ' % (
-												self.GetAnchor()['simplePos'], self.GetAnchor()['relativeHeight'])
-			t += 'behindDoc="%d" locked="%d" ' % (self.GetAnchor()['behindDoc'], self.GetAnchor()['locked'])
+												self.get_Anchor()['simplePos'], self.get_Anchor()['relativeHeight'])
+			t += 'behindDoc="%d" locked="%d" ' % (self.get_Anchor()['behindDoc'], self.get_Anchor()['locked'])
 			t += 'layoutInCell="%d" allowOverlap="%d" ' % (
-												self.GetAnchor()['layoutInCell'], self.GetAnchor()['allowOverlap'])
-			t += 'wp14:anchorId="%s" wp14:editId="%s">' % (self.GetAnchor()['wp14:anchorId'], self.GetAnchor()['wp14:editId'])
+												self.get_Anchor()['layoutInCell'], self.get_Anchor()['allowOverlap'])
+			t += 'wp14:anchorId="%s" wp14:editId="%s">' % (self.get_Anchor()['wp14:anchorId'], self.get_Anchor()['wp14:editId'])
 			value.append(t)
 			value.append('%s<wp:simplePos x="%d" y="%d"/>' %
-											(self.get_tab(1), self.GetSimplePosition()['x'], self.GetSimplePosition()['y']))
-			value.append(self.GetPositionHorizontal().get_xml())
-			value.append(self.GetPositionVertical().get_xml())
+											(self.get_tab(1), self.get_SimplePosition()['x'], self.get_SimplePosition()['y']))
+			value.append(self.get_PositionHorizontal().get_xml())
+			value.append(self.get_PositionVertical().get_xml())
 
-			value.append('%s<wp:extent cx="%s" cy="%s"/>' % (self.get_tab(1), self.GetExtent()['cx'], self.GetExtent()['cy']))
+			value.append('%s<wp:extent cx="%s" cy="%s"/>' % (self.get_tab(1), self.get_Extent()['cx'], self.get_Extent()['cy']))
 			value.append('%s<wp:effectExtent l="%s" t="%s" r="%s" b="%s"/>' %
-							(self.get_tab(1), self.GetEffectExtent()['l'], self.GetEffectExtent()['t'],
-							self.GetEffectExtent()['r'], self.GetEffectExtent()['b']))
-			value.append('%s<wp:wrapSquare wrapText="%s"/>' % (self.get_tab(1), self.GetWrapSquare()))
+							(self.get_tab(1), self.get_EffectExtent()['l'], self.get_EffectExtent()['t'],
+							self.get_EffectExtent()['r'], self.get_EffectExtent()['b']))
+			value.append('%s<wp:wrapSquare wrapText="%s"/>' % (self.get_tab(1), self.get_WrapSquare()))
 			value.append('%s<wp:docPr id="%s" name="%s" descr="%s"/>' %
-							(self.get_tab(1), self.GetIdPicture(), self.get_namePicture(), self.GetDescriptionPicture()))
+							(self.get_tab(1), self.get_IdPicture(), self.get_namePicture(), self.get_DescriptionPicture()))
 
-			# value.append(self.GetGraphicFrame().get_xml())
-			value.append(self.GetGraphicFramePr().get_xml())
-			value.append(self.GetGraphic().get_xml())
-			value.append(self.GetSizeRelativeHorizontal().get_xml())
-			value.append(self.GetSizeRelativeVertical().get_xml())
+			# value.append(self.get_GraphicFrame().get_xml())
+			value.append(self.get_GraphicFramePr().get_xml())
+			value.append(self.get_Graphic().get_xml())
+			value.append(self.get_SizeRelativeHorizontal().get_xml())
+			value.append(self.get_SizeRelativeVertical().get_xml())
 			value.append('</wp:anchor>')
 
 			return self.separator.join(value)
 
-		def GetSizeRelativeHorizontal(self):
+		def get_SizeRelativeHorizontal(self):
 			return self.size_relative_horizontal
 
-		def GetSizeRelativeVertical(self):
+		def get_SizeRelativeVertical(self):
 			return self.size_relative_vertical
 
-		def GetGraphic(self):
+		def get_Graphic(self):
 			return self.graphic
 
-		def GetGraphicFrame(self):
+		def get_GraphicFrame(self):
 			return self.graphic_frame
 
-		def GetGraphicFramePr(self):
+		def get_GraphicFramePr(self):
 			return self.graphic_framePr
 
-		def GetDescriptionPicture(self):
+		def get_DescriptionPicture(self):
 			return self.description_picture
 
 		def SetDescriptionPicture(self, description_picture):
@@ -430,31 +430,31 @@ class Picture(object):
 		def SetNamePicture(self, name_picture):
 			self.name_picture = name_picture
 
-		def GetIdPicture(self):
+		def get_IdPicture(self):
 			return self.id_picture
 
 		def SetIdPicture(self, id_picture):
 			self.id_picture = id_picture
 
-		def GetWrapSquare(self):
+		def get_WrapSquare(self):
 			return self.wrap_square
 
 		def SetWrapSquare(self, wrap_square):
 			self.wrap_square = wrap_square
 
-		def GetPositionHorizontal(self):
+		def get_PositionHorizontal(self):
 			return self.position_horizontal
 
 		def SetPositionHorizontal(self, relative_from='paragraph', align=None, position_offset=None):
 			self.position_horizontal = self.Position(self, 'horizontal', relative_from, align, position_offset)
 
-		def GetPositionVertical(self):
+		def get_PositionVertical(self):
 			return self.position_vertical
 
 		def SetPositionVertical(self, relative_from='paragraph', align=None, position_offset=None):
 			self.position_vertical = self.Position(self, 'vertical', relative_from, align, position_offset)
 
-		def GetEffectExtent(self):
+		def get_EffectExtent(self):
 			return self.effectExtent
 
 		def SetEffectExtent(self, dc):
@@ -465,7 +465,7 @@ class Picture(object):
 				raise ValueError('La clave %s no en válida' % key)
 			self.effectExtent[key] = value
 
-		def GetExtent(self):
+		def get_Extent(self):
 			return self.extent
 
 		def SetExtent(self, dc):
@@ -476,7 +476,7 @@ class Picture(object):
 				raise ValueError('La clave %s no en válida' % key)
 			self.extent[key] = value
 
-		def GetSimplePosition(self):
+		def get_SimplePosition(self):
 			return self.simple_position
 
 		def SetSimplePosition(self, dc):
@@ -487,7 +487,7 @@ class Picture(object):
 				raise ValueError('La clave %s no en válida' % key)
 			self.simple_position[key] = value
 
-		def GetAnchor(self):
+		def get_Anchor(self):
 			return self.anchor
 
 		def SetAnchor(self, dc):

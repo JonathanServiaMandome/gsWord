@@ -27,19 +27,19 @@ class Properties(object):
 		def setThemeTint(self, value):
 			self.themeTint = value
 
-		def GetValue(self):
+		def get_Value(self):
 			return self.val
 
 		def get_name(self):
 			return self.name
 
-		def GetThemeColor(self):
+		def get_ThemeColor(self):
 			return self.themeColor
 
-		def GetThemeShade(self):
+		def get_ThemeShade(self):
 			return self.themeShade
 
-		def GetThemeTint(self):
+		def get_ThemeTint(self):
 			return self.themeTint
 
 		def get_tab(self, number=0):
@@ -78,10 +78,10 @@ class Properties(object):
 		def get_name(self):
 			return self.name
 
-		def GetColor(self):
+		def get_color(self):
 			return self.color
 
-		def GetValue(self):
+		def get_Value(self):
 			return self.val
 
 		def get_tab(self, number=0):
@@ -101,9 +101,15 @@ class Properties(object):
 		self.separator = parent.separator
 		self.indent = parent.indent + 1
 		self.tabulation = tabulation
+
 		self.bold = 'b' in font_format
 		self.italic = 'i' in font_format
+		self.underline = None
+		if 'u' in font_format:
+			self.underline = self.U(self, 'single')
 		self.boldCs = False
+		self.italicCs = False
+		self.underlineCs = False
 
 		'''Specifies that the content should be displayed with an underline: <w:u w:val="double"/>.
 		The most common attributes are below (the theme-related attributed are omitted):
@@ -130,9 +136,6 @@ class Properties(object):
 				wavyDouble - a pair of wavy lines
 				wavyHeavy - a single thick wavy line
 				words - a single line beneath all non-space characters'''
-		self.underline = None
-		if 'u' in font_format:
-			self.underline = self.U(self, 'single')
 
 		'''Specifies that any lowercase characters are to be displayed as their uppercase equivalents. It cannot 
 		appear with smallCaps in the same text run: <w:caps w:val="true" />. This is a toggle property. '''
@@ -201,7 +204,19 @@ class Properties(object):
 	def get_tab(self, number=0):
 		return self.tab * (self.indent + number)
 
-	def GetRFonts(self):
+	def set_font_format(self, font_format):
+		self.bold = 'b' in font_format
+		self.italic = 'i' in font_format
+		if 'u' in font_format:
+			self.underline = self.U(self, 'single')
+
+	def set_font_format_cs(self, font_format):
+		self.boldCs = 'b' in font_format
+		self.italicCs = 'i' in font_format
+		if 'u' in font_format:
+			self.underlineCs = self.U(self, 'single')
+
+	def get_RFonts(self):
 		return self.rFonts
 
 	def set_font(self, name):
@@ -210,46 +225,52 @@ class Properties(object):
 	def get_separator(self):
 		return self.separator
 
-	def Bold(self, value=True):
+	def bold(self, value=True):
 		self.bold = value
 
 	def bold_cs(self, value=True):
 		self.boldCs = value
 
-	def Italic(self, value=True):
+	def italic(self, value=True):
 		self.italic = value
 
-	def Underline(self, value='single', color=''):
+	def italic_cs(self, value=True):
+		self.italicCs = value
+
+	def underline(self, value='single', color=''):
 		self.underline = self.U(self, value, color)
 
-	def SetCaps(self, value):
+	def underline_cs(self, value='single', color=''):
+		self.underlineCs = self.U(self, value, color)
+
+	def set_caps(self, value):
 		self.caps = value
 
 	def set_color(self, value):
 		self.color = value
 
-	def SetDstrike(self, value):
+	def set_dstrike(self, value):
 		self.dstrike = value
 
-	def SetEmboss(self, value):
+	def set_emboss(self, value):
 		self.emboss = value
 
-	def SetImprint(self, value):
+	def set_imprint(self, value):
 		self.imprint = value
 
-	def SetOutlinet(self, value):
+	def set_outline(self, value):
 		self.outline = value
 
-	def SetRStyle(self, value):
+	def set_rstyle(self, value):
 		self.rStyle = value
 
-	def SetShadow(self, value):
+	def set_shadow(self, value):
 		self.shadow = value
 
-	def SetSmallCaps(self, value):
+	def set_small_caps(self, value):
 		self.smallCaps = value
 
-	def SetStrike(self, value):
+	def set_strike(self, value):
 		self.strike = value
 
 	def set_font_size(self, value):
@@ -260,40 +281,40 @@ class Properties(object):
 		value = str(int(value * 2))
 		self.szCs = value
 
-	def SetVanish(self, value):
+	def set_vanish(self, value):
 		self.vanish = value
 
-	def SetVerticalAlign(self, value):
+	def set_vertical_align(self, value):
 		self.vertAlign = value
 
-	def GetCaps(self):
+	def get_caps(self):
 		return self.caps
 
-	def GetColor(self):
+	def get_color(self):
 		return self.color
 
-	def GetDstrike(self):
+	def get_dstrike(self):
 		return self.dstrike
 
-	def GetEmboss(self):
+	def get_emboss(self):
 		return self.emboss
 
-	def GetImprint(self):
+	def get_imprint(self):
 		return self.imprint
 
-	def GetOutlinet(self):
+	def get_outline(self):
 		return self.outline
 
-	def GetRStyle(self):
+	def get_rstyle(self):
 		return self.rStyle
 
-	def GetShadow(self):
+	def get_shadow(self):
 		return self.shadow
 
-	def GetSmallCaps(self):
+	def get_small_caps(self):
 		return self.smallCaps
 
-	def GetStrike(self):
+	def get_strike(self):
 		return self.strike
 
 	def get_font_size(self):
@@ -302,10 +323,10 @@ class Properties(object):
 	def get_font_size_cs(self):
 		return self.szCs
 
-	def GetVanish(self):
+	def get_vanish(self):
 		return self.vanish
 
-	def GetVerticalAlign(self):
+	def get_vertical_align(self):
 		return self.vertAlign
 
 	def get_name(self):
@@ -328,7 +349,7 @@ class Properties(object):
 		if self.caps:
 			value.append('%s<w:caps w:val="true" />' % (self.get_tab(1)))
 		if self.color is not None:
-			value.append('%s<w:color w:val="%s" />' % (self.get_tab(1), self.color))
+			value.append('%s<w:color w:val="%s" />' % (self.get_tab(1), self.get_color()))
 		if self.dstrike:
 			value.append('%s<w:dstrike w:val="true" />' % (self.get_tab(1)))
 		if self.emboss:
@@ -337,7 +358,6 @@ class Properties(object):
 			value.append('%s<w:imprint w:val="true" />' % (self.get_tab(1)))
 		if self.outline:
 			value.append('%s<w:outline w:val="true" />' % (self.get_tab(1)))
-
 		if self.rStyle:
 			value.append('%s<w:rStyle w:val="%s" />' % (self.get_tab(1), self.rStyle))
 		if self.shadow:
@@ -385,7 +405,9 @@ class Text(object):
 		for txt in text:
 			if txt:
 				self.text.append(self.T(self, txt, tabulation, space))
+
 		self.properties = Properties(self, font_format, font_size, tabulation)
+
 		'''Para la númeración de páginas'''
 		self.field_char = ''
 		'''
@@ -441,12 +463,16 @@ class Text(object):
 		pr = self.properties.get_xml()
 		if pr:
 			value.append(pr)
-
-		for txt in self.text:
-			tx = txt.get_xml()
-			if not tx:
-				continue
-			value.append(tx)
+		if self.get_field_char():
+			value.append('%s<w:fldChar w:fldCharType="%s"/>' % (self.get_tab(1), self.get_field_char()))
+		elif self.get_instr_text():
+			value.append('%s<w:instrText>%s</w:instrText>' % (self.get_tab(1), self.get_instr_text()))
+		else:
+			for txt in self.text:
+				tx = txt.get_xml()
+				if not tx:
+					continue
+				value.append(tx)
 		value.append('%s</w:%s>' % (self.get_tab(), self.name))
 
 		return self.get_separator().join(value)
@@ -502,10 +528,10 @@ class Text(object):
 		def get_name(self):
 			return self.name
 
-		def GetValue(self):
+		def get_Value(self):
 			return self.val
 
-		def GetPosition(self):
+		def get_Position(self):
 			return self.pos
 
 		def get_tab(self, number=0):
@@ -554,7 +580,7 @@ class Text(object):
 		def get_type(self):
 			return self.type
 
-		def GetClear(self):
+		def get_Clear(self):
 			return self.clear
 
 		def get_tab(self, number=0):
@@ -657,10 +683,10 @@ class Text(object):
 		def SetChar(self, value):
 			self.char = value
 
-		def GetFont(self):
+		def get_Font(self):
 			return self.font
 
-		def GetChar(self):
+		def get_Char(self):
 			return self.char
 
 		def get_name(self):
@@ -704,7 +730,7 @@ class Text(object):
 			self.text = text.decode('latin-1').encode('utf-8').replace('%EURO%', '€').replace('&', '&amp;').replace(
 				'<', '&lt;').replace('>', '&gt;')
 
-		def GetText(self):
+		def get_Text(self):
 			return self.text
 
 		def get_name(self):
@@ -716,7 +742,7 @@ class Text(object):
 		def SetSpace(self, value):
 			self.space = value
 
-		def GetSpace(self):
+		def get_Space(self):
 			return self.space
 
 		def get_tab(self, number=0):

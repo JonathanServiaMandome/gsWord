@@ -19,7 +19,7 @@ class Document:
 		self.tab = '\t'
 		self.separator = '\n'
 		self.tag = 'document'
-		self._debug = False
+
 		self.ruta_plantilla = ruta_plantilla
 		self._plantilla = plantilla_
 
@@ -91,10 +91,10 @@ class Document:
 		return self.tab
 
 	def get_name(self):
-		return self.get_tag()
+		return self.get_tab()
 
-	def get_tag(self):
-		return self.tag
+	def get_tab(self):
+		return self.tab
 
 	def get_Tag(self):
 		return self.tag
@@ -120,12 +120,12 @@ class Document:
 	def Table(self, parent, data=(), titles=(), column_width=None, horizontal_alignment=(), borders=None):
 		self.idx += 1
 		return parts.word.elements.table.Table(parent, self.idx, data, titles, column_width, horizontal_alignment,
-												borders)
+											   borders)
 
 	def Paragraph(self, parent, idx, text=(), horizontal_alignment='j', font_format='', font_size=None, null=False):
 		self.idx += 1
 		return parts.word.elements.paragraph.Paragraph(parent, idx, text, horizontal_alignment, font_format, font_size,
-														nulo=null)
+													   nulo=null)
 
 	def Image(self, parent, path, width, heigth):
 		self.idx += 1
@@ -209,7 +209,7 @@ class Document:
 		self.parts["body"].AddPrincipalSection()
 		try:
 			os.makedirs(self.get_RutaPlantilla())
-		except Exception:
+		except:
 			pass
 
 		try:
@@ -229,33 +229,167 @@ class Document:
 				continue
 			try:
 				zout.writestr(part.get_name(), part.get_xml())
-			except Exception:
+			except:
 				raise ValueError(part.get_xml())
+
+			try:
+				part_split = part.get_name().split('/')
+				os.makedirs(self.get_RutaPlantilla() + '/'.join(part_split[:-1]))
+			except Exception:
+				pass
 
 			if hasattr(part, 'get_Images'):
 				for img in part.get_Images():
 					zout.writestr('word/' + img[0], img[1])
 
-			if self._debug:
-				try:
-					os.makedirs(self.get_RutaPlantilla() + 'temp/')
-				except Exception:
-					pass
-
-				try:
-					part_split = part.get_name().split('/')
-					os.makedirs(self.get_RutaPlantilla() + 'temp/'+'/'.join(part_split[:-1]))
-				except Exception:
-					pass
-				with open(self.get_RutaPlantilla() + 'temp/' + part.get_name(), 'w') as file_part:
-					file_part.write(part.get_xml())
-
+			with open(self.get_RutaPlantilla() + part.get_name(), 'w') as file_part:
+				file_part.write(part.get_xml())
 		zout.writestr(self.get_ContentTypes().get_name(), self.get_ContentTypes().get_xml())
 
-		if self._debug:
-			with open(self.get_RutaPlantilla() + 'temp/' + self.get_ContentTypes().get_name(), 'w') as file_part:
-				file_part.write(self.get_ContentTypes().get_xml())
+		with open(self.get_RutaPlantilla() + self.get_ContentTypes().get_name(), 'w') as file_content:
+			file_content.write(self.get_ContentTypes().get_xml())
 		zout.close()
+
+	# noinspection PyBroadException
+	def Load(self):
+		path = self.get_RutaPlantilla() + '/' + self.get_Plantilla()
+
+		zin = ZipFile(path, 'r')
+
+		for item in zin.infolist():
+			"""
+			[Content_Types].xml
+			_rels/.rels
+			word/_rels/document.xml.rels
+			word/document.xml
+			word/header1.xml
+			word/footer1.xml
+			word/endnotes.xml
+			word/_rels/header1.xml.rels
+			word/footnotes.xml
+			word/theme/theme1.xml
+			word/media/image1.png
+			word/settings.xml
+			customXml/_rels/item1.xml.rels
+			customXml/itemProps1.xml
+			word/styles.xml
+			word/fontTable.xml
+			docProps/core.xml
+			customXml/item1.xml
+			word/webSettings.xml
+			docProps/app.xml
+			"""
+
+			path = item.filename.split('/')
+			file_ = path.pop(-1)
+			path = self.get_RutaPlantilla() + 'temp/' + '/'.join(path) + '/'
+			try:
+				os.makedirs(path)
+			except Exception:
+				pass
+			buffer_in = zin.read(item.filename)
+
+			path = path + file_
+			open(path, 'w').write(buffer_in)
+
+		zin.close()
+
+	# noinspection PyBroadException
+	def Generate(self, vx=None):
+		if vx is None:
+			vx = dict()
+		from zipfile import ZipFile, ZIP_DEFLATED
+		from shutil import copyfile
+		from types import DictType
+		dc_vars = {}
+		for tabla in vx.keys():
+			if type(vx[tabla]) != DictType:
+				continue
+			for cod in vx[tabla].keys():
+				if type(vx[tabla][cod]) != DictType:
+					continue
+				for campo in vx[tabla][cod].keys():
+					valor = vx[tabla][cod][campo]
+					dc_vars[campo] = str(valor)
+					if '_' in campo:
+						raiz = campo.split('_')[0]
+						dc_vars[raiz + '_IDX'] = cod
+
+		forma = 1
+		if forma == 1:
+			zout = None
+			numero_impresion = 1
+			while zout is None:
+				try:
+					copyfile(self.ruta_plantilla + self._plantilla,
+							self.ruta_plantilla + 'impresion_%d.docx' % numero_impresion)
+					zout = 1
+				except Exception:
+					numero_impresion += 1
+				if numero_impresion == 99:
+					raise NameError('No se puede generar el contador.')
+			zin = ZipFile(self.ruta_plantilla + 'impresion_%d.docx' % numero_impresion, 'r')
+			zout = ZipFile(self.ruta_plantilla + 'impresion_%d_temp.docx' % numero_impresion, 'w')
+
+			for item in zin.infolist():
+				buffer_in = zin.read(item.filename)
+
+				archivos_saltar = ['word/document.xml']
+				if item.filename not in archivos_saltar:
+					zout.writestr(item, buffer_in)
+			zout.close()
+			zin.close()
+
+			copyfile(self.ruta_plantilla + 'impresion_%d_temp.docx' % numero_impresion,
+					self.ruta_plantilla + 'impresion_%d.docx' % numero_impresion)
+
+			_zipf = ZipFile(self.ruta_plantilla + 'impresion_%d.docx' % numero_impresion, 'a', compression=ZIP_DEFLATED)
+			_zipf.writestr('word/document.xml', self.get_xml())
+			open(self.ruta_plantilla + 'document.xml', 'w').write(self.get_xml())
+			_zipf.close()
+		else:
+			zin = ZipFile(self.ruta_plantilla + self._plantilla, 'r')
+			# open(self.ruta_plantilla+'header2.xml','wb').write(zin.read('word/header2.xml'))
+			# open(self.ruta_plantilla+'footer2.xml','wb').write(zin.read('word/footer2.xml'))
+			zout = None
+			numero_impresion = 1
+			while zout is None:
+				try:
+					zout = ZipFile(self.ruta_plantilla + 'impresion_%d.docx' % numero_impresion, 'w')
+				except Exception:
+					numero_impresion += 1
+
+			for item in zin.infolist():
+				buffer_in = zin.read(item.filename)
+
+				# archivos_saltar=['word/styles.xml','word/document.xml','word/header2.xml','word/footer2.xml']#'word/styles.xml',
+				archivos_saltar = ['word/document.xml']
+				if item.filename not in archivos_saltar:
+					zout.writestr(item, buffer_in)
+
+				'''if item.filename=='word/header2.xml':
+					header_txt = zin.open(item.filename).read()
+				elif item.filename=='word/footer2.xml':
+					footer_txt = zin.open(item.filename).read()
+				elif item.filename=='word/document.xml':
+					t=zin.open(item.filename).read()'''
+			zout.close()
+			zin.close()
+
+			_zipf = ZipFile(self.ruta_plantilla + 'impresion_%d.docx' % numero_impresion, 'a', compression=ZIP_DEFLATED)
+			open(self.ruta_plantilla + 'document.xml', 'w').write(self.get_xml())
+			_zipf.writestr('word/document.xml', self.get_xml())
+
+			_zipf.close()
+
+		if True:
+			try:
+				os.system('start ' + self.ruta_plantilla + 'impresion_%d.docx' % numero_impresion)
+			except Exception as e:
+				if type(e) == tuple and e[0] == 13:
+					raise ValueError('Ya tiene abierto un documento con el mismo nombre.')
+				else:
+					raise ValueError(repr(e))
 
 	def get_xml(self):
 		value = list()

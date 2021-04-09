@@ -16,13 +16,13 @@ class DocumentRels(object):
 		self.parts = dict()
 		self.images = list()
 
-	def GetImages(self):
+	def get_Images(self):
 		return self.images
 
 	def AddImage(self, target, image):
 		self.images.append([target, image])
 
-	def GetParts(self):
+	def get_Parts(self):
 		return self.parts
 
 	def SetParts(self, dc):
@@ -33,7 +33,7 @@ class DocumentRels(object):
 			raise ValueError("La parte %s ya está añadida al documento." % name)
 		self.parts[name] = value
 
-	def GetPart(self, name):
+	def get_Part(self, name):
 		return self.parts[name]
 
 	def SetPart(self, name, dc):
@@ -57,18 +57,18 @@ class DocumentRels(object):
 	def get_name(self):
 		return self.name
 
-	def GetTag(self):
+	def get_Tag(self):
 		return self.tag
 
 	def get_xml(self):
-		value = [self.get_xmlHeader(), '<%s xmlns="%s">' % (self.GetTag(), self.get_xmlNS())]
+		value = [self.get_xmlHeader(), '<%s xmlns="%s">' % (self.get_Tag(), self.get_xmlNS())]
 
-		for target in self.GetParts():
-			dc = self.GetPart(target)
+		for target in self.get_Parts():
+			dc = self.get_Part(target)
 			value.append(
 				self.tab + '<Relationship Id="%s" Type="%s" Target="%s"/>' % (
 					dc.get('Id', ''), dc.get('Type', ''), target))
 
-		value.append('</%s>' % self.GetTag())
+		value.append('</%s>' % self.get_Tag())
 		value.append('')
 		return self.separator.join(value)

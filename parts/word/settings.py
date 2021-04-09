@@ -48,7 +48,7 @@ class Settings:
 		self.chartTrackingRefBased = ''
 		self.docId = ''
 
-	def GetRId(self):
+	def get_RId(self):
 		return self.rId
 
 	def SetRId(self, value):
@@ -57,13 +57,13 @@ class Settings:
 	def ContentType(self):
 		return self.content_type
 
-	def GetZoom(self):
+	def get_Zoom(self):
 		return self.zoom
 
 	def SetZoom(self, value):
 		self.zoom = value
 
-	def Get_rsids(self):
+	def get__rsids(self):
 		return self.rsids
 
 	def Set_rsids(self, value):
@@ -72,13 +72,13 @@ class Settings:
 	def AddRsid(self, value):
 		self.rsids.append(value)
 
-	def GetCharacterSpacingControl(self):
+	def get_CharacterSpacingControl(self):
 		return self.characterSpacingControl
 
 	def SetCharacterSpacingControl(self, value):
 		self.characterSpacingControl = value
 
-	def GetHyphenationZone(self):
+	def get_HyphenationZone(self):
 		return self.hyphenationZone
 
 	def SetHyphenationZone(self, value):
@@ -90,16 +90,16 @@ class Settings:
 	def SetXMLHeader(self, value):
 		self.xml_header = value
 
-	def GetIgnorable(self):
+	def get_Ignorable(self):
 		return self.ignorable
 
 	def SetIgnorable(self, value):
 		self.ignorable = value
 
-	def GetCompat(self):
+	def get_Compat(self):
 		return self.compat
 
-	def GetCompatbyName(self, name):
+	def get_CompatbyName(self, name):
 		return self.compat.get(name, '')
 
 	def SetCompat(self, dc):
@@ -117,10 +117,10 @@ class Settings:
 	def get_parent(self):
 		return self.parent
 
-	def GetTag(self):
+	def get_Tag(self):
 		return self.tag
 
-	def GetTag(self):
+	def get_Tag(self):
 		return self.tag
 
 	def get_name(self):
@@ -139,11 +139,11 @@ class Settings:
 		value.append(self.get_xmlHeader())
 		value.append(
 			'<w:%s xmlns:mc="%s" xmlns:r="%s" xmlns:w="%s" xmlns:w14="%s" xmlns:w15="%s" mc:Ignorable="%s" >' % (
-				self.GetTag(), self.get_xmlNSbyName('mc'), self.get_xmlNSbyName('r'), self.get_xmlNSbyName('w'),
-				self.get_xmlNSbyName('w14'), self.get_xmlNSbyName('w15'), self.GetIgnorable()))
-		# value.append(Value_('optimizeForBrowser', self.GetOptimizeForBrowser()))
-		# value.append(Value_('allowPNG', self.GetAllowPNG()))
-		value.append('/<w:%s>' % (self.GetTag()))
+				self.get_Tag(), self.get_xmlNSbyName('mc'), self.get_xmlNSbyName('r'), self.get_xmlNSbyName('w'),
+				self.get_xmlNSbyName('w14'), self.get_xmlNSbyName('w15'), self.get_Ignorable()))
+		# value.append(Value_('optimizeForBrowser', self.get_OptimizeForBrowser()))
+		# value.append(Value_('allowPNG', self.get_AllowPNG()))
+		value.append('/<w:%s>' % (self.get_Tag()))
 		return self.separator.join(value)
 
 	def get_xml(self):

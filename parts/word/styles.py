@@ -805,7 +805,7 @@ class Styles(object):
 	def get_name(self):
 		return self.name
 
-	def GetTag(self):
+	def get_Tag(self):
 		return self.tag
 
 	def get_name(self):
@@ -820,13 +820,13 @@ class Styles(object):
 		xmlns = ' '.join(self.xmlns)
 		if xmlns:
 			xmlns = ' ' + xmlns
-		value.append('%s<%s%s>' % (self.get_tab(), self.GetTag(), xmlns))
+		value.append('%s<%s%s>' % (self.get_tab(), self.get_Tag(), xmlns))
 		value.append(self.get_doc_defaluts().get_xml())
 		value.append(self.get_latentStyles().get_xml())
 
 		for style in self.styles:
 			value.append(style.get_xml())
 
-		value.append('%s</%s>' % (self.get_tab(), self.GetTag()))
+		value.append('%s</%s>' % (self.get_tab(), self.get_Tag()))
 
 		return self.separator.join(value)

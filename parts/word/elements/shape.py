@@ -991,4 +991,4 @@ if __name__ == '__main__':
 	p = body.add_paragraph(x)
 
 	parent.Save()
-	print x.get_xml()
+

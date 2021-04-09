@@ -33,7 +33,7 @@ class ContentType(object):
 	def SetXMLNS(self, value):
 		self.xmlns = value
 
-	def GetDefault(self):
+	def get_Default(self):
 		return self.default
 
 	def SetDefault(self, value):
@@ -51,28 +51,28 @@ class ContentType(object):
 	def get_tab(self):
 		return self.tab
 
-	def GetTag(self):
+	def get_Tag(self):
 		return self.tag
 
 	def get_name(self):
 		return self.name
 
 	def get_xml(self):
-		value = [self.get_xmlHeader(), '<%s xmlns="%s">' % (self.GetTag(), self.get_xmlNS())]
+		value = [self.get_xmlHeader(), '<%s xmlns="%s">' % (self.get_Tag(), self.get_xmlNS())]
 
-		for target in self.GetDefault().keys():
+		for target in self.get_Default().keys():
 			value.append(
 				self.tab + '<Default Extension="%s" %s/>' % (
-					target, self.GetDefault()[target]))
+					target, self.get_Default()[target]))
 
-		for part_name in self.get_parent().GetParts():
+		for part_name in self.get_parent().get_Parts():
 			if part_name in ['rels', 'document_rels']:
 				continue
-			part = self.get_parent().GetPart(part_name)
+			part = self.get_parent().get_Part(part_name)
 			if hasattr(part, 'ContentType'):
 				value.append('%s<Override PartName="/%s" ContentType="%s"/>' % (
 					self.get_tab(), part.get_name(), part.ContentType()))
 
-		value.append('</%s>' % self.GetTag())
+		value.append('</%s>' % self.get_Tag())
 		value.append('')
 		return self.separator.join(value)

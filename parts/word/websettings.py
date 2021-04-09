@@ -27,7 +27,7 @@ class WebSettings:
 
 		self.ignorable = 'w14 w15'
 
-	def GetRId(self):
+	def get_RId(self):
 		return self.rId
 
 	def SetRId(self, value):
@@ -36,13 +36,13 @@ class WebSettings:
 	def ContentType(self):
 		return self.content_type
 
-	def GetAllowPNG(self):
+	def get_AllowPNG(self):
 		return self.allowPNG
 
 	def SetAllowPNG(self, value):
 		self.allowPNG = value
 
-	def GetOptimizeForBrowser(self):
+	def get_OptimizeForBrowser(self):
 		return self.optimizeForBrowser
 
 	def SetOptimizeForBrowser(self, value):
@@ -54,7 +54,7 @@ class WebSettings:
 	def SetXMLHeader(self, value):
 		self.xml_header = value
 
-	def GetIgnorable(self):
+	def get_Ignorable(self):
 		return self.ignorable
 
 	def SetIgnorable(self, value):
@@ -72,7 +72,7 @@ class WebSettings:
 	def get_parent(self):
 		return self.parent
 
-	def GetTag(self):
+	def get_Tag(self):
 		return self.tag
 
 	def get_name(self):
@@ -91,10 +91,10 @@ class WebSettings:
 		value.append(self.get_xmlHeader())
 		value.append(
 			'<%s xmlns:mc="%s" xmlns:r="%s" xmlns:w="%s" xmlns:w14="%s" xmlns:w15="%s" mc:Ignorable="%s">' % (
-				self.GetTag(), self.get_xmlNSbyName('mc'), self.get_xmlNSbyName('r'), self.get_xmlNSbyName('w'),
-				self.get_xmlNSbyName('w14'), self.get_xmlNSbyName('w15'), self.GetIgnorable()))
-		value.append(Value_('w:optimizeForBrowser', self.GetOptimizeForBrowser()))
-		value.append(Value_('w:allowPNG', self.GetAllowPNG()))
-		value.append('</%s>' % (self.GetTag()))
+				self.get_Tag(), self.get_xmlNSbyName('mc'), self.get_xmlNSbyName('r'), self.get_xmlNSbyName('w'),
+				self.get_xmlNSbyName('w14'), self.get_xmlNSbyName('w15'), self.get_Ignorable()))
+		value.append(Value_('w:optimizeForBrowser', self.get_OptimizeForBrowser()))
+		value.append(Value_('w:allowPNG', self.get_AllowPNG()))
+		value.append('</%s>' % (self.get_Tag()))
 		value.append('')
 		return self.separator.join(value)

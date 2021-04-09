@@ -71,19 +71,19 @@ class Part:
 		self.rsidR = '00D4598A'
 		self.rsidRDefault = '00D4598A'
 
-	def GetTypeReference(self):
+	def get_TypeReference(self):
 		return self.type_reference
 
 	def SetRId(self, value):
 		self.rId = value
 
-	def GetRId(self):
+	def get_RId(self):
 		return self.rId
 
 	def AddRelRId(self):
 		self.relRId += 1
 
-	def GetRelRId(self):
+	def get_RelRId(self):
 		return self.relRId
 
 	def get_tab(self, number=0):
@@ -92,7 +92,7 @@ class Part:
 	def ContentType(self):
 		return self.content_type
 
-	def GetTag(self):
+	def get_Tag(self):
 		return self.tag
 
 	def get_name(self):
@@ -107,28 +107,28 @@ class Part:
 	def get_xmlHeader(self):
 		return self.xml_header
 
-	def GetElements(self):
+	def get_Elements(self):
 		return self.elements
 
 	def get_xml(self):
 		value = list()
 
 		value.append(self.get_xmlHeader())
-		value.append('<%s %s>' % (self.GetTag(), ' '.join(self.attributes)))
+		value.append('<%s %s>' % (self.get_Tag(), ' '.join(self.attributes)))
 
 		''' Si no hay ningún elemento se añade un párrafo en blanco '''
-		if not self.GetElements():
+		if not self.get_Elements():
 			value.append('%s<w:p w:rsidR="%s" w:rsidRDefault="%s">' % (self.get_tab(), self.rsidR, self.rsidRDefault))
 			value.append('%s<w:pPr>' % self.get_tab(2))
 			value.append('%s<w:pStyle w:val="Encabezado"/>' % self.get_tab(3))
 			value.append('%s</w:pPr>' % self.get_tab(2))
 			value.append('%s</w:p>' % self.get_tab())
 		else:
-			for element in self.GetElements():
+			for element in self.get_Elements():
 				value.append(element.get_xml())
 
 		# value.append('<w:pPr> <w:pStyle w:val = "Encabezado"/> </w:pPr>')
-		value.append('</%s>' % self.GetTag())
+		value.append('</%s>' % self.get_Tag())
 		value.append('')
 
 		return self.get_separator().join(value)
@@ -164,7 +164,7 @@ class Notes:
 		self.indent = 1
 		self.parent = parent
 
-	def GetRId(self):
+	def get_RId(self):
 		return self.rId
 
 	def SetRId(self, value):
@@ -173,7 +173,7 @@ class Notes:
 	def ContentType(self):
 		return self.content_type
 
-	def GetTag(self):
+	def get_Tag(self):
 		return self.tag
 
 	def get_name(self):
@@ -187,7 +187,7 @@ class Notes:
 
 	def get_xml(self):
 		txt = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n'
-		txt += '<%s xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas"' % self.GetTag()
+		txt += '<%s xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas"' % self.get_Tag()
 		txt += ' xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"'
 		txt += ' xmlns:o="urn:schemas-microsoft-com:office:office"'
 		txt += ' xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"'
@@ -207,7 +207,7 @@ class Notes:
 
 		value = list()
 		value.append(txt)
-		value.append('<%s w:type="separator" w:id="-1">' % self.GetTag()[:-1])
+		value.append('<%s w:type="separator" w:id="-1">' % self.get_Tag()[:-1])
 
 		value.append('<w:p w:rsidR="000E0AE3" w:rsidRDefault="000E0AE3" w:rsidP="00D4598A">')
 		value.append('<w:pPr>')
@@ -227,7 +227,7 @@ class Notes:
 		value.append('<w:continuationSeparator/>')
 		value.append('</w:r>')
 		value.append('</w:p>')
-		value.append('</%s>' % self.GetTag()[:-1])
-		value.append('</%s>' % self.GetTag())
+		value.append('</%s>' % self.get_Tag()[:-1])
+		value.append('</%s>' % self.get_Tag())
 		value.append('')
 		return self.separator.join(value)

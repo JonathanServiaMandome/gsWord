@@ -33,49 +33,49 @@ class App(object):
 	def ContentType(self):
 		return self.content_type
 
-	def GetScaleCrop(self):
+	def get_ScaleCrop(self):
 		return self.scale_crop
 
 	def SetScaleCrop(self, value):
 		self.scale_crop = value
 
-	def GetCharactersWithSpaces(self):
+	def get_CharactersWithSpaces(self):
 		return self.characters_with_spaces
 
 	def SetCharactersWithSpaces(self, value):
 		self.characters_with_spaces = value
 
-	def GetCompany(self):
+	def get_Company(self):
 		return self.company
 
 	def SetCompany(self, value):
 		self.company = value
 
-	def GetLinksUpToDate(self):
+	def get_LinksUpToDate(self):
 		return self.links_up_to_date
 
 	def SetLinksUpToDate(self, value):
 		self.links_up_to_date = value
 
-	def GetSharedDoc(self):
+	def get_SharedDoc(self):
 		return self.shared_doc
 
 	def SetSharedDoc(self, value):
 		self.shared_doc = value
 
-	def GetHyperlinksChanged(self):
+	def get_HyperlinksChanged(self):
 		return self.hyperlinks_changed
 
 	def SetHyperlinksChanged(self, value):
 		self.hyperlinks_changed = value
 
-	def GetAppVersion(self):
+	def get_AppVersion(self):
 		return self.app_version
 
 	def SetAppVersion(self, value):
 		self.app_version = value
 
-	def GetLines(self):
+	def get_Lines(self):
 		return self.lines
 
 	def SetLines(self, value):
@@ -87,37 +87,37 @@ class App(object):
 	def set_paragraphs(self, value):
 		self.paragraphs = value
 
-	def GetDocSecurity(self):
+	def get_DocSecurity(self):
 		return self.doc_security
 
 	def SetDocSecurity(self, value):
 		self.doc_security = value
 
-	def GetApplication(self):
+	def get_Application(self):
 		return self.application
 
 	def SetApplication(self, value):
 		self.application = value
 
-	def GetCharacters(self):
+	def get_Characters(self):
 		return self.characters
 
 	def SetCharacters(self, value):
 		self.characters = value
 
-	def GetTotalTime(self):
+	def get_TotalTime(self):
 		return self.total_time
 
 	def SetTotalTime(self, value):
 		self.total_time = value
 
-	def GetPages(self):
+	def get_Pages(self):
 		return self.pages
 
 	def SetPages(self, value):
 		self.pages = value
 
-	def GetWords(self):
+	def get_Words(self):
 		return self.words
 
 	def SetWords(self, value):
@@ -129,7 +129,7 @@ class App(object):
 	def SetXMLNS(self, value):
 		self.xmlns = value
 
-	def GetTemplate(self):
+	def get_Template(self):
 		return self.template
 
 	def SetTemplate(self, value):
@@ -153,7 +153,7 @@ class App(object):
 	def get_name(self):
 		return self.name
 
-	def GetTag(self):
+	def get_Tag(self):
 		return self.tag
 
 	def DefaultValues(self):
@@ -177,29 +177,29 @@ class App(object):
 	def get_xml(self):
 		value = list()
 		value.append(self.get_xmlHeader())
-		value.append('<%s xmlns="%s" xmlns:vt="%s">' % (self.GetTag(), self.get_xmlNS(), self.get_xmlNSVT()))
+		value.append('<%s xmlns="%s" xmlns:vt="%s">' % (self.get_Tag(), self.get_xmlNS(), self.get_xmlNSVT()))
 
-		value.append('%s<Template>%s</Template>' % (self.tab, self.GetTemplate()))
-		value.append('%s<TotalTime>%d</TotalTime>' % (self.tab, self.GetTotalTime()))
-		value.append('%s<Pages>%d</Pages>' % (self.tab, self.GetPages()))
-		value.append('%s<Words>%d</Words>' % (self.tab, self.GetWords()))
-		value.append('%s<Characters>%d</Characters>' % (self.tab, self.GetCharacters()))
-		value.append('%s<Application>%s</Application>' % (self.tab, self.GetApplication()))
-		value.append('%s<DocSecurity>%d</DocSecurity>' % (self.tab, self.GetDocSecurity()))
-		value.append('%s<Lines>%d</Lines>' % (self.tab, self.GetLines()))
+		value.append('%s<Template>%s</Template>' % (self.tab, self.get_Template()))
+		value.append('%s<TotalTime>%d</TotalTime>' % (self.tab, self.get_TotalTime()))
+		value.append('%s<Pages>%d</Pages>' % (self.tab, self.get_Pages()))
+		value.append('%s<Words>%d</Words>' % (self.tab, self.get_Words()))
+		value.append('%s<Characters>%d</Characters>' % (self.tab, self.get_Characters()))
+		value.append('%s<Application>%s</Application>' % (self.tab, self.get_Application()))
+		value.append('%s<DocSecurity>%d</DocSecurity>' % (self.tab, self.get_DocSecurity()))
+		value.append('%s<Lines>%d</Lines>' % (self.tab, self.get_Lines()))
 		value.append('%s<Paragraphs>%d</Paragraphs>' % (self.tab, self.get_paragraphs()))
-		value.append('%s<ScaleCrop>%s</ScaleCrop>' % (self.tab, self.GetScaleCrop()))
+		value.append('%s<ScaleCrop>%s</ScaleCrop>' % (self.tab, self.get_ScaleCrop()))
 
-		if self.GetCompany():
-			value.append('%s<Company>%s</Company>' % (self.tab, self.GetCompany()))
+		if self.get_Company():
+			value.append('%s<Company>%s</Company>' % (self.tab, self.get_Company()))
 		else:
 			value.append('%s<Company/>' % self.tab)
-		value.append('%s<LinksUpToDate>%s</LinksUpToDate>' % (self.tab, self.GetLinksUpToDate()))
-		value.append('%s<CharactersWithSpaces>%d</CharactersWithSpaces>' % (self.tab, self.GetCharactersWithSpaces()))
-		value.append('%s<SharedDoc>%s</SharedDoc>' % (self.tab, self.GetSharedDoc()))
-		value.append('%s<HyperlinksChanged>%s</HyperlinksChanged>' % (self.tab, self.GetHyperlinksChanged()))
-		value.append('%s<AppVersion>%s</AppVersion>' % (self.tab, self.GetAppVersion()))
+		value.append('%s<LinksUpToDate>%s</LinksUpToDate>' % (self.tab, self.get_LinksUpToDate()))
+		value.append('%s<CharactersWithSpaces>%d</CharactersWithSpaces>' % (self.tab, self.get_CharactersWithSpaces()))
+		value.append('%s<SharedDoc>%s</SharedDoc>' % (self.tab, self.get_SharedDoc()))
+		value.append('%s<HyperlinksChanged>%s</HyperlinksChanged>' % (self.tab, self.get_HyperlinksChanged()))
+		value.append('%s<AppVersion>%s</AppVersion>' % (self.tab, self.get_AppVersion()))
 
-		value.append('</%s>' % self.GetTag())
+		value.append('</%s>' % self.get_Tag())
 		value.append('')
 		return self.separator.join(value)

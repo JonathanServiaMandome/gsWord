@@ -27,7 +27,7 @@ class HorizontalAlignment:
 	def SetValue(self, value):
 		self.val = value
 
-	def GetValue(self):
+	def get_Value(self):
 		return self.val
 
 	def get_tab(self, number=0):
@@ -88,13 +88,13 @@ Atributtes:
 	def SetValue(self, value):
 		self.val = value
 
-	def GetFill(self):
+	def get_Fill(self):
 		return self.fill
 
-	def GetColor(self):
+	def get_color(self):
 		return self.color
 
-	def GetValue(self):
+	def get_Value(self):
 		return self.val
 
 	def get_tab(self, number=0):
@@ -257,19 +257,19 @@ class TableElement:
 	def SetValue(self, value):
 		self.val = value
 
-	def GetColor(self):
+	def get_color(self):
 		return self.color
 
-	def GetShadow(self):
+	def get_Shadow(self):
 		return self.shadow
 
-	def GetSpace(self):
+	def get_Space(self):
 		return self.space
 
-	def GetSize(self):
+	def get_Size(self):
 		return self.sz
 
-	def GetValue(self):
+	def get_Value(self):
 		return self.val
 
 	def get_tab(self, number=0):
@@ -378,22 +378,22 @@ class TableBorders(object):
 	def SetInsideV(self, value, sz='', space='', shadow=False, color=''):
 		self.insideV = TableElement(self, 'insideV', value, sz, space, shadow, color)
 
-	def GetTop(self):
+	def get_Top(self):
 		return self.top
 
-	def GetBottom(self):
+	def get_Bottom(self):
 		return self.bottom
 
-	def GetStart(self):
+	def get_Start(self):
 		return self.start
 
-	def GetEnd(self):
+	def get_End(self):
 		return self.end
 
-	def GetInsideH(self):
+	def get_InsideH(self):
 		return self.insideH
 
-	def GetInsideV(self):
+	def get_InsideV(self):
 		return self.insideV
 
 	def get_tab(self, number=0):
@@ -471,16 +471,16 @@ class CellMargin:
 	def SetEnd(self, x, type_='dxa'):
 		self.end = Element(self, 'end', x, type_)
 
-	def GetTop(self):
+	def get_Top(self):
 		return self.top
 
-	def GetBottom(self):
+	def get_Bottom(self):
 		return self.bottom
 
-	def GetStart(self):
+	def get_Start(self):
 		return self.start
 
-	def GetEnd(self):
+	def get_End(self):
 		return self.end
 
 	def get_tab(self, number=0):
@@ -519,7 +519,7 @@ class CellSpacing:
 	def SetTblCellSpacing(self, w, type_='dxa'):
 		self.tblCellSpacing = Element(self, 'tblCellSpacing', w, type_)
 
-	def GetTblCellSpacing(self):
+	def get_TblCellSpacing(self):
 		return self.tblCellSpacing
 
 	def get_tab(self, number=0):
@@ -592,7 +592,7 @@ class TableLayout:
 	def SetValue(self, value):
 		self.value = value
 
-	def GetValue(self):
+	def get_Value(self):
 		return self.value
 
 	def get_tab(self, number=0):
@@ -630,43 +630,43 @@ class TableLook:
 	def SetValue(self, value):
 		self.value = value
 
-	def GetValue(self):
+	def get_Value(self):
 		return self.value
 
 	def SetFirstColumn(self, value):
 		self.firstColumn = value
 
-	def GetFirstColumn(self):
+	def get_FirstColumn(self):
 		return self.firstColumn
 
 	def SetLastColumn(self, value):
 		self.lastColumn = value
 
-	def GetLastColumn(self):
+	def get_LastColumn(self):
 		return self.lastColumn
 
 	def SetFirstRow(self, value):
 		self.firstRow = value
 
-	def GetFirstRow(self):
+	def get_FirstRow(self):
 		return self.firstRow
 
 	def SetLastRow(self, value):
 		self.lastRow = value
 
-	def GetLastRow(self):
+	def get_LastRow(self):
 		return self.lastRow
 
 	def SetNoHBand(self, value):
 		self.noHBand = value
 
-	def GetNoHBand(self):
+	def get_NoHBand(self):
 		return self.noHBand
 
 	def SetNoVBand(self, value):
 		self.noVBand = value
 
-	def GetNoVBand(self):
+	def get_NoVBand(self):
 		return self.noVBand
 
 	def get_tab(self, number=0):
@@ -775,61 +775,61 @@ class FloatingTable:
 	def SetBottomFromText(self, value):
 		self.bottomFromText = value
 
-	def GetBottomFromText(self):
+	def get_BottomFromText(self):
 		return self.bottomFromText
 
 	def SetTopFromText(self, value):
 		self.topFromText = value
 
-	def GetTopFromText(self):
+	def get_TopFromText(self):
 		return self.topFromText
 
 	def SetLeftFromText(self, value):
 		self.leftFromText = value
 
-	def GetLeftFromText(self):
+	def get_LeftFromText(self):
 		return self.leftFromText
 
 	def SetRightFromText(self, value):
 		self.rightFromText = value
 
-	def GetRightFromText(self):
+	def get_RightFromText(self):
 		return self.rightFromText
 
 	def SetAnclajeHorizontal(self, value):
 		self.horzAnchor = value
 
-	def GetAnclajeVertical(self):
+	def get_AnclajeVertical(self):
 		return self.horzAnchor
 
 	def SetAnclajeVertical(self, value):
 		self.vertAnchor = value
 
-	def GetAnclajeHorizontal(self):
+	def get_AnclajeHorizontal(self):
 		return self.vertAnchor
 
 	def SetPositionX(self, value):
 		self.tblpX = value
 
-	def GetPositionX(self):
+	def get_PositionX(self):
 		return self.tblpX
 
 	def SetRelativePositionX(self, value):
 		self.tblpXSpec = value
 
-	def GetRelativePositionX(self):
+	def get_RelativePositionX(self):
 		return self.tblpXSpec
 
 	def SetPositionY(self, value):
 		self.tblpY = value
 
-	def GetPositionY(self):
+	def get_PositionY(self):
 		return self.tblpY
 
 	def SetRelativePositionY(self, value):
 		self.tblpYSpec = value
 
-	def GetRelativePositionY(self):
+	def get_RelativePositionY(self):
 		return self.tblpYSpec
 
 	def get_tab(self, number=0):
@@ -945,19 +945,19 @@ class CellBorders:
 		def SetValue(self, value):
 			self.val = value
 
-		def GetColor(self):
+		def get_color(self):
 			return self.color
 
-		def GetShadow(self):
+		def get_Shadow(self):
 			return self.shadow
 
-		def GetSpace(self):
+		def get_Space(self):
 			return self.space
 
-		def GetSize(self):
+		def get_Size(self):
 			return self.sz
 
-		def GetValue(self):
+		def get_Value(self):
 			return self.val
 
 		def get_tab(self, number=0):
@@ -1083,28 +1083,28 @@ class CellBorders:
 	def SetTr2bl(self, value, sz='', space='', shadow=False, color=''):
 		self.tr2bl = TableElement(self, 'tr2bl', value, sz, space, shadow, color)
 
-	def GetTop(self):
+	def get_Top(self):
 		return self.top
 
-	def GetBottom(self):
+	def get_Bottom(self):
 		return self.bottom
 
-	def GetStart(self):
+	def get_Start(self):
 		return self.start
 
-	def GetEnd(self):
+	def get_End(self):
 		return self.end
 
-	def GetInsideH(self):
+	def get_InsideH(self):
 		return self.insideH
 
-	def GetInsideV(self):
+	def get_InsideV(self):
 		return self.insideV
 
-	def GetTl2br(self):
+	def get_Tl2br(self):
 		return self.tl2br
 
-	def GetTr2bl(self):
+	def get_Tr2bl(self):
 		return self.tr2bl
 
 	def get_tab(self, number=0):
@@ -1136,6 +1136,3 @@ class CellBorders:
 
 		return self.separator.join(value)
 
-
-if __name__ == '__main__':
-	print Shading.__init__.__doc__

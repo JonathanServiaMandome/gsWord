@@ -78,7 +78,7 @@ class Font(object):
 		self.tab = self.parent.get_tab()
 		self.indent = 1
 
-	def GetFontName(self):
+	def get_FontName(self):
 		return self.font_name
 
 	def SetFontName(self, font_name):
@@ -87,18 +87,18 @@ class Font(object):
 	def get_parent(self):
 		return self.parent
 
-	def GetTag(self):
+	def get_Tag(self):
 		return self.tag
 
 	def get_tab(self, number=0):
 		return self.tab * (self.indent + number)
 
 	def get_xml(self):
-		value = ['%s<%s w:name="%s">' % (self.get_tab(), self.GetTag(), self.GetFontName())]
+		value = ['%s<%s w:name="%s">' % (self.get_tab(), self.get_Tag(), self.get_FontName())]
 
-		font = FONTS.get(self.GetFontName(), DEFAULT_FONT)
+		font = FONTS.get(self.get_FontName(), DEFAULT_FONT)
 		if font == 1:
-			raise ValueError("La fuente %s no está soportada por la librería." % self.GetFontName())
+			raise ValueError("La fuente %s no está soportada por la librería." % self.get_FontName())
 		value.append('%s<w:panose1 w:val="%s"/>' % (self.get_tab(1), font['panose1']))
 		value.append('%s<w:charset w:val="%s"/>' % (self.get_tab(1), font['charset']))
 		value.append('%s<w:family w:val="%s"/>' % (self.get_tab(1), font['family']))
@@ -106,5 +106,5 @@ class Font(object):
 		value.append('%s<w:sig w:usb0="%s" w:usb1="%s" w:usb2="%s" w:usb3="%s" w:csb0="%s" w:csb1="%s"/>' % (
 			self.get_tab(1), font['usb0'], font['usb1'], font['usb2'], font['usb3'], font['csb0'], font['csb1']))
 
-		value.append('%s</%s>' % (self.get_tab(), self.GetTag()))
+		value.append('%s</%s>' % (self.get_tab(), self.get_Tag()))
 		return self.separator.join(value)

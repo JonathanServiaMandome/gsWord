@@ -139,7 +139,7 @@ class TableProperties(object):
 	def set_table_look(self, value='04A0', first_row='1', last_row='0', first_column='1', last_column='0',
 						nohband='0', novband='1'):  # ??
 		self.tblLook = element.TableLook(self, value, first_row, last_row, first_column, last_column, nohband,
-										 novband)
+											novband)
 
 	def get_table_layout(self):
 		return self.tblLayout
@@ -272,7 +272,7 @@ Atributtes:
 
 		for k in range(len(data)):
 			txt = data[k]
-			print txt
+
 			if getattr(txt, 'name', '') == 'tr':
 				txt.get_properties().set_width_cells(self.tblGrid)
 				txt.set_horizontal_alignment(horizontal_alignment)
@@ -524,7 +524,7 @@ class CellProperties(object):
 	def get_parent(self):
 		return self.parent
 
-	def get_name(self, number=0):
+	def get_name(self):
 		return self.name
 
 	def get_tab(self, number=0):
@@ -596,7 +596,7 @@ class CellProperties(object):
 	def set_wrap(self, value):
 		self.hideMark = value
 
-	def GetCellMargin(self):
+	def get_CellMargin(self):
 		return self.tcMar
 
 	def set_cell_margin(self, dc):
@@ -606,23 +606,20 @@ class CellProperties(object):
 		return self.tcW
 
 	def set_table_cell_width(self, w, type_='dxa'):
-		import os
-		fi = open(os.getcwd()+'/aa.txt','w')
 		if type(w) == str and '%' in w:
 			w = float(w.replace('%', '').strip())
 			p = self
 			while not hasattr(p, 'get_active_section'):
-				fi.write(str(p.name)+'\n')
-				try:p = p.get_parent()
-				except:break
-			'''p = self.get_parent().get_row().get_table().get_parent()
-			if p.get_name() != 'word/document.xml':
-				p = p.get_parent().get_body()'''
-			ancho_seccion = p.get_active_section().get_width()
-			ancho_seccion -= p.get_active_section().get_margin_left()
-			ancho_seccion -= p.get_active_section().get_margin_rigth()
+				if getattr(p, 'get_parent'):
+					p = p.get_parent()
+				else:
+					p = p.get_body()
 
-			w = int(ancho_seccion * (w / 100.))
+			section_width = p.get_active_section().get_width()
+			section_width -= p.get_active_section().get_margin_left()
+			section_width -= p.get_active_section().get_margin_rigth()
+
+			w = int(section_width * (w / 100.))
 		self.tcW = element.CellWidth(self, int(w), type_)
 
 	def get_xml(self):
@@ -667,7 +664,7 @@ class CellProperties(object):
 
 class Cell(object):
 
-	def __init__(self, row, numero_celda, data, horizontal_alignment='l'):
+	def __init__(self, row, cell_number, data, horizontal_alignment='l'):
 		self.name = 'tc'
 
 		self.id = ''
@@ -676,7 +673,7 @@ class Cell(object):
 		self.separator = row.separator
 		self.indent = row.indent + 1
 		self.properties = CellProperties(self, horizontal_alignment)
-		self.numero_celda = numero_celda
+		self.cell_number = cell_number
 
 		self.elements = list()
 
@@ -728,7 +725,7 @@ class Cell(object):
 	def get_separator(self):
 		return self.separator
 
-	def get_name(self, number=0):
+	def get_name(self):
 		return self.name
 
 	def get_row(self):
@@ -743,8 +740,8 @@ class Cell(object):
 	def get_paragraph(self, index):
 		return self.elements[index]
 
-	def set_paragraph(self, index, paragraph):
-		self.elements[index] = paragraph
+	def set_paragraph(self, index, _paragraph):
+		self.elements[index] = _paragraph
 
 	def set_cell_borders(self, dc):
 		self.get_properties().set_cell_borders(dc)
@@ -759,7 +756,7 @@ class Cell(object):
 		self.properties = value
 
 	def cell_number(self):
-		return self.numero_celda
+		return self.cell_number
 
 	def get_id(self):
 		return self.id
@@ -784,9 +781,9 @@ class Cell(object):
 					ff = font_format[k]
 
 			for _text in _element.elements:
-				if getattr(_text, 'name', '')=='r':
+				if getattr(_text, 'name', '') == 'r':
 					if 'b' in ff:
-						_text.get_properties().Bold()
+						_text.get_properties().bold()
 					if 'i' in ff:
 						_text.get_properties().Italic()
 					if 'u' in ff:
@@ -820,28 +817,28 @@ class Cell(object):
 
 		if not self.elements:
 			raise ValueError('Celda sin elementos')
-		for element in self.elements:
-			if isinstance(element, paragraph.Paragraph):
+		for _element in self.elements:
+			if getattr(_element, 'name', '') == 'p':
 				paragraph_spacing = self.get_properties().get_paragraph_spacing()
-				if element.get_properties().get_spacing() is None:
-					element.get_properties().set_spacing(paragraph_spacing)
+				if _element.get_properties().get_spacing() is None:
+					_element.get_properties().set_spacing(paragraph_spacing)
 				else:
 					if 'after' in paragraph_spacing.keys():
-						element.get_properties().get_spacing().set_after(paragraph_spacing['after'])
+						_element.get_properties().get_spacing().set_after(paragraph_spacing['after'])
 					if 'before' in paragraph_spacing.keys():
-						element.get_properties().get_spacing().set_before(paragraph_spacing['before'])
+						_element.get_properties().get_spacing().set_before(paragraph_spacing['before'])
 					if 'line' in paragraph_spacing.keys():
-						element.get_properties().get_spacing().set_line(paragraph_spacing['line'])
+						_element.get_properties().get_spacing().set_line(paragraph_spacing['line'])
 					if 'lineRule' in paragraph_spacing.keys():
-						element.get_properties().get_spacing().set_line_rule(paragraph_spacing['lineRule'])
+						_element.get_properties().get_spacing().set_line_rule(paragraph_spacing['lineRule'])
 					if 'beforeAutospacing' in paragraph_spacing.keys():
-						element.get_properties().get_spacing().set_before_autospacing(
+						_element.get_properties().get_spacing().set_before_autospacing(
 							paragraph_spacing['beforeAutospacing'])
 					if 'afterAutospacing' in paragraph_spacing.keys():
-						element.get_properties().get_spacing().set_after_autospacing(paragraph_spacing['afterAutospacing'])
+						_element.get_properties().get_spacing().set_after_autospacing(paragraph_spacing['afterAutospacing'])
 
-			value.append(element.get_xml())
-			if isinstance(element, Table):
+			value.append(_element.get_xml())
+			if isinstance(_element, Table):
 				value.append('%s<w:p/>' % self.get_tab())
 		value.append('%s</w:%s>' % (self.get_tab(), self.name))
 
@@ -1095,7 +1092,7 @@ class Row(object):
 
 		self.cells = list()
 
-		if isinstance(data, paragraph.Paragraph):
+		if getattr(data, 'name', '') == 'p':
 			if horizontal_alignment in [(), None]:
 				horizontal_alignment = ['l']
 			c = Cell(self, 0, [data], horizontal_alignment[0])
@@ -1110,10 +1107,10 @@ class Row(object):
 				elif len(horizontal_alignment) > k:
 					jc = horizontal_alignment[k]
 
-				if isinstance(txt, Cell):
+				if getattr(txt, 'name', '') == 'p':
 					txt.get_properties().set_horizontal_alignment(jc)
 					self.cells.append(txt)
-				if isinstance(txt, paragraph.Paragraph):
+				if getattr(txt, 'name', '') == 'tc':
 					c = Cell(self, k, [txt], jc)
 					self.cells.append(c)
 				else:
@@ -1124,7 +1121,7 @@ class Row(object):
 	def get_tab(self, number=0):
 		return self.tab * (self.indent + number)
 
-	def get_name(self, number=0):
+	def get_name(self):
 		return self.name
 
 	def get_separator(self):
@@ -1162,7 +1159,7 @@ class Row(object):
 				for _text in _element.elements:
 					if getattr(text, 'name', '') == 'r':
 						if 'b' in ff:
-							_text.get_properties().Bold()
+							_text.get_properties().bold()
 						if 'i' in ff:
 							_text.get_properties().Italic()
 						if 'u' in ff:
@@ -1183,9 +1180,9 @@ class Row(object):
 	def set_font_size(self, size):
 		for k in range(len(self.get_cells())):
 			cell = self.get_cell(k)
-			for paragraph in cell.get_paragraphs():
-				for text in paragraph.get_texts():
-					text.get_properties().set_font_size(size)
+			for _paragraph in cell.get_paragraphs():
+				for _text in _paragraph.get_texts():
+					_text.get_properties().set_font_size(size)
 
 	def get_table(self):
 		return self.table

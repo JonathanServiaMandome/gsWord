@@ -29,7 +29,7 @@ class FontTable:
 			'w15': "http://schemas.microsoft.com/office/word/2012/wordml"}
 		self.ignorable = 'w14 w15'
 
-	def GetRId(self):
+	def get_RId(self):
 		return self.rId
 
 	def SetRId(self, value):
@@ -44,7 +44,7 @@ class FontTable:
 	def SetXMLHeader(self, value):
 		self.xml_header = value
 
-	def GetIgnorable(self):
+	def get_Ignorable(self):
 		return self.ignorable
 
 	def SetIgnorable(self, value):
@@ -59,22 +59,22 @@ class FontTable:
 	def SetXMLNS(self, dc):
 		self.xmlns = dc
 
-	def GetFonts(self):
+	def get_Fonts(self):
 		return self.fonts
 
-	def GetFont(self, font_name):
+	def get_Font(self, font_name):
 		return self.fonts[font_name]
 
 	def SetFonts(self, dc):
 		self.fonts = dc
 
 	def SetFont(self, font_):
-		self.fonts[font_.GetFontName()] = font_
+		self.fonts[font_.get_FontName()] = font_
 
 	def AddFont(self, font_):
-		if font_.GetFontName() in self.GetFonts().keys():
-			raise ValueError("La fuente %s ya está añadida al documento." % font_.GetFontName())
-		self.fonts[font_.GetFontName()] = font_
+		if font_.get_FontName() in self.get_Fonts().keys():
+			raise ValueError("La fuente %s ya está añadida al documento." % font_.get_FontName())
+		self.fonts[font_.get_FontName()] = font_
 
 	def AddFontbyName(self, name):
 		_font = font.Font(self.parent, name)
@@ -86,21 +86,21 @@ class FontTable:
 	def get_name(self):
 		return self.name
 
-	def GetTag(self):
+	def get_Tag(self):
 		return self.tag
 
 	def get_xml(self):
 		value = [self.get_xmlHeader(),
 					'<%s xmlns:mc="%s" xmlns:r="%s" xmlns:w="%s" xmlns:w14="%s" xmlns:w15="%s" mc:Ignorable="%s">' % (
-					self.GetTag(), self.get_xmlNSbyName('mc'), self.get_xmlNSbyName('r'),
+					self.get_Tag(), self.get_xmlNSbyName('mc'), self.get_xmlNSbyName('r'),
 					self.get_xmlNSbyName('w'), self.get_xmlNSbyName('w14'),
-					self.get_xmlNSbyName('w15'), self.GetIgnorable())]
-		fonts = self.GetFonts()
+					self.get_xmlNSbyName('w15'), self.get_Ignorable())]
+		fonts = self.get_Fonts()
 		keys = fonts.keys()
 		keys.sort()
 		for _font in keys:
-			value.append(self.GetFont(_font).get_xml())
+			value.append(self.get_Font(_font).get_xml())
 
-		value.append('</%s>' % self.GetTag())
+		value.append('</%s>' % self.get_Tag())
 		value.append('')
 		return self.separator.join(value)

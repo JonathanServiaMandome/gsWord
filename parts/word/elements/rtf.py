@@ -965,11 +965,6 @@ class Rtf:
 				_ini_table = False
 				if not self.elements[-1].rows[-1].cells:
 					del self.elements[-1].rows[-1]
-				''''if self.elements and self.elements[-1].name == 'RtfTable':
-					print '***************'
-					print self.elements[-1].name
-					print self.elements[-1]
-					print '***************'''
 
 			return [_key_border, _background, _ini_table, _is_row]
 
