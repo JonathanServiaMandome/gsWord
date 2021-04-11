@@ -102,14 +102,14 @@ class Properties(object):
 		self.indent = parent.indent + 1
 		self.tabulation = tabulation
 
-		self.bold = 'b' in font_format
-		self.italic = 'i' in font_format
-		self.underline = None
+		self._bold = 'b' in font_format
+		self._italic = 'i' in font_format
+		self._underline = None
 		if 'u' in font_format:
-			self.underline = self.U(self, 'single')
-		self.boldCs = False
-		self.italicCs = False
-		self.underlineCs = False
+			self._underline = self.U(self, 'single')
+		self._boldCs = False
+		self._italicCs = False
+		self._underlineCs = False
 
 		'''Specifies that the content should be displayed with an underline: <w:u w:val="double"/>.
 		The most common attributes are below (the theme-related attributed are omitted):
@@ -205,16 +205,16 @@ class Properties(object):
 		return self.tab * (self.indent + number)
 
 	def set_font_format(self, font_format):
-		self.bold = 'b' in font_format
-		self.italic = 'i' in font_format
+		self._bold = 'b' in font_format
+		self._italic = 'i' in font_format
 		if 'u' in font_format:
-			self.underline = self.U(self, 'single')
+			self._underline = self.U(self, 'single')
 
 	def set_font_format_cs(self, font_format):
-		self.boldCs = 'b' in font_format
-		self.italicCs = 'i' in font_format
+		self._boldCs = 'b' in font_format
+		self._italicCs = 'i' in font_format
 		if 'u' in font_format:
-			self.underlineCs = self.U(self, 'single')
+			self._underlineCs = self.U(self, 'single')
 
 	def get_RFonts(self):
 		return self.rFonts
@@ -226,22 +226,22 @@ class Properties(object):
 		return self.separator
 
 	def bold(self, value=True):
-		self.bold = value
+		self._bold = value
 
 	def bold_cs(self, value=True):
-		self.boldCs = value
+		self._boldCs = value
 
 	def italic(self, value=True):
-		self.italic = value
+		self._italic = value
 
 	def italic_cs(self, value=True):
-		self.italicCs = value
+		self._italicCs = value
 
 	def underline(self, value='single', color=''):
-		self.underline = self.U(self, value, color)
+		self._underline = self.U(self, value, color)
 
 	def underline_cs(self, value='single', color=''):
-		self.underlineCs = self.U(self, value, color)
+		self._underlineCs = self.U(self, value, color)
 
 	def set_caps(self, value):
 		self.caps = value
@@ -338,14 +338,14 @@ class Properties(object):
 		if self.rFonts:
 			value.append('%s<w:rFonts w:ascii="%s" w:hAnsi="%s" w:cs="%s"/>' % (
 				self.get_tab(1), self.rFonts, self.rFonts, self.rFonts))
-		if self.bold:
+		if self._bold:
 			value.append('%s<w:b/>' % (self.get_tab(1)))
-		if self.boldCs:
+		if self._boldCs:
 			value.append('%s<w:bCs/>' % (self.get_tab(1)))
-		if self.italic:
+		if self._italic:
 			value.append('%s<w:i/>' % (self.get_tab(1)))
-		if self.underline is not None:
-			value.append(self.underline.get_xml())
+		if self.underline() is not None:
+			value.append(self.underline().get_xml())
 		if self.caps:
 			value.append('%s<w:caps w:val="true" />' % (self.get_tab(1)))
 		if self.color is not None:

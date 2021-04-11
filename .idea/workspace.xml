@@ -2,34 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bb430744-0a77-41b3-85db-7aa05c86df10" name="Default Changelist" comment="Initial commit">
-      <change afterPath="$PROJECT_DIR$/document_old.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shape.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/document.py" beforeDir="false" afterPath="$PROJECT_DIR$/document.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/parts/content_types.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/content_types.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/parts/docProps/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/docProps/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/parts/docProps/core.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/docProps/core.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/parts/rels/rels.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/rels/rels.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/parts/word/body.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/word/body.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/parts/word/documentrels/documentRels.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/word/documentrels/documentRels.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/parts/word/elements/element.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/word/elements/element.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/parts/word/elements/pagenumber.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/word/elements/pagenumber.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/parts/word/elements/paragraph.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/word/elements/paragraph.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/parts/word/elements/pictures.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/word/elements/pictures.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/parts/word/elements/rtf.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/word/elements/rtf.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/parts/word/elements/shape.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/word/elements/shape.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/parts/word/elements/table.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/word/elements/table.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/parts/word/elements/text.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/word/elements/text.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/parts/word/font.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/word/font.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/parts/word/fonttable.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/word/fonttable.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/parts/word/part.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/word/part.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/parts/word/rtf.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/word/rtf.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/parts/word/rtf_old.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/parts/word/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/word/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/parts/word/styles.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/word/styles.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/parts/word/styles_b.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/word/styles_b.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/parts/word/theme/theme1.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/word/theme/theme1.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/parts/word/websettings.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/word/websettings.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,6 +50,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Server\gsWord" />
       <recent name="F:\gsWord" />
       <recent name="F:\gsWord\parts\word\elements" />
       <recent name="F:\gsWord\parts\word\theme\rt" />
@@ -190,9 +173,9 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.shape" />
         <item itemvalue="Python.Main (1)" />
         <item itemvalue="Python.table" />
-        <item itemvalue="Python.shape" />
         <item itemvalue="Python.styles" />
       </list>
     </recent_temporary>
@@ -219,6 +202,33 @@
     <option name="localTasksCounter" value="2" />
     <servers />
   </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+        <option value="Default.Hash" />
+      </list>
+    </option>
+    <option name="COLUMN_ID_VISIBILITY">
+      <map>
+        <entry key="Table.Default.Hash.ColumnIdVisibility" value="true" />
+      </map>
+    </option>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Initial commit" />
     <option name="LAST_COMMIT_MESSAGE" value="Initial commit" />
@@ -238,7 +248,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/parts/word/elements/table.py</url>
-          <line>946</line>
+          <line>948</line>
           <option name="timeStamp" value="97" />
         </line-breakpoint>
       </breakpoints>

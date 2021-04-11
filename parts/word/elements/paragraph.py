@@ -912,13 +912,13 @@ class Paragraph(object):
 				if len(font_format) > k:
 					ff = font_format[k]
 
-			if isinstance(element, text.Text):
+			if getattr(element, 'name', '') == 'r':
 				if 'b' in ff:
 					element.get_properties().bold()
 				if 'i' in ff:
-					element.get_properties().Italic()
+					element.get_properties().italic()
 				if 'u' in ff:
-					element.get_properties().Underline()
+					element.get_properties().underline()
 
 	def set_font_size(self, size):
 		for text in self.get_texts():

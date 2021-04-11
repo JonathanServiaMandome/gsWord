@@ -137,7 +137,7 @@ class Part:
 		self.get_parent().idx += 1
 		idx = self.get_parent().idx
 		paragraph = elements.paragraph.Paragraph(self, idx, text, horizontal_alignment, font_format,
-												 font_size)
+													font_size)
 		self.elements.append(paragraph)
 		return paragraph
 

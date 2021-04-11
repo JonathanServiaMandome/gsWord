@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import paragraph
+
 
 
 class PrstTxWarp(object):
@@ -434,9 +434,9 @@ class TextBox(object):
 		while getattr(_x, 'tag', '') != 'document':
 			_x = _x.parent
 		_x.idx += 1
-		p = paragraph.Paragraph(self, _x.idx, text, horizontal_alignment, font_format, font_size, nulo=is_null)
-		self.elements.append(p)
-		return p
+		# p = paragraph.Paragraph(self, _x.idx, text, horizontal_alignment, font_format, font_size, nulo=is_null)
+		# self.elements.append(p)
+		# return p
 
 
 class GraphicData(object):
@@ -898,7 +898,8 @@ class AlternateContent(object):
 		self.indent = parent.indent + 1
 		self.choice = Choice(self, requires, pos, size, size_relative)
 		self.fallBack = None
-		self.txt = text
+		self.txt = text.decode('iso-8859-1').encode('utf8').replace('%EURO%', '€').replace('&', '&amp;').replace(
+					'<', '&lt;').replace('>', '&gt;')
 
 	def get_tab(self, number=0):
 		return self.tab * (number + self.indent)
@@ -913,29 +914,22 @@ class AlternateContent(object):
 		return self.fallBack
 
 	def get_xml(self):
-		tx = """	<w:p w14:paraId="0C684FBC" w14:textId="44C77EB5" w:rsidR="005B7084" w:rsidRDefault="005B7084">
-			<w:pPr>
-				<w:pStyle w:val="Encabezado"/>
-			</w:pPr>
-			<w:r>
-				<w:rPr>
-					<w:noProof/>
-				</w:rPr>
+		tx = """
 				<mc:AlternateContent>
 					<mc:Choice Requires="wps">
 						<w:drawing>
-							<wp:anchor distT="45720" distB="45720" distL="114300" distR="114300" simplePos="0" relativeHeight="251659264" behindDoc="0" locked="0" layoutInCell="1" allowOverlap="1" wp14:anchorId="3454B481" wp14:editId="6B87A082">
+							<wp:anchor distT="45720" distB="45720" distL="114300" distR="114300" simplePos="0" relativeHeight="251660288" behindDoc="0" locked="0" layoutInCell="1" allowOverlap="1" wp14:anchorId="3454B481" wp14:editId="6B87A082">
 								<wp:simplePos x="0" y="0"/>
-								<wp:positionH relativeFrom="column">
-									<wp:posOffset>-4509135</wp:posOffset>
+								<wp:positionH relativeFrom="margin">
+									<wp:posOffset>-3078955</wp:posOffset>
 								</wp:positionH>
 								<wp:positionV relativeFrom="paragraph">
-									<wp:posOffset>4801870</wp:posOffset>
+									<wp:posOffset>3491230</wp:posOffset>
 								</wp:positionV>
-								<wp:extent cx="7526655" cy="257175"/>
-								<wp:effectExtent l="0" t="3810" r="0" b="0"/>
+								<wp:extent cx="5514975" cy="323215"/>
+								<wp:effectExtent l="5080" t="0" r="0" b="0"/>
 								<wp:wrapSquare wrapText="bothSides"/>
-								<wp:docPr id="217" name="Cuadro de texto 2"/>
+								<wp:docPr id="3" name="Cuadro de texto 2"/>
 								<wp:cNvGraphicFramePr>
 									<a:graphicFrameLocks xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"/>
 								</wp:cNvGraphicFramePr>
@@ -948,7 +942,7 @@ class AlternateContent(object):
 											<wps:spPr bwMode="auto">
 												<a:xfrm rot="16200000">
 													<a:off x="0" y="0"/>
-													<a:ext cx="7526655" cy="257175"/>
+													<a:ext cx="5514975" cy="323215"/>
 												</a:xfrm>
 												<a:prstGeom prst="rect">
 													<a:avLst/>
@@ -968,6 +962,7 @@ class AlternateContent(object):
 													<w:p w14:paraId="79920982" w14:textId="180F8E3D" w:rsidR="005B7084" w:rsidRDefault="005B7084" w:rsidP="005B7084">
 														<w:pPr>
 															<w:jc w:val="center"/>
+															<w:sz w:val="14"/>
 														</w:pPr>
 														<w:r>
 															<w:t>%s</w:t>
@@ -1002,6 +997,7 @@ class AlternateContent(object):
 										<w:p w14:paraId="79920982" w14:textId="180F8E3D" w:rsidR="005B7084" w:rsidRDefault="005B7084" w:rsidP="005B7084">
 											<w:pPr>
 												<w:jc w:val="center"/>
+												<w:sz w:val="14"/>
 											</w:pPr>
 											<w:r>
 												<w:t>%s</w:t>
@@ -1009,13 +1005,11 @@ class AlternateContent(object):
 										</w:p>
 									</w:txbxContent>
 								</v:textbox>
-								<w10:wrap type="square"/>
+								<w10:wrap type="square" anchorx="margin"/>
 							</v:shape>
 						</w:pict>
 					</mc:Fallback>
 				</mc:AlternateContent>
-			</w:r>
-		</w:p>
 	""" % (self.txt, self.txt)
 		print tx
 		return tx

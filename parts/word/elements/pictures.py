@@ -3,6 +3,240 @@
 
 
 class Picture(object):
+	class InlineProperties(object):
+
+		class Graphic(object):
+			def __init__(self, parent, rid, description, width, height):
+				self.name = 'wp:cNvGraphicFrame'
+				self.parent = parent
+				self.tab = parent.tab
+				self.separator = parent.separator
+				self.indent = parent.indent + 1
+				self.width = width
+				self.height = height
+				self.rId = rid
+				self.name = "Imagen %d" % rid
+				self.description = description
+
+			def get_Description(self):
+				return self.description
+
+			def get_RId(self):
+				return self.rId
+
+			def SetRId(self, rid):
+				self.rId = rid
+
+			def get_name(self):
+				return self.name
+
+			def set_name(self, name):
+				self.name = name
+
+			def get_width(self):
+				return self.width
+
+			def get_height(self):
+				return self.height
+
+			def SetWidth(self, width):
+				self.width = width
+
+			def set_height(self, height):
+				self.height = height
+
+			def get_tab(self, number=0):
+				return self.tab * (number + self.indent)
+
+			def get_xml_old(self):
+				value = list()
+				value.append('%s<a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">' %
+								(self.get_tab()))
+				value.append('%s<a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture">' %
+								(self.get_tab(1)))
+				value.append('%s<pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">' %
+								(self.get_tab(2)))
+				value.append('%s<pic:nvPicPr>' % (self.get_tab(3)))
+				value.append('%s<pic:cNvPr id="%d" name="%s"/>' % (self.get_tab(4), self.get_RId(), self.get_name()))
+				value.append('%s<pic:cNvPicPr/>' % (self.get_tab(4)))
+				value.append('%s</pic:nvPicPr>' % (self.get_tab(3)))
+				value.append('%s<pic:blipFill>' % (self.get_tab(3)))
+				# value.append('%s<a:blip r:embed="rId%d">' % (self.get_tab(4), self.get_RId()))
+				value.append('%s<a:blip r:embed="rId%d">' % (self.get_tab(4), 4))
+				value.append('%s<a:extLst>' % (self.get_tab(5)))
+				value.append('%s<a:ext uri="{28A0092B-C50C-407E-A947-70E740481C1C}">' % (self.get_tab(6)))
+				value.append(
+					'%s<a14:useLocalDpi xmlns:a14="http://schemas.microsoft.com/office/drawing/2010/main" val="0"/>' %
+					(self.get_tab(7)))
+				value.append('%s</a:ext>' % (self.get_tab(6)))
+				value.append('%s</a:extLst>' % (self.get_tab(5)))
+				value.append('%s</a:blip>' % (self.get_tab(4)))
+				value.append('%s<a:stretch>' % (self.get_tab(4)))
+				value.append('%s<a:fillRect/>' % (self.get_tab(5)))
+				value.append('%s</a:stretch>' % (self.get_tab(4)))
+				value.append('%s</pic:blipFill>' % (self.get_tab(3)))
+				value.append('%s<pic:spPr>' % (self.get_tab(3)))
+				value.append('%s<a:xfrm>' % (self.get_tab(4)))
+				value.append('%s<a:off x="0" y="0"/>' % (self.get_tab(5)))
+				value.append('%s<a:ext cx="%d" cy="%d"/>' % (self.get_tab(5), self.get_width(), self.get_height()))
+				value.append('%s</a:xfrm>' % (self.get_tab(4)))
+				value.append('%s<a:prstGeom prst="rect">' % (self.get_tab(4)))
+				value.append('%s<a:avLst/>' % (self.get_tab(5)))
+				value.append('%s</a:prstGeom>' % (self.get_tab(4)))
+				value.append('%s</pic:spPr>' % (self.get_tab(3)))
+				value.append('%s</pic:pic>' % (self.get_tab(2)))
+				value.append('%s</a:graphicData>' % (self.get_tab(1)))
+				value.append('%s</a:graphic>' % (self.get_tab(0)))
+				return self.separator.join(value)
+
+			def get_xml(self):
+				value = list()
+				value.append('%s<a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">' %
+								(self.get_tab()))
+				value.append('%s<a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture">' %
+								(self.get_tab(1)))
+				value.append('%s<pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">' %
+								(self.get_tab(2)))
+				value.append('%s<pic:nvPicPr>' % (self.get_tab(3)))
+				value.append('%s<pic:cNvPr id="%d" name="%s"/>' % (self.get_tab(4), self.get_RId(), self.get_name()))
+				value.append('%s<pic:cNvPicPr/>' % (self.get_tab(4)))
+				value.append('%s</pic:nvPicPr>' % (self.get_tab(3)))
+				value.append('%s<pic:blipFill>' % (self.get_tab(3)))
+				# value.append('%s<a:blip r:embed="rId%d">' % (self.get_tab(4), self.get_RId()))
+				value.append('%s<a:blip r:embed="rId%d">' % (self.get_tab(4), self.get_RId()))
+				value.append('%s<a:extLst>' % (self.get_tab(5)))
+				value.append('%s<a:ext uri="{28A0092B-C50C-407E-A947-70E740481C1C}">' % (self.get_tab(6)))
+				value.append(
+					'%s<a14:useLocalDpi xmlns:a14="http://schemas.microsoft.com/office/drawing/2010/main" val="0"/>' %
+					(self.get_tab(7)))
+				value.append('%s</a:ext>' % (self.get_tab(6)))
+				value.append('%s</a:extLst>' % (self.get_tab(5)))
+				value.append('%s</a:blip>' % (self.get_tab(4)))
+				value.append('%s<a:stretch>' % (self.get_tab(4)))
+				value.append('%s<a:fillRect/>' % (self.get_tab(5)))
+				value.append('%s</a:stretch>' % (self.get_tab(4)))
+				value.append('%s</pic:blipFill>' % (self.get_tab(3)))
+				value.append('%s<pic:spPr>' % (self.get_tab(3)))
+				value.append('%s<a:xfrm>' % (self.get_tab(4)))
+				value.append('%s<a:off x="0" y="0"/>' % (self.get_tab(5)))
+				value.append('%s<a:ext cx="%d" cy="%d"/>' % (self.get_tab(5), self.get_width(), self.get_height()))
+				value.append('%s</a:xfrm>' % (self.get_tab(4)))
+				value.append('%s<a:prstGeom prst="rect">' % (self.get_tab(4)))
+				value.append('%s<a:avLst/>' % (self.get_tab(5)))
+				value.append('%s</a:prstGeom>' % (self.get_tab(4)))
+				value.append('%s</pic:spPr>' % (self.get_tab(3)))
+				value.append('%s</pic:pic>' % (self.get_tab(2)))
+				value.append('%s</a:graphicData>' % (self.get_tab(1)))
+				value.append('%s</a:graphic>' % (self.get_tab(0)))
+				return self.separator.join(value)
+
+		class GraphicFramePr(object):
+			def __init__(self, parent):
+				self.name = 'wp:cNvGraphicFramePr'
+				self.parent = parent
+				self.tab = parent.tab
+				self.separator = parent.separator
+				self.indent = parent.indent + 1
+
+			def get_xml(self):
+				value = list()
+				value.append('%s<%s/>' % (self.get_tab(), self.get_name()))
+
+				return self.separator.join(value)
+
+			def get_tab(self, number=0):
+				return self.tab * (number + self.indent)
+
+			def get_name(self):
+				return self.name
+
+		def __init__(self, parent, rid, path, width, height):
+			self.name = 'inline'
+			self.parent = parent
+			self.tab = parent.tab
+			self.separator = parent.separator
+			self.indent = parent.indent + 1
+			self.inline = {'distT': 0, 'distB': 0, 'distL': 0, 'distR': 0, 'simplePos': 0,
+						'wp14:anchorId': "56601072", 'wp14:editId': "0C39F830"}
+			width *= 635
+			height *= 635
+			self.extent = {'cx': width, 'cy': height}
+			self.effectExtent = {'l': 0, 't': 0, 'r': 0, 'b': 0}
+			self.wrap_square = 'bothSides'
+			self.id_picture = rid
+			self.name_picture = "Imagen %d" % rid
+			self.description_picture = path
+			self.graphic_framePr = self.GraphicFramePr(self)
+			self.graphic = self.Graphic(self, rid, path, width, height)
+
+		def get_tab(self, number=0):
+			return self.tab * (number + self.indent)
+
+		def get_description_picture(self):
+			return self.description_picture
+
+		def set_description_picture(self, description_picture):
+			self.description_picture = description_picture
+
+		def get_name_picture(self):
+			return self.name_picture
+
+		def set_name_picture(self, name_picture):
+			self.name_picture = name_picture
+
+		def get_id_picture(self):
+			return self.id_picture
+
+		def set_id_picture(self, id_picture):
+			self.id_picture = id_picture
+
+		def get_name(self):
+			return self.name
+
+		def get_extent(self):
+			return self.extent
+
+		def get_effect_extent(self):
+			return self.effectExtent
+
+		def get_inline(self):
+			return self.inline
+
+		def set_name(self, name):
+			self.name = name
+
+		def get_graphic(self):
+			return self.graphic
+
+		def get_graphic_frame_pr(self):
+			return self.graphic_framePr
+
+		def get_xml(self):
+			value = list()
+			t = '%s<wp:%s ' % (self.get_tab(), self.get_name())
+			t += 'distT="%d" distB="%d" ' % (self.get_inline()['distT'], self.get_inline()['distB'])
+			t += 'distL="%d" distR="%d" ' % (self.get_inline()['distL'], self.get_inline()['distR'])
+			t += 'wp14:anchorId="%s" wp14:editId="%s">' % (
+					self.get_inline()['wp14:anchorId'], self.get_inline()['wp14:editId'])
+			value.append(t)
+
+			value.append('%s<wp:extent cx="%s" cy="%s"/>' % (
+				self.get_tab(1), self.get_extent()['cx'], self.get_extent()['cy']))
+			value.append('%s<wp:effectExtent l="%s" t="%s" r="%s" b="%s"/>' %
+							(self.get_tab(1), self.get_effect_extent()['l'], self.get_effect_extent()['t'],
+							self.get_effect_extent()['r'], self.get_effect_extent()['b']))
+			value.append('%s<wp:docPr id="%s" name="%s" descr="%s"/>' %
+							(self.get_tab(1), self.get_id_picture(), self.get_name_picture(),
+							self.get_description_picture()))
+
+			# value.append(self.get_graphicFrame().get_xml())
+			value.append(self.get_graphic_frame_pr().get_xml())
+			value.append(self.get_graphic().get_xml())
+
+			value.append('%s</wp:%s>' % (self.get_tab(), self.get_name()))
+
+			return self.separator.join(value)
+
 	class Properties(object):
 
 		class Graphic(object):
@@ -30,7 +264,7 @@ class Picture(object):
 			def get_name(self):
 				return self.name
 
-			def SetName(self, name):
+			def set_name(self, name):
 				self.width = name
 
 			def get_width(self):
@@ -230,7 +464,7 @@ class Picture(object):
 							position_offset=None):
 				self.orientation = orientation
 				self.name = ''
-				self.SetName(orientation)
+				self.set_name(orientation)
 				self.relative_from = relative_from
 				self.position_offset = position_offset
 				self.align = align
@@ -245,7 +479,7 @@ class Picture(object):
 			def get_name(self):
 				return self.name
 
-			def SetName(self, orientation):
+			def set_name(self, orientation):
 				if orientation is 'horizontal':
 					self.name = 'wp:positionH'
 				elif orientation is 'vertical':
@@ -270,7 +504,7 @@ class Picture(object):
 
 			def SetOrientation(self, orientation):
 				self.orientation = orientation
-				self.SetName(orientation)
+				self.set_name(orientation)
 
 			def get_RelativeFrom(self):
 				return self.relative_from
@@ -292,7 +526,7 @@ class Picture(object):
 			def __init__(self, parent, orientation='horizontal', relative_from='margin'):
 				self.orientation = orientation
 				self.name = ''
-				self.SetName(orientation)
+				self.set_name(orientation)
 				self.relative_from = relative_from
 				self.value = 0
 				self.parent = parent
@@ -306,7 +540,7 @@ class Picture(object):
 			def get_name(self):
 				return self.name
 
-			def SetName(self, orientation):
+			def set_name(self, orientation):
 				if orientation is 'horizontal':
 					self.name = 'wp14:sizeRelH'
 				elif orientation is 'vertical':
@@ -325,7 +559,7 @@ class Picture(object):
 
 			def SetOrientation(self, orientation):
 				self.orientation = orientation
-				self.SetName(orientation)
+				self.set_name(orientation)
 
 			def get_RelativeFrom(self):
 				return self.relative_from
@@ -388,15 +622,15 @@ class Picture(object):
 
 			value.append('%s<wp:extent cx="%s" cy="%s"/>' % (self.get_tab(1), self.get_Extent()['cx'], self.get_Extent()['cy']))
 			value.append('%s<wp:effectExtent l="%s" t="%s" r="%s" b="%s"/>' %
-							(self.get_tab(1), self.get_EffectExtent()['l'], self.get_EffectExtent()['t'],
-							self.get_EffectExtent()['r'], self.get_EffectExtent()['b']))
+							(self.get_tab(1), self.get_effect_extent()['l'], self.get_effect_extent()['t'],
+							self.get_effect_extent()['r'], self.get_effect_extent()['b']))
 			value.append('%s<wp:wrapSquare wrapText="%s"/>' % (self.get_tab(1), self.get_WrapSquare()))
 			value.append('%s<wp:docPr id="%s" name="%s" descr="%s"/>' %
-							(self.get_tab(1), self.get_IdPicture(), self.get_namePicture(), self.get_DescriptionPicture()))
+							(self.get_tab(1), self.get_id_picture(), self.get_name_picture(), self.get_description_picture()))
 
-			# value.append(self.get_GraphicFrame().get_xml())
-			value.append(self.get_GraphicFramePr().get_xml())
-			value.append(self.get_Graphic().get_xml())
+			# value.append(self.get_graphicFrame().get_xml())
+			value.append(self.get_graphic_frame_pr().get_xml())
+			value.append(self.get_graphic().get_xml())
 			value.append(self.get_SizeRelativeHorizontal().get_xml())
 			value.append(self.get_SizeRelativeVertical().get_xml())
 			value.append('</wp:anchor>')
@@ -409,31 +643,31 @@ class Picture(object):
 		def get_SizeRelativeVertical(self):
 			return self.size_relative_vertical
 
-		def get_Graphic(self):
+		def get_graphic(self):
 			return self.graphic
 
-		def get_GraphicFrame(self):
+		def get_graphicFrame(self):
 			return self.graphic_frame
 
-		def get_GraphicFramePr(self):
+		def get_graphic_frame_pr(self):
 			return self.graphic_framePr
 
-		def get_DescriptionPicture(self):
+		def get_description_picture(self):
 			return self.description_picture
 
-		def SetDescriptionPicture(self, description_picture):
+		def set_description_picture(self, description_picture):
 			self.description_picture = description_picture
 
-		def get_namePicture(self):
+		def get_name_picture(self):
 			return self.name_picture
 
-		def SetNamePicture(self, name_picture):
+		def set_name_picture(self, name_picture):
 			self.name_picture = name_picture
 
-		def get_IdPicture(self):
+		def get_id_picture(self):
 			return self.id_picture
 
-		def SetIdPicture(self, id_picture):
+		def set_id_picture(self, id_picture):
 			self.id_picture = id_picture
 
 		def get_WrapSquare(self):
@@ -454,7 +688,7 @@ class Picture(object):
 		def SetPositionVertical(self, relative_from='paragraph', align=None, position_offset=None):
 			self.position_vertical = self.Position(self, 'vertical', relative_from, align, position_offset)
 
-		def get_EffectExtent(self):
+		def get_effect_extent(self):
 			return self.effectExtent
 
 		def SetEffectExtent(self, dc):
@@ -514,7 +748,8 @@ class Picture(object):
 		self.separator = parent.separator
 		self.indent = parent.indent + 1
 
-		self.properties = self.Properties(self, rid, name, width, height)
+		# self.properties = self.Properties(self, rid, name, width, height)
+		self.properties = self.InlineProperties(self, rid, name, width, height)
 
 	def get_tab(self, number=0):
 		return self.tab * (self.indent + number)

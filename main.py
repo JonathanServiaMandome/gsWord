@@ -6,6 +6,7 @@ Created on 08/03/2021
 @author: Jonathan Servia Mandome
 """
 from parts.word.elements.pagenumber import PageNumber
+from shape import AlternateContent
 
 
 def LineaToDc(linea, columnas):
@@ -28,9 +29,11 @@ def CertificadoSAT(partes, args):
 	_doc_word.EmptyDocument()
 	body = _doc_word.get_body()
 	header = _doc_word.get_DefaultHeader()
-	t = header.add_table([['1', PageNumber(header, 'Página ')]],
+	t = header.add_table([['1', document.new_page_number(header, 'Página ')]],
 							column_width=[5000, 5000], horizontal_alignment=['c', 'r'])
 
+	x = AlternateContent(header, text='ccccccccc')
+	header.add_paragraph(x)
 	'''style = doc_word.get_Part('style').get_doc_defaluts().get_rpr_defaults()
 	style.get_values()['sz'] = 18
 	style.get_values()['szCs'] = 18
@@ -52,14 +55,74 @@ def CertificadoSAT(partes, args):
 
 	# rt = open('c:/users/jonathan/desktop/002.rtf','r').read()
 	cw = ['25%', '75%']
-	body.add_paragraph('drtwnmw´nsrmdrm')
-	for i in range(206):
+
+
+	def Formatea(paragraph):
+		paragraph.set_spacing({'after': '60', 'before': '60', 'line': '160'})
+
+	paragraph_d = _doc_word.Image(header, 'c:/users/jonathan/desktop/out/iso.jpg', 2000, 1300)
+	paragraph_i = _doc_word.Image(header, 'c:/users/jonathan/desktop/out/logo.png', 1800, 1200)
+
+	datos_intec = _doc_word.Table(header, column_width=['100%'])
+	datos_intec.get_properties().set_cell_margin({'start': {'w': 50}})
+	nombre_empresa = 'P_NME'
+	par, num_row = datos_intec.add_paragraph(nombre_empresa, horizontal_alignment='l', font_format='b')
+	Formatea(par)
+	data = 'P_DOM'
+	_cell_ = datos_intec.get_row(num_row).get_cell(0)
+	par1 = _cell_.add_paragraph(data, horizontal_alignment='l', font_format='b')
+	Formatea(par1)
+	data = 'P_CDP' + ' ' + 'P_POB'
+	par2 = _cell_.add_paragraph(data, horizontal_alignment='l', font_format='b')
+	Formatea(par2)
+	data = 'P_RI'
+	par3 = _cell_.add_paragraph(data, horizontal_alignment='l', font_format='b')
+	Formatea(par3)
+	data = 'Tel: %s    e-mail:%s' % ('P_TEL', 'P_MAIL')
+	par4 = _cell_.add_paragraph(data, horizontal_alignment='l', font_format='b')
+	Formatea(par4)
+	datos_intec.set_foreground_colour('885500')
+
+	table = header.add_table([[paragraph_i, datos_intec, paragraph_d]], column_width=[2000, 6000, 2000],
+								horizontal_alignment=['l', 'l', 'r'])
+	table.get_row(0).get_cell(0).get_properties().set_vertical_alignment('center')
+
+	def FormateaTitulo(paragraph):
+
+		paragraph.set_font_format('b')
+
+		paragraph.set_font_size(14)
+		paragraph.set_spacing({'before': '180', 'after': '80'})
+
+	##
+	def Formatea(paragraph):
+		paragraph.set_spacing({'after': '60', 'before': '60', 'line': '160'})
+	datos_intec = _doc_word.Table(header, column_width=[6000])
+	nombre_empresa = 'P_NME'
+	par, num_row = datos_intec.add_paragraph(nombre_empresa, horizontal_alignment='l', font_format='b')
+	Formatea(par)
+	data = 'P_DOM'
+	_cell_ = datos_intec.get_row(num_row).get_cell(0)
+	par1 = _cell_.add_paragraph(data, horizontal_alignment='l', font_format='b')
+	Formatea(par1)
+	data = 'P_CDP' + ' P_POB'
+	par2 = _cell_.add_paragraph(data, horizontal_alignment='l', font_format='b')
+	Formatea(par2)
+	data = 'P_RI'
+	par3 = _cell_.add_paragraph(data, horizontal_alignment='l', font_format='b')
+	Formatea(par3)
+	data = 'Tel: %s    e-mail:%s' % ('P_TEL', 'P_MAIL')
+	par4 = _cell_.add_paragraph(data, horizontal_alignment='l', font_format='b')
+	Formatea(par4)
+
+	for i in range(0):
 		body.add_paragraph('')
 	p = body.add_paragraph('drmdrm')
 	p.get_properties().set_keep_next(True)
 	p.get_properties().set_pstyle('Descripcin')
 
 	tabla_1 = body.add_table(lineas_1, column_width=cw, borders={'all': {'sz': 4}})
+	tabla_1.get_properties().set_cell_margin({'start': {'w': 50}})
 	tabla_1.get_properties().set_table_caption('titulo')
 	tabla_1.set_spacing({'after': '80', 'before': '80', 'line': '180'})
 	tabla_1.get_row(4).get_cell(0).get_properties().set_grid_span(2)
@@ -97,6 +160,6 @@ if __name__ == '__main__':
 
 	partes = ['0026085']
 	args = {}
-	doc_word = CertificadoSAT(partes, args)
+	_doc_word = CertificadoSAT(partes, args)
 
 

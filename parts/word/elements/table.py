@@ -232,6 +232,7 @@ class TableProperties(object):
 			value.insert(0, '%s<w:%s>' % (self.get_tab(), self.name))
 			value.append('%s</w:%s>' % (self.get_tab(), self.name))
 
+		print self.get_separator().join(value)
 		return self.get_separator().join(value)
 
 
@@ -400,7 +401,8 @@ Atributtes:
 		for _row in self.get_rows():
 			for _cell in _row.get_cells():
 				for _element in _cell.elements:
-					_element.set_spacing(dc)
+					if hasattr(_element, 'set_spacing'):
+						_element.set_spacing(dc)
 
 	def set_font_format(self, dc):
 		for key in dc.keys():
@@ -610,7 +612,7 @@ class CellProperties(object):
 			w = float(w.replace('%', '').strip())
 			p = self
 			while not hasattr(p, 'get_active_section'):
-				if getattr(p, 'get_parent'):
+				if hasattr(p, 'get_parent'):
 					p = p.get_parent()
 				else:
 					p = p.get_body()
@@ -785,9 +787,9 @@ class Cell(object):
 					if 'b' in ff:
 						_text.get_properties().bold()
 					if 'i' in ff:
-						_text.get_properties().Italic()
+						_text.get_properties().italic()
 					if 'u' in ff:
-						_text.get_properties().Underline()
+						_text.get_properties().underline()
 
 	def add_rtf(self, rtf_text):
 		_rtf = rtf.Rtf(text=rtf_text, parent=self)
@@ -1107,10 +1109,10 @@ class Row(object):
 				elif len(horizontal_alignment) > k:
 					jc = horizontal_alignment[k]
 
-				if getattr(txt, 'name', '') == 'p':
+				if getattr(txt, 'name', '') == 'tc':
 					txt.get_properties().set_horizontal_alignment(jc)
 					self.cells.append(txt)
-				if getattr(txt, 'name', '') == 'tc':
+				elif getattr(txt, 'name', '') == 'p':
 					c = Cell(self, k, [txt], jc)
 					self.cells.append(c)
 				else:
@@ -1161,9 +1163,9 @@ class Row(object):
 						if 'b' in ff:
 							_text.get_properties().bold()
 						if 'i' in ff:
-							_text.get_properties().Italic()
+							_text.get_properties().italic()
 						if 'u' in ff:
-							_text.get_properties().Underline()
+							_text.get_properties().underline()
 
 	def set_row_height(self, height):
 		self.get_properties().set_row_height(height)

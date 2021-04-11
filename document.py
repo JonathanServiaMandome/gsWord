@@ -13,6 +13,13 @@ from parts import rels
 from parts import word
 
 
+from pagenumber import PageNumber
+
+
+def new_page_number(parent, title):
+	return PageNumber(parent, title)
+
+
 class Document:
 
 	def __init__(self, ruta_plantilla='', plantilla_=''):
@@ -217,6 +224,9 @@ class Document:
 		except IOError as e:
 			if e.args and e.args[0] == 13:
 				raise ValueError("Tiene abierto un documento con el mismo nombre y en la misma ubicación.")
+			else:
+				raise ValueError(e)
+		except Exception as e:
 			raise ValueError(e)
 
 		for img in self.get_Images():
@@ -260,10 +270,6 @@ class Document:
 	def get_xml(self):
 		value = list()
 		value.append('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>')
-		# value.append('<w:%s %s>' % (self.get_Tag(), ' '.join(self.attributes)))
-
-		# value.append(self.body.get_xml())
-
 		value.append('</w:%s>' % self.get_Tag())
 		try:
 			open('c:/users/jonathan/desktop/body.txt', 'w').write(self.separator.join(value))
