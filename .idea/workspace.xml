@@ -2,13 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bb430744-0a77-41b3-85db-7aa05c86df10" name="Default Changelist" comment="Initial commit">
-      <change afterPath="$PROJECT_DIR$/utility.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/parts/word/elements/paragraph.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/word/elements/paragraph.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/parts/word/elements/shape.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/word/elements/shape.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/parts/word/elements/table.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/word/elements/table.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/parts/word/part.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/word/part.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/shape.py" beforeDir="false" afterPath="$PROJECT_DIR$/shape.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -211,7 +206,14 @@
       <option name="project" value="LOCAL" />
       <updated>1618172174659</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Cuadros de textos básicos">
+      <created>1618438453747</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1618438453747</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -245,7 +247,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Añadida registro mercantil, alineación de imagenes al texto y refactorización de nombre de funciones" />
     <MESSAGE value="Initial commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="Initial commit" />
+    <MESSAGE value="Cuadros de textos básicos" />
+    <option name="LAST_COMMIT_MESSAGE" value="Cuadros de textos básicos" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

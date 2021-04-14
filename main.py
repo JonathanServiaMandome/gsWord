@@ -35,8 +35,9 @@ def CertificadoSAT(partes, args):
 	# x = AlternateContent(header, text='ccccccccc')
 	r_position=[]
 	r_position.append({'orientation':'horizontal', 'position':0, 'relative': 'column'})
-	r_position.append({'orientation':'vertical', 'position':0, 'relative': 'margin'})
-	header.add_paragraph( TextBox(header, 'aaaaaaaaaaa', (500, 250), rotation=270, r_position=r_position) )
+	r_position.append({'orientation':'vertical', 'position':0, 'relative': 'page'})
+	header.add_paragraph( TextBox(header, 'aaaaaaaaaaa', (500, 250), rotation=270, r_position=r_position,
+									horizontal_alignment='c', font_format='b', font_size=12) )
 	'''style = doc_word.get_Part('style').get_doc_defaluts().get_rpr_defaults()
 	style.get_values()['sz'] = 18
 	style.get_values()['szCs'] = 18
@@ -175,8 +176,9 @@ if __name__ == '__main__':
 	header = _doc_word.get_DefaultHeader()
 	r_position=[]
 	r_position.append({'orientation': 'horizontal', 'position': -5000, 'relative': 'column'})
-	r_position.append({'orientation': 'vertical', 'position': 6000, 'relative': 'margin'})
-	header.add_paragraph(TextBox(header, 'aaaaaaaaaaa', (50, 5000), (8000, 500), rotation=270, r_position=r_position, background_color='FFEFFF'))
+	r_position.append({'orientation': 'vertical', 'position': 6000, 'relative': 'paragraph'})
+	header.add_paragraph(TextBox(header, 'aaaaaaaaaaa', (50, 5000), (8000, 500), rotation=270, r_position=r_position,
+								 background_color='FFEFFF', horizontal_alignment='c', font_format='b', font_size=12))
 
 	_doc_word.Save()
 

@@ -4,7 +4,9 @@ from parts.word.elements import paragraph
 
 
 class TextBox(object):
-	def __init__(self, parent, text, position, size, rotation=0, r_position=(), simple_position=(0, 0), background_color='FFFFFF'):
+	def __init__(self, parent, text, position, size, rotation=0, r_position=(), simple_position=(0, 0),
+					background_color='FFFFFF', flip_vertical='', flip_horizontal='', horizontal_alignment='j',
+				 	font_format='', font_size=None):
 		self.name = 'shape'
 		self.parent = parent
 		self.tab = parent.tab
@@ -14,7 +16,7 @@ class TextBox(object):
 		self.content = AlternateContent(parent)
 		choice = Choice()
 		self.content.set_choice(choice)
-		drawing = Drawing(position, size)
+		drawing = Drawing()
 		choice.set_drawing(drawing)
 		anchor = Anchor()
 		drawing.set_element(anchor)
@@ -60,7 +62,7 @@ class TextBox(object):
 		shape.add_element(sp_pr)
 		shape_pr = ShapeProperties()
 		shape.add_element(shape_pr)
-		shape_pr.add_element(Xform(position, rotation=rotation))
+		shape_pr.add_element(Xform(position, rotation=rotation, flip_vertical=flip_vertical, flip_horizontal=flip_horizontal))
 		shape_pr.add_element(PrstGeom())
 		shape_pr.add_element(SolidFill(background_color))
 		line = Line('9525')
@@ -72,7 +74,7 @@ class TextBox(object):
 
 		txbx = Txbx()
 		shape.add_element(txbx)
-		txbx.add_paragraph(text)
+		txbx.add_paragraph(text, horizontal_alignment, font_format, font_size)
 
 		shape_body = Shape_body(auto_fit=False)
 		shape.add_element(shape_body)
@@ -91,7 +93,6 @@ class TextBox(object):
 		text_box.name = 'v:textbox'
 		fall_shape.set_object(text_box)
 		text_box.add_paragraph(text)
-
 
 	def get_separator(self):
 		return self.separator
@@ -248,7 +249,7 @@ class FallBack(object):
 
 class Drawing(object):
 
-	def __init__(self, position, size):
+	def __init__(self):
 		self.name = 'w:drawing'
 		self.parent = None
 		self.tab = ''
@@ -463,7 +464,7 @@ class SimplePosition(object):
 		self.tab = ''
 		self.separator = ''
 		self.indent = 0
-		self.y = x
+		self.y = y
 		self.x = x
 
 	def set_parent(self, _parent):
@@ -693,11 +694,11 @@ class EffectExent(object):
 	def get_xml(self):
 		value = list()
 		value.append('%s<%s l="%s" t="%s" r="%s" b="%s"/>' % (self.get_tab(),
-															  self.get_name(),
-															  self.get_left(),
-															  self.get_top(),
-															  self.get_right(),
-															  self.get_bottom()))
+																self.get_name(),
+																self.get_left(),
+																self.get_top(),
+																self.get_right(),
+																self.get_bottom()))
 
 		return self.separator.join(value)
 
@@ -983,7 +984,7 @@ class CNvSpPr(object):
 		return self.no_change_arrowheads
 
 	def set_no_change_arrowheads(self, no_change_arrowheads):
-		return self.no_change_arrowheads
+		self.no_change_arrowheads = no_change_arrowheads
 
 	def get_tx_box(self):
 		return self.tx_box
@@ -1051,7 +1052,7 @@ class ShapeProperties(object):
 
 class Xform(object):
 
-	def __init__(self, ext, flip_horizontal='', flip_vertical='', rotation='', offset=(0, 0)):
+	def __init__(self, ext, flip_horizontal='', flip_vertical='', rotation=0, offset=(0, 0)):
 		self.name = 'a:xfrm'
 		self.parent = None
 		self.tab = ''
@@ -1444,7 +1445,7 @@ class Pict(object):
 
 class ShapeType(object):
 
-	def __init__(self, w14_anchor_id="3454B481", id="_x0000_t202", coordsize="21600,21600", o_spt="202",
+	def __init__(self, w14_anchor_id="3454B481", _id="_x0000_t202", coordsize="21600,21600", o_spt="202",
 					path="m,l,21600r21600,l21600,xe"):
 		self.name = 'v:shapetype'
 		self.parent = None
@@ -1453,7 +1454,7 @@ class ShapeType(object):
 		self.indent = 0
 
 		self.w14_anchor_id = w14_anchor_id
-		self.id = id
+		self.id = _id
 		self.coordsize = coordsize
 		self.o_spt = o_spt
 		self.path = path
@@ -1469,8 +1470,8 @@ class ShapeType(object):
 	def get_id(self):
 		return self.id
 
-	def set_id(self, id):
-		self.id = id
+	def set_id(self, _id):
+		self.id = _id
 
 	def get_coordsize(self):
 		return self.coordsize
@@ -1544,61 +1545,61 @@ class ShapeType(object):
 
 class FallShape(object):
 
-	def __init__(self, id="Shape", o_spid="_x0000_s1026", type="#_x0000_t202", stroked='f', wrap=''):
+	def __init__(self, _id="Shape", o_spid="_x0000_s1026", _type="#_x0000_t202", stroked='f', wrap=''):
 		self.name = 'v:shape'
 		self.parent = None
 		self.tab = ''
 		self.separator = ''
 		self.indent = 0
-		self.id = id
+		self.id = _id
 		self.o_spid = o_spid
-		self.type = type
+		self.type = _type
 		self.stroked = stroked
 		self.wrap = wrap
-		self.style = "position:absolute;margin-left:-355.05pt;margin-top:378.1pt;width:592.65pt;height:20.25pt;" \
-					 "rotation:-90;z-index:251659264;visibility:visible;mso-wrap-style:square;mso-width-percent:0;" \
-					 "mso-height-percent:0;mso-wrap-distance-left:9pt;mso-wrap-distance-top:3.6pt;" \
-					 "mso-wrap-distance-right:9pt;mso-wrap-distance-bottom:3.6pt;mso-position-horizontal:absolute;" \
-					 "mso-position-horizontal-relative:text;mso-position-vertical:absolute;" \
-					 "mso-position-vertical-relative:text;mso-width-percent:0;mso-height-percent:0;" \
-					 "mso-width-relative:margin;mso-height-relative:margin;v-text-anchor:top"
-		self.o_gfxdata = "UEsDBBQABgAIAAAAIQC2gziS/gAAAOEBAAATAAAAW0NvbnRlbnRfVHlwZXNdLnhtbJSRQU7DMBBF&#10" \
-						 ";90jcwfIWJU67QAgl6YK0S0CoHGBkTxKLZGx5TGhvj5O2G0SRWNoz/78nu9wcxkFMGNg6quQqL6RA&#10" \
-						 ";0s5Y6ir5vt9lD1JwBDIwOMJKHpHlpr69KfdHjyxSmriSfYz+USnWPY7AufNIadK6MEJMx9ApD/oD&#10" \
-						 ";OlTrorhX2lFEilmcO2RdNtjC5xDF9pCuTyYBB5bi6bQ4syoJ3g9WQ0ymaiLzg5KdCXlKLjvcW893&#10" \
-						 ";SUOqXwnz5DrgnHtJTxOsQfEKIT7DmDSUCaxw7Rqn8787ZsmRM9e2VmPeBN4uqYvTtW7jvijg9N/y&#10;JsXecLq0q" \
-						 "+WD6m8AAAD//wMAUEsDBBQABgAIAAAAIQA4/SH/1gAAAJQBAAALAAAAX3JlbHMvLnJl&#10;bHOkkMFqwzAMhu" \
-						 "+DvYPRfXGawxijTi+j0GvpHsDYimMaW0Yy2fr2M4PBMnrbUb/Q94l/f/hMi1qR&#10;JVI2sOt6UJgd" \
-						 "+ZiDgffL8ekFlFSbvV0oo4EbChzGx4f9GRdb25HMsYhqlCwG5lrLq9biZkxWOiqY&#10;22YiTra2kYMu1l1tQD30" \
-						 "/bPm3wwYN0x18gb45AdQl1tp5j/sFB2T0FQ7R0nTNEV3j6o9feQzro1i&#10;OWA14Fm+Q8a1a8+Bvu/d" \
-						 "/dMb2JY5uiPbhG/ktn4cqGU/er3pcvwCAAD//wMAUEsDBBQABgAIAAAA&#10" \
-						 ";IQAWQs4yLQIAADMEAAAOAAAAZHJzL2Uyb0RvYy54bWysU9uO2yAQfa/Uf0C8N46tONm14qy22aaq&#10" \
-						 ";tL1I234ABhyjAuMCiZ1+fQccJWn7VpUHxDDD4cyZmfXDaDQ5SucV2Jrmszkl0nIQyu5r+u3r7s0d&#10" \
-						 ";JT4wK5gGK2t6kp4+bF6/Wg99JQvoQAvpCIJYXw19TbsQ+irLPO+kYX4GvbTobMEZFtB0+0w4NiC6&#10;0Vkxny" \
-						 "+zAZzoHXDpPd4+TU66SfhtK3n43LZeBqJritxC2l3am7hnmzWr9o71neJnGuwfWBimLH56&#10" \
-						 ";gXpigZGDU39BGcUdeGjDjIPJoG0VlykHzCaf/5HNS8d6mXJBcXx/kcn/P1j+6fjFESVqWuQrSiwz&#10" \
-						 ";WKTtgQkHREgS5BiAFFGmofcVRr/0GB/GtzBiuVPKvn8G/t0TC9uO2b18dA6GTjKBNPP4Mrt5OuH4&#10;CNIMH0Hgb" \
-						 "+wQIAGNrTPEAdYoX2JtcaVrFIngZ1i906ViSItwvFyVxXJZlpRw9BXlKl+V6UdWRbBY&#10" \
-						 ";kN758F6CIfFQU4cdkVDZ8dmHSO4aEsM9aCV2SutkuH2z1Y4cGXbPLq0z+m9h2pKhpvdlUSZkC/F9&#10" \
-						 ";aiyjAna3Vqamd1NC6TqK886KdA5M6emMTLQ9qxUFmqQKYzNiYJSwAXFC3ZJCqAZOHSbUgftJyYAd&#10;XFP" \
-						 "/48CcpER/sKj9fb5YxJZPxqJcFWi4W09z62GWI1RNAyXTcRvSmEQdLDxijVqV9LoyOXPFzkwy&#10" \
-						 ";nqcotv6tnaKus775BQAA//8DAFBLAwQUAAYACAAAACEAqtzyR+UAAAANAQAADwAAAGRycy9kb3du&#10" \
-						 ";cmV2LnhtbEyPT0vDQBDF74LfYRnBi6SbNJI0MZsixT/0ItgWobdtMibB7GzIbtvop+940uO89+PN&#10" \
-						 ";e8VyMr044eg6SwqiWQgCqbJ1R42C3fY5WIBwXlOte0uo4BsdLMvrq0LntT3TO542vhEcQi7XClrv&#10" \
-						 ";h1xKV7VotJvZAYm9Tzsa7fkcG1mP+szhppfzMEyk0R3xh1YPuGqx+tocjYL09S3Z+5X56fYv4Tp7&#10" \
-						 ";ujPr4f5Dqdub6fEBhMfJ/8HwW5+rQ8mdDvZItRO9giCK05RZdhYxj2AkyNI5iAMrcZJFIMtC/l9R&#10;XgAAAP" \
-						 "//AwBQSwECLQAUAAYACAAAACEAtoM4kv4AAADhAQAAEwAAAAAAAAAAAAAAAAAAAAAAW0Nv&#10" \
-						 ";bnRlbnRfVHlwZXNdLnhtbFBLAQItABQABgAIAAAAIQA4/SH/1gAAAJQBAAALAAAAAAAAAAAAAAAA&#10" \
-						 ";AC8BAABfcmVscy8ucmVsc1BLAQItABQABgAIAAAAIQAWQs4yLQIAADMEAAAOAAAAAAAAAAAAAAAA&#10" \
-						 ";AC4CAABkcnMvZTJvRG9jLnhtbFBLAQItABQABgAIAAAAIQCq3PJH5QAAAA0BAAAPAAAAAAAAAAAA&#10" \
-						 ";AAAAAIcEAABkcnMvZG93bnJldi54bWxQSwUGAAAAAAQABADzAAAAmQUAAAAA&#10;"
+		self.style = "position:absolute;margin-left:-355.05pt;margin-top:378.1pt;width:592.65pt;height:20.25pt;"
+		self.style += "rotation:-90;z-index:251659264;visibility:visible;mso-wrap-style:square;mso-width-percent:0;"
+		self.style += "mso-height-percent:0;mso-wrap-distance-left:9pt;mso-wrap-distance-top:3.6pt;"
+		self.style += "mso-wrap-distance-right:9pt;mso-wrap-distance-bottom:3.6pt;mso-position-horizontal:absolute;"
+		self.style += "mso-position-horizontal-relative:text;mso-position-vertical:absolute;"
+		self.style += "mso-position-vertical-relative:text;mso-width-percent:0;mso-height-percent:0;"
+		self.style += "mso-width-relative:margin;mso-height-relative:margin;v-text-anchor:top"
+		self.o_gfxdata = "UEsDBBQABgAIAAAAIQC2gziS/gAAAOEBAAATAAAAW0NvbnRlbnRfVHlwZXNdLnhtbJSRQU7DMBBF&#10"
+		self.o_gfxdata += ";90jcwfIWJU67QAgl6YK0S0CoHGBkTxKLZGx5TGhvj5O2G0SRWNoz/78nu9wcxkFMGNg6quQqL6RA&#10"
+		self.o_gfxdata += ";0s5Y6ir5vt9lD1JwBDIwOMJKHpHlpr69KfdHjyxSmriSfYz+USnWPY7AufNIadK6MEJMx9ApD/oD&#10"
+		self.o_gfxdata += ";OlTrorhX2lFEilmcO2RdNtjC5xDF9pCuTyYBB5bi6bQ4syoJ3g9WQ0ymaiLzg5KdCXlKLjvcW893&#10"
+		self.o_gfxdata += ";SUOqXwnz5DrgnHtJTxOsQfEKIT7DmDSUCaxw7Rqn8787ZsmRM9e2VmPeBN4uqYvTtW7jvijg9N/y&#10;JsXecLq0q"
+		self.o_gfxdata += "+WD6m8AAAD//wMAUEsDBBQABgAIAAAAIQA4/SH/1gAAAJQBAAALAAAAX3JlbHMvLnJl&#10;bHOkkMFqwzAMhu"
+		self.o_gfxdata += "+DvYPRfXGawxijTi+j0GvpHsDYimMaW0Yy2fr2M4PBMnrbUb/Q94l/f/hMi1qR&#10;JVI2sOt6UJgd"
+		self.o_gfxdata += "+ZiDgffL8ekFlFSbvV0oo4EbChzGx4f9GRdb25HMsYhqlCwG5lrLq9biZkxWOiqY&#10;22YiTra2kYMu1l1tQD30"
+		self.o_gfxdata += "/bPm3wwYN0x18gb45AdQl1tp5j/sFB2T0FQ7R0nTNEV3j6o9feQzro1i&#10;OWA14Fm+Q8a1a8+Bvu/d"
+		self.o_gfxdata += "/dMb2JY5uiPbhG/ktn4cqGU/er3pcvwCAAD//wMAUEsDBBQABgAIAAAA&#10"
+		self.o_gfxdata += ";IQAWQs4yLQIAADMEAAAOAAAAZHJzL2Uyb0RvYy54bWysU9uO2yAQfa/Uf0C8N46tONm14qy22aaq&#10"
+		self.o_gfxdata += ";tL1I234ABhyjAuMCiZ1+fQccJWn7VpUHxDDD4cyZmfXDaDQ5SucV2Jrmszkl0nIQyu5r+u3r7s0d&#10"
+		self.o_gfxdata += ";JT4wK5gGK2t6kp4+bF6/Wg99JQvoQAvpCIJYXw19TbsQ+irLPO+kYX4GvbTobMEZFtB0+0w4NiC6&#10;0Vkxny"
+		self.o_gfxdata += "+zAZzoHXDpPd4+TU66SfhtK3n43LZeBqJritxC2l3am7hnmzWr9o71neJnGuwfWBimLH56&#10"
+		self.o_gfxdata += ";gXpigZGDU39BGcUdeGjDjIPJoG0VlykHzCaf/5HNS8d6mXJBcXx/kcn/P1j+6fjFESVqWuQrSiwz&#10"
+		self.o_gfxdata += ";WKTtgQkHREgS5BiAFFGmofcVRr/0GB/GtzBiuVPKvn8G/t0TC9uO2b18dA6GTjKBNPP4Mrt5OuH4&#10;CNIMH0Hgb"
+		self.o_gfxdata += "+wQIAGNrTPEAdYoX2JtcaVrFIngZ1i906ViSItwvFyVxXJZlpRw9BXlKl+V6UdWRbBY&#10"
+		self.o_gfxdata += ";kN758F6CIfFQU4cdkVDZ8dmHSO4aEsM9aCV2SutkuH2z1Y4cGXbPLq0z+m9h2pKhpvdlUSZkC/F9&#10"
+		self.o_gfxdata += ";aiyjAna3Vqamd1NC6TqK886KdA5M6emMTLQ9qxUFmqQKYzNiYJSwAXFC3ZJCqAZOHSbUgftJyYAd&#10;XFP"
+		self.o_gfxdata += "/48CcpER/sKj9fb5YxJZPxqJcFWi4W09z62GWI1RNAyXTcRvSmEQdLDxijVqV9LoyOXPFzkwy&#10"
+		self.o_gfxdata += ";nqcotv6tnaKus775BQAA//8DAFBLAwQUAAYACAAAACEAqtzyR+UAAAANAQAADwAAAGRycy9kb3du&#10"
+		self.o_gfxdata += ";cmV2LnhtbEyPT0vDQBDF74LfYRnBi6SbNJI0MZsixT/0ItgWobdtMibB7GzIbtvop+940uO89+PN&#10"
+		self.o_gfxdata += ";e8VyMr044eg6SwqiWQgCqbJ1R42C3fY5WIBwXlOte0uo4BsdLMvrq0LntT3TO542vhEcQi7XClrv&#10"
+		self.o_gfxdata += ";h1xKV7VotJvZAYm9Tzsa7fkcG1mP+szhppfzMEyk0R3xh1YPuGqx+tocjYL09S3Z+5X56fYv4Tp7&#10"
+		self.o_gfxdata += ";ujPr4f5Dqdub6fEBhMfJ/8HwW5+rQ8mdDvZItRO9giCK05RZdhYxj2AkyNI5iAMrcZJFIMtC/l9R&#10;XgAAAP"
+		self.o_gfxdata += "//AwBQSwECLQAUAAYACAAAACEAtoM4kv4AAADhAQAAEwAAAAAAAAAAAAAAAAAAAAAAW0Nv&#10"
+		self.o_gfxdata += ";bnRlbnRfVHlwZXNdLnhtbFBLAQItABQABgAIAAAAIQA4/SH/1gAAAJQBAAALAAAAAAAAAAAAAAAA&#10"
+		self.o_gfxdata += ";AC8BAABfcmVscy8ucmVsc1BLAQItABQABgAIAAAAIQAWQs4yLQIAADMEAAAOAAAAAAAAAAAAAAAA&#10"
+		self.o_gfxdata += ";AC4CAABkcnMvZTJvRG9jLnhtbFBLAQItABQABgAIAAAAIQCq3PJH5QAAAA0BAAAPAAAAAAAAAAAA&#10"
+		self.o_gfxdata += ";AAAAAIcEAABkcnMvZG93bnJldi54bWxQSwUGAAAAAAQABADzAAAAmQUAAAAA&#10;"
 		self.object = None
 
 	def get_id(self):
 		return self.id
 
-	def set_id(self, id):
-		self.id = id
+	def set_id(self, _id):
+		self.id = _id
 
 	def get_o_spid(self):
 		return self.o_spid
@@ -1609,8 +1610,8 @@ class FallShape(object):
 	def get_type(self):
 		return self.type
 
-	def set_type(self, type):
-		self.type = type
+	def set_type(self, _type):
+		self.type = _type
 
 	def get_wrap(self):
 		return self.wrap
@@ -1686,59 +1687,3 @@ class FallShape(object):
 
 		return self.separator.join(value)
 
-if __name__ == '__main__':
-	class A(object):
-		def __init__(self):
-			self.tag = 'document'
-			self.tab = '\t'
-			self.separator = '\n'
-			self.indent = 0
-			self.idx = 1
-
-	a = A()
-	print TextBox(a, 'aaaaaaaaaaa', (500, 250), (5000, 2000), 270).get_xml()
-
-	"""
-
-
-	from document import Document
-	parent = Document('c:users/jonathan/desktop/pyword/','t.docx')
-	parent._debug = True
-	parent.EmptyDocument()
-	header = parent.get_DefaultHeader()
-	x = AlternateContent(header, text='ccccccccc')
-	header.add_paragraph(x)
-	'''sr = {'vertical': {}}
-	sr['vertical']['relative'] = 'margin'
-	sr['vertical']['value'] = '0'
-	x = AlternateContent(parent, requires='wps', pos=(5, 5), size=(200, 150), size_relative=sr)
-	graphic_data = x.get_choice().get_drawing().get_graphic().get_graphic_data()
-	shape = Shape(graphic_data)
-	shape_pr = shape.get_properties()
-	xf = Xform(shape_pr, '', '', ('5', '5'), ('1285875', '523875'))
-	shape_pr.elements.append(xf)
-	pg = PrstGeom(shape_pr, 'rect', True)
-	shape_pr.elements.append(pg)
-	sf = SolidFill(shape_pr, scheme_clr='lt1')
-	shape_pr.elements.append(sf)
-	ln = Line(shape_pr, width='4000')
-
-	sf2 = SolidFill(ln, prst_clr="black")
-	ln.elements.append(sf2)
-	shape_pr.elements.append(ln)
-	txbx = TextBox(shape)
-	txbx.add_paragraph('Hola')
-	shape.add_element(txbx)
-	shape_body = Shape_body(shape)
-	shape_body.add_element(PrstTxWarp(shape_body))
-	shape.add_element(shape_body)
-	graphic_data.set_shape(shape)
-
-	body = parent.get_body()
-	section = body.get_active_section()
-	p = body.add_paragraph(x)'''
-
-	parent.Save()
-	import os
-
-	os.system('start c:users/jonathan/desktop/pyword/t.docx')"""

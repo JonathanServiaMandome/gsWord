@@ -773,7 +773,7 @@ class Paragraph(object):
 			self.elements.append(_text)
 		elif getattr(_text, 'name', '') in ['drawing', 'shape']:
 			self.elements.append(_text)
-			self.get_properties().set_horizontal_alignment(None)
+			# self.get_properties().set_horizontal_alignment(None)
 		else:
 			if type(_text) == str:
 				_text = [_text]
