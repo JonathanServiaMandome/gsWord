@@ -1017,7 +1017,7 @@ class AlternateContent(object):
 			</w:r>
 		</w:p>
 	""" % (self.txt, self.txt)
-		print tx
+		# print tx
 		return tx
 
 	def get_xml2(self):

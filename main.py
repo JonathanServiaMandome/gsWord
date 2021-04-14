@@ -6,7 +6,7 @@ Created on 08/03/2021
 @author: Jonathan Servia Mandome
 """
 from parts.word.elements.pagenumber import PageNumber
-from shape import AlternateContent
+from shape import AlternateContent, TextBox
 
 
 def LineaToDc(linea, columnas):
@@ -32,8 +32,11 @@ def CertificadoSAT(partes, args):
 	t = header.add_table([['1', document.new_page_number(header, 'Página ')]],
 							column_width=[5000, 5000], horizontal_alignment=['c', 'r'])
 
-	x = AlternateContent(header, text='ccccccccc')
-	header.add_paragraph(x)
+	# x = AlternateContent(header, text='ccccccccc')
+	r_position=[]
+	r_position.append({'orientation':'horizontal', 'position':0, 'relative': 'column'})
+	r_position.append({'orientation':'vertical', 'position':0, 'relative': 'margin'})
+	header.add_paragraph( TextBox(header, 'aaaaaaaaaaa', (500, 250), rotation=270, r_position=r_position) )
 	'''style = doc_word.get_Part('style').get_doc_defaluts().get_rpr_defaults()
 	style.get_values()['sz'] = 18
 	style.get_values()['szCs'] = 18
@@ -160,6 +163,21 @@ if __name__ == '__main__':
 
 	partes = ['0026085']
 	args = {}
-	_doc_word = CertificadoSAT(partes, args)
+	#_doc_word = CertificadoSAT(partes, args)
 
 
+	path_temp = 'C:/Users/Jonathan/Desktop/pyword/'
+	f = 'rtf.docx'
+	_doc_word = document.Document(path_temp, f)
+	_doc_word._debug = True
+	_doc_word.EmptyDocument()
+	body = _doc_word.get_body()
+	header = _doc_word.get_DefaultHeader()
+	r_position=[]
+	r_position.append({'orientation': 'horizontal', 'position': -5000, 'relative': 'column'})
+	r_position.append({'orientation': 'vertical', 'position': 6000, 'relative': 'margin'})
+	header.add_paragraph(TextBox(header, 'aaaaaaaaaaa', (50, 5000), (8000, 500), rotation=270, r_position=r_position, background_color='FFEFFF'))
+
+	_doc_word.Save()
+
+	os.system('start ' + path_temp + f)

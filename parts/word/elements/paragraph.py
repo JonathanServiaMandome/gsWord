@@ -613,7 +613,10 @@ class Properties(object):
 		self.keepNext = value
 
 	def set_horizontal_alignment(self, alineamiento):
-		self.jc = element.HorizontalAlignment(self, alineamiento)
+		if alineamiento:
+			self.jc = element.HorizontalAlignment(self, alineamiento)
+		else:
+			self.jc = None
 
 	def SetIndentation(self, _dc):
 		self.ind = self.Indentation(self, _dc)
@@ -763,12 +766,14 @@ class Paragraph(object):
 
 		self.elements = list()
 
+		print getattr(_text, 'name', ''), _text
 		if getattr(_text, 'name', '') == 'r':
 			if font_size is not None:
 				_text.get_properties().set_font_size(font_size)
 			self.elements.append(_text)
-		elif getattr(_text, 'name', '') in ['drawing', 'mc:AlternateContent']:
+		elif getattr(_text, 'name', '') in ['drawing', 'shape']:
 			self.elements.append(_text)
+			self.get_properties().set_horizontal_alignment(None)
 		else:
 			if type(_text) == str:
 				_text = [_text]
@@ -964,7 +969,7 @@ class Paragraph(object):
 				value.append(txt.get_xml())
 				value.append('%s</w:r>' % (self.get_tab(1)))
 
-			elif getattr(txt, 'name', '') == 'mc:AlternateContent':
+			elif getattr(txt, 'name', '') == 'shape':
 				value.append('%s<w:r>' % (self.get_tab(1)))
 				value.append('%s<w:rPr>' % (self.get_tab(2)))
 				value.append('%s<w:noProof/>' % (self.get_tab(3)))

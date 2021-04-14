@@ -58,13 +58,17 @@ class Part:
 		self.attributes.append('xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"')
 		self.attributes.append('xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml"')
 		self.attributes.append('xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml"')
+		self.attributes.append('xmlns:w16cex="http://schemas.microsoft.com/office/word/2018/wordml/cex"') #
 		self.attributes.append('xmlns:w16cid="http://schemas.microsoft.com/office/word/2016/wordml/cid"')
+		self.attributes.append('xmlns:w16="http://schemas.microsoft.com/office/word/2018/wordml"') #
+		self.attributes.append('xmlns:w16sdtdh="http://schemas.microsoft.com/office/word/2020/wordml/sdtdatahash"') #
 		self.attributes.append('xmlns:w16se="http://schemas.microsoft.com/office/word/2015/wordml/symex"')
 		self.attributes.append('xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup"')
 		self.attributes.append('xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk"')
 		self.attributes.append('xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml"')
 		self.attributes.append('xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"')
-		self.attributes.append('mc:Ignorable="w14 w15 w16se w16cid wp14"')
+		#self.attributes.append('mc:Ignorable="w14 w15 w16se w16cid wp14"')
+		self.attributes.append('mc:Ignorable="w14 w15 w16se w16cid w16 w16cex w16sdtdh wp14"')
 
 		self.elements = list()
 		''' Id's '''

@@ -232,7 +232,6 @@ class TableProperties(object):
 			value.insert(0, '%s<w:%s>' % (self.get_tab(), self.name))
 			value.append('%s</w:%s>' % (self.get_tab(), self.name))
 
-		print self.get_separator().join(value)
 		return self.get_separator().join(value)
 
 
