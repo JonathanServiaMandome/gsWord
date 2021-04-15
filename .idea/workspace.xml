@@ -3,7 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="bb430744-0a77-41b3-85db-7aa05c86df10" name="Default Changelist" comment="Initial commit">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/document.py" beforeDir="false" afterPath="$PROJECT_DIR$/document.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pagenumber.py" beforeDir="false" afterPath="$PROJECT_DIR$/pagenumber.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/parts/word/elements/pagenumber.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/word/elements/pagenumber.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/parts/word/elements/table.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/word/elements/table.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/parts/word/elements/text.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/word/elements/text.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/shape.py" beforeDir="false" afterPath="$PROJECT_DIR$/shape.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -213,7 +218,14 @@
       <option name="project" value="LOCAL" />
       <updated>1618438453747</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Formato de texto en los cuadros de texto">
+      <created>1618441384472</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1618441384472</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -248,7 +260,8 @@
     <MESSAGE value="Añadida registro mercantil, alineación de imagenes al texto y refactorización de nombre de funciones" />
     <MESSAGE value="Initial commit" />
     <MESSAGE value="Cuadros de textos básicos" />
-    <option name="LAST_COMMIT_MESSAGE" value="Cuadros de textos básicos" />
+    <MESSAGE value="Formato de texto en los cuadros de texto" />
+    <option name="LAST_COMMIT_MESSAGE" value="Formato de texto en los cuadros de texto" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -265,13 +278,8 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/parts/word/elements/table.py</url>
-          <line>947</line>
+          <line>948</line>
           <option name="timeStamp" value="97" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/parts/word/elements/shape.py</url>
-          <line>441</line>
-          <option name="timeStamp" value="105" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

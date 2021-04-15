@@ -14,6 +14,9 @@ class Properties(object):
 			self.docPartGallery = doc_part_gallery
 			self.docPartUnique = doc_part_unique
 
+		def get_parent(self):
+			return self.parent
+
 		def set_doc_part_gallery(self, value):
 			self.docPartGallery = value
 
@@ -52,6 +55,9 @@ class Properties(object):
 		self.indent = parent.indent + 1
 		self.id = _id
 		self.part_object = self.PartObject(self)
+
+	def get_parent(self):
+		return self.parent
 
 	def get_tab(self, number=0):
 		return self.tab * (self.indent + number)
@@ -129,6 +135,9 @@ class Content(object):
 		t10 = self.paragraph.add_text((), font_format, font_size)
 		t10.set_field_char('end')
 
+	def get_parent(self):
+		return self.parent
+
 	def set_title(self, title):
 		self.title = title
 
@@ -175,6 +184,9 @@ class PageNumber(object):
 
 		self.properties = Properties(self)
 		self.content = Content(self, title, text_separator, font_format, font_size, horizontal_alignment)
+
+	def get_parent(self):
+		return self.parent
 
 	def get_tab(self, number=0):
 		return self.tab * (self.indent + number)

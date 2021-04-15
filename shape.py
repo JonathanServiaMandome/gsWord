@@ -6,7 +6,7 @@ from parts.word.elements import paragraph
 class TextBox(object):
 	def __init__(self, parent, text, position, size, rotation=0, r_position=(), simple_position=(0, 0),
 					background_color='FFFFFF', flip_vertical='', flip_horizontal='', horizontal_alignment='j',
-				 	font_format='', font_size=None):
+					font_format='', font_size=None):
 		self.name = 'shape'
 		self.parent = parent
 		self.tab = parent.tab
@@ -97,6 +97,9 @@ class TextBox(object):
 	def get_separator(self):
 		return self.separator
 
+	def get_parent(self):
+		return self.parent
+
 	def get_tab(self, number=0):
 		return self.tab * (self.indent + number)
 
@@ -126,6 +129,9 @@ class AlternateContent(object):
 
 	def get_tab(self, number=0):
 		return self.tab * (number + self.indent)
+
+	def get_parent(self):
+		return self.parent
 
 	def get_choice(self):
 		return self.choice
@@ -171,6 +177,9 @@ class Choice(object):
 
 	def get_tab(self, number=0):
 		return self.tab * (number + self.indent)
+
+	def get_parent(self):
+		return self.parent
 
 	def set_parent(self, _parent):
 		self.parent = _parent
@@ -220,6 +229,9 @@ class FallBack(object):
 	def get_tab(self, number=0):
 		return self.tab * (number + self.indent)
 
+	def get_parent(self):
+		return self.parent
+
 	def set_parent(self, _parent):
 		self.parent = _parent
 		self.parent = _parent
@@ -256,6 +268,9 @@ class Drawing(object):
 		self.separator = ''
 		self.indent = 0
 		self.element = None
+
+	def get_parent(self):
+		return self.parent
 
 	def set_parent(self, _parent):
 		self.parent = _parent
@@ -310,6 +325,9 @@ class Anchor(object):
 		self.relative_height = relative_height
 
 		self.elements = list()
+
+	def get_parent(self):
+		return self.parent
 
 	def set_parent(self, _parent):
 		self.parent = _parent
@@ -467,6 +485,9 @@ class SimplePosition(object):
 		self.y = y
 		self.x = x
 
+	def get_parent(self):
+		return self.parent
+
 	def set_parent(self, _parent):
 		self.parent = _parent
 		self.parent = _parent
@@ -516,6 +537,9 @@ class Position(object):
 		self.indent = 0
 		self.relative_from = relative_from
 		self.position = position * 635
+
+	def get_parent(self):
+		return self.parent
 
 	def set_parent(self, _parent):
 		self.parent = _parent
@@ -567,6 +591,9 @@ class PositionRelative(object):
 		self.relative_from = relative_from
 		self.position = position * 635
 
+	def get_parent(self):
+		return self.parent
+
 	def set_parent(self, _parent):
 		self.parent = _parent
 		self.parent = _parent
@@ -614,6 +641,9 @@ class Extent(object):
 		self.indent = 0
 		self.size = size
 
+	def get_parent(self):
+		return self.parent
+
 	def set_parent(self, _parent):
 		self.parent = _parent
 		self.parent = _parent
@@ -653,6 +683,9 @@ class EffectExent(object):
 		self.right = right
 		self.top = top
 		self.bottom = bottom
+
+	def get_parent(self):
+		return self.parent
 
 	def set_parent(self, _parent):
 		self.parent = _parent
@@ -713,6 +746,9 @@ class WrapSquare(object):
 		self.indent = 0
 		self.wrap_text = wrap_text
 
+	def get_parent(self):
+		return self.parent
+
 	def set_parent(self, _parent):
 		self.parent = _parent
 		self.parent = _parent
@@ -749,6 +785,9 @@ class DocPr(object):
 		self.indent = 0
 		self.shape_name = shape_name
 		self.shape_id = shape_id
+
+	def get_parent(self):
+		return self.parent
 
 	def set_parent(self, _parent):
 		self.parent = _parent
@@ -795,6 +834,9 @@ class CNvGraphicFramePr(object):
 		self.indent = 0
 		self.graphic_frame_locks = "http://schemas.openxmlformats.org/drawingml/2006/main"
 
+	def get_parent(self):
+		return self.parent
+
 	def set_parent(self, _parent):
 		self.parent = _parent
 		self.parent = _parent
@@ -832,6 +874,9 @@ class Graphic(object):
 		self.indent = 0
 		self.graphicData = GraphicData(self)
 		self.xmls = 'http://schemas.openxmlformats.org/drawingml/2006/main'
+
+	def get_parent(self):
+		return self.parent
 
 	def set_parent(self, _parent):
 		self.parent = _parent
@@ -881,6 +926,9 @@ class GraphicData(object):
 		self.shape = None
 		self.uri = 'http://schemas.microsoft.com/office/word/2010/wordprocessingShape'
 
+	def get_parent(self):
+		return self.parent
+
 	def set_parent(self, _parent):
 		self.parent = _parent
 		self.parent = _parent
@@ -923,6 +971,9 @@ class Shape(object):
 		self.separator = ''
 		self.indent = 0
 		self.elements = list()
+
+	def get_parent(self):
+		return self.parent
 
 	def set_parent(self, _parent):
 		self.parent = _parent
@@ -967,6 +1018,9 @@ class CNvSpPr(object):
 		self.tx_box = tx_box
 		self.no_change_arrowheads = no_change_arrowheads
 
+	def get_parent(self):
+		return self.parent
+
 	def set_parent(self, _parent):
 		self.parent = _parent
 		self.parent = _parent
@@ -1010,6 +1064,9 @@ class ShapeProperties(object):
 		self.indent = 0
 		self.mode = mode
 		self.elements = list()
+
+	def get_parent(self):
+		return self.parent
 
 	def set_parent(self, _parent):
 		self.parent = _parent
@@ -1064,6 +1121,9 @@ class Xform(object):
 		self.offset = offset
 		self.ext = (ext[0] * 635, ext[1] * 635)
 		self.rotation = rotation * 60000
+
+	def get_parent(self):
+		return self.parent
 
 	def get_xml(self):
 		value = list()
@@ -1139,6 +1199,9 @@ class PrstGeom(object):
 		self.avlst = avlst
 		self.prst = prst
 
+	def get_parent(self):
+		return self.parent
+
 	def set_parent(self, _parent):
 		self.parent = _parent
 		self.parent = _parent
@@ -1183,6 +1246,9 @@ class Line(object):
 		self.indent = 0
 		self.properties_list = list()
 		self.width = width
+
+	def get_parent(self):
+		return self.parent
 
 	def set_parent(self, _parent):
 		self.parent = _parent
@@ -1239,6 +1305,9 @@ class SolidFill(object):
 		self.indent = 0
 		self.color = color
 
+	def get_parent(self):
+		return self.parent
+
 	def set_parent(self, _parent):
 		self.parent = _parent
 		self.parent = _parent
@@ -1278,6 +1347,9 @@ class Txbx(object):
 		self.separator = ''
 		self.indent = 0
 		self.elements = list()
+
+	def get_parent(self):
+		return self.parent
 
 	def set_parent(self, _parent):
 		self.parent = _parent
@@ -1336,6 +1408,9 @@ class Shape_body(object):
 		}
 		self.auto_fit = auto_fit
 		self.elements = list()
+
+	def get_parent(self):
+		return self.parent
 
 	def set_parent(self, _parent):
 		self.parent = _parent
@@ -1410,6 +1485,9 @@ class Pict(object):
 		self.indent = 0
 		self.elements = list()
 
+	def get_parent(self):
+		return self.parent
+
 	def set_parent(self, _parent):
 		self.parent = _parent
 		self.parent = _parent
@@ -1460,6 +1538,9 @@ class ShapeType(object):
 		self.path = path
 
 		self.elements = list()
+
+	def get_parent(self):
+		return self.parent
 
 	def get_w14_anchor_id(self):
 		return self.w14_anchor_id
@@ -1595,6 +1676,9 @@ class FallShape(object):
 		self.o_gfxdata += ";AAAAAIcEAABkcnMvZG93bnJldi54bWxQSwUGAAAAAAQABADzAAAAmQUAAAAA&#10;"
 		self.object = None
 
+	def get_parent(self):
+		return self.parent
+
 	def get_id(self):
 		return self.id
 
@@ -1686,4 +1770,3 @@ class FallShape(object):
 		value.append('%s</%s>' % (self.get_tab(), self.get_name()))
 
 		return self.separator.join(value)
-

@@ -817,7 +817,8 @@ class Cell(object):
 				value.append(pr)
 
 		if not self.elements:
-			raise ValueError('Celda sin elementos')
+			self.add_paragraph('')
+
 		for _element in self.elements:
 			if getattr(_element, 'name', '') == 'p':
 				paragraph_spacing = self.get_properties().get_paragraph_spacing()

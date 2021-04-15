@@ -29,7 +29,7 @@ class Document:
 		self._debug = False
 		self.ruta_plantilla = ruta_plantilla
 		self._plantilla = plantilla_
-
+		self.variables = dict()
 		# ./
 		self.content_types = content_types.ContentType(self)
 
@@ -93,6 +93,18 @@ class Document:
 
 	def SetPlantilla(self, value):
 		self._plantilla = value
+
+	def get_variables(self):
+		return self.variables
+
+	def get_variable(self, name):
+		return self.variables.get(name, '')
+
+	def set_variables(self, dc):
+		self.variables = dc
+
+	def update_variables(self, dc):
+		self.variables.update(dc)
 
 	def get_tab(self):
 		return self.tab

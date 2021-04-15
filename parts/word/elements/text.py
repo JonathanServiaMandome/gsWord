@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+ENCODING = 'iso-8859-1'
 
 class Properties(object):
 	class Color(object):
@@ -416,6 +417,9 @@ class Text(object):
 		'''
 		self.instrText = ''
 
+	def get_parent(self):
+		return self.parent
+
 	def set_field_char(self, value):
 		self.field_char = value
 
@@ -706,12 +710,13 @@ class Text(object):
 			self.tab = parent.tab
 			self.separator = parent.separator
 			self.indent = parent.indent + 1
-
-			if type(text) is not unicode:
-				text = text.decode('iso-8859-1').encode('utf8').replace('%EURO%', '€').replace('&', '&amp;').replace(
-					'<', '&lt;').replace('>', '&gt;')
-
-			self.text = text
+			x = self
+			while getattr(x, 'tag', '') != 'document':
+				x = x.get_parent()
+			self.document = x
+			self.text = str()
+			if text:
+				self.set_text(text)
 
 			'''True: tabulación, no incluye el texo, False:Texto'''
 			self.tabulation = tabulation
@@ -726,12 +731,51 @@ class Text(object):
 
 			self.space = space
 
-		def SetText(self, text):
-			self.text = text.decode('latin-1').encode('utf-8').replace('%EURO%', '€').replace('&', '&amp;').replace(
-				'<', '&lt;').replace('>', '&gt;')
+		def set_text(self, text):
+			if type(text) is not unicode:
+				text = text.decode(ENCODING).encode('utf-8').replace('%EURO%', '€').replace('&', '&amp;').replace(
+					'<', '&lt;').replace('>', '&gt;')
 
-		def get_Text(self):
-			return self.text
+			self.text = text
+
+		def get_parent(self):
+			return self.parent
+
+		def get_text(self):
+			text = self.text
+
+			for key in self.document.get_variables():
+				var = eval(repr(self.document.get_variable(key)))
+
+				if type(var) not in (tuple, list):
+					if type(var) != str:
+						var = unicode(var)
+					else:
+						var = var.decode(ENCODING).encode('utf-8').replace('%EURO%', '€').replace('&', '&amp;').replace(
+							'<', '&lt;').replace('>', '&gt;')
+					text = text.replace(key, str(var))
+				else:
+					text = text.decode(ENCODING).encode('utf-8').replace('%EURO%', '€').replace('&', '&amp;').replace(
+							'<', '&lt;').replace('>', '&gt;').split(' ')
+
+					for i in range(len(text)):
+						if key not in text[i]:
+							continue
+
+						text[i] = text[i].split('/')
+
+						_var = text[i][0]
+						if len(text[i]) > 1 and text[i][1]:
+							_var = var[int(text[i][1])]
+
+							if len(text[i]) == 3 and text[i][2]:
+								_var = _var[int(text[i][2])]
+
+						text[i] = _var
+
+					text = ' '.join(text)
+
+			return text
 
 		def get_name(self):
 			return self.name
@@ -749,13 +793,15 @@ class Text(object):
 			return self.tab * (self.indent + number)
 
 		def get_xml(self):
-			space = ''
-			spaces = self.text.startswith(' ') or self.text.endswith(' ')
+			space = str()
+			spaces = str()
+			tx = self.get_text()
+			if tx:
+				spaces = tx.startswith(' ') or self.text.endswith(' ')
 			if self.space and spaces:
 				space = ' xml:space="%s"' % self.space
-			value = '%s<w:%s%s>%s</w:%s>' % (self.get_tab(), self.name, space, self.text, self.name)
+			value = '%s<w:%s%s>%s</w:%s>' % (self.get_tab(), self.name, space, tx, self.name)
 
 			if self.tabulation:
 				value = '%s<w:tab/>' % self.get_tab()
 			return value
-

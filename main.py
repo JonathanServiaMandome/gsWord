@@ -171,13 +171,14 @@ if __name__ == '__main__':
 	f = 'rtf.docx'
 	_doc_word = document.Document(path_temp, f)
 	_doc_word._debug = True
+	_doc_word.set_variables({'CL_DENO': [['Pedro','Marta', 'Maria'], ['PedroL','MartaL', 'MariaL']]})
 	_doc_word.EmptyDocument()
 	body = _doc_word.get_body()
 	header = _doc_word.get_DefaultHeader()
 	r_position=[]
 	r_position.append({'orientation': 'horizontal', 'position': -5000, 'relative': 'column'})
 	r_position.append({'orientation': 'vertical', 'position': 6000, 'relative': 'paragraph'})
-	header.add_paragraph(TextBox(header, 'aaaaaaaaaaa', (50, 5000), (8000, 500), rotation=270, r_position=r_position,
+	header.add_paragraph(TextBox(header, 'CL_DENO/1/2 23232 CL_DENO/0/1', (50, 5000), (8000, 500), rotation=270, r_position=r_position,
 								 background_color='FFEFFF', horizontal_alignment='c', font_format='b', font_size=12))
 
 	_doc_word.Save()
