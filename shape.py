@@ -4,9 +4,9 @@ from parts.word.elements import paragraph
 
 
 class TextBox(object):
-	def __init__(self, parent, text, position, size, rotation=0, r_position=(), simple_position=(0, 0),
-					background_color='FFFFFF', flip_vertical='', flip_horizontal='', horizontal_alignment='j',
-					font_format='', font_size=None):
+	def __init__(self, parent, text='', position=(0, 0), size=(0, 0), rotation=0, r_position=(), simple_position=(0, 0),
+	             background_color='FFFFFF', flip_vertical='', flip_horizontal='', horizontal_alignment='j',
+	             font_format='', font_size=None):
 		self.name = 'shape'
 		self.parent = parent
 		self.tab = parent.tab
@@ -25,7 +25,12 @@ class TextBox(object):
 		anchor.add_element(simple_pos)
 
 		for rp in r_position:
-			position_r = Position(rp['position'], orientation=rp['orientation'], relative_from=rp['relative'])
+			position_r = Position(
+				rp.get('position'),
+				orientation=rp['orientation'],
+				relative_from=rp.get('relative', 'margin'),
+				align=rp.get('align')
+			)
 			position_r.set_parent(anchor)
 			anchor.add_element(position_r)
 
@@ -38,7 +43,8 @@ class TextBox(object):
 		wrap_square = WrapSquare()
 		wrap_square.set_parent(anchor)
 		anchor.add_element(wrap_square)
-		doc_pr = DocPr(217)
+		parent.AddRelRId()
+		doc_pr = DocPr(parent.get_RelRId())
 		doc_pr.set_parent(anchor)
 		anchor.add_element(doc_pr)
 		graphic_frame = CNvGraphicFramePr()
@@ -62,7 +68,8 @@ class TextBox(object):
 		shape.add_element(sp_pr)
 		shape_pr = ShapeProperties()
 		shape.add_element(shape_pr)
-		shape_pr.add_element(Xform(position, rotation=rotation, flip_vertical=flip_vertical, flip_horizontal=flip_horizontal))
+		shape_pr.add_element(
+			Xform(position, rotation=rotation, flip_vertical=flip_vertical, flip_horizontal=flip_horizontal))
 		shape_pr.add_element(PrstGeom())
 		shape_pr.add_element(SolidFill(background_color))
 		line = Line('9525')
@@ -76,7 +83,7 @@ class TextBox(object):
 		shape.add_element(txbx)
 		txbx.add_paragraph(text, horizontal_alignment, font_format, font_size)
 
-		shape_body = Shape_body(auto_fit=False)
+		shape_body = ShapeBody(auto_fit=False)
 		shape.add_element(shape_body)
 
 		fall_back = FallBack()
@@ -93,6 +100,22 @@ class TextBox(object):
 		text_box.name = 'v:textbox'
 		fall_shape.set_object(text_box)
 		text_box.add_paragraph(text)
+
+	def set_elements(self, elements):
+		anchor = self.content.get_choice().get_drawing().element
+		for element in anchor.elements:
+			if getattr(element, 'name', '') == 'a:graphic':
+				for elem in element.get_graphic_data().get_shape().get_elements():
+					if getattr(elem, 'name', '') == 'wps:txbx':
+						elem.elements = elements
+
+	def add_element(self, _element):
+		anchor = self.content.get_choice().get_drawing().element
+		for element in anchor.elements:
+			if getattr(element, 'name', '') == 'a:graphic':
+				for elem in element.get_graphic_data().get_shape().get_elements():
+					if getattr(elem, 'name', '') == 'wps:txbx':
+						elem.elements.append(_element)
 
 	def get_separator(self):
 		return self.separator
@@ -116,8 +139,6 @@ class AlternateContent(object):
 		self.indent = parent.indent + 1
 		self.choice = None
 		self.fallBack = None
-		'''self.txt = text.decode('iso-8859-1').encode('utf8').replace('%EURO%', '€').replace('&', '&amp;').replace(
-					'<', '&lt;').replace('>', '&gt;')'''
 
 	def set_parent(self, _parent):
 		self.parent = _parent
@@ -304,8 +325,8 @@ class Drawing(object):
 class Anchor(object):
 
 	def __init__(self, allow_overlap="1", dist_b="0", dist_l="114300", dist_r="114300", dist_t="0", layout_in_cell="1",
-					behind_doc="0", anchor_id="45C456EB", locked="0", wp14_edit_id="0CFAEE44", simple_pos="0",
-					relative_height="251659264"):
+	             behind_doc="0", anchor_id="45C456EB", locked="0", wp14_edit_id="0CFAEE44", simple_pos="0",
+	             relative_height="251659264"):
 		self.name = 'wp:anchor'
 		self.parent = None
 		self.tab = ''
@@ -526,7 +547,7 @@ class SimplePosition(object):
 
 class Position(object):
 
-	def __init__(self, position, orientation='vertical', relative_from='margin'):
+	def __init__(self, position, orientation='vertical', relative_from='margin', align=None):
 		if orientation == 'vertical':
 			self.name = 'wp:positionV'
 		else:
@@ -536,7 +557,10 @@ class Position(object):
 		self.separator = ''
 		self.indent = 0
 		self.relative_from = relative_from
-		self.position = position * 635
+		self.position = position
+		if self.position is not None:
+			self.position *= 635
+		self.align = align
 
 	def get_parent(self):
 		return self.parent
@@ -554,6 +578,12 @@ class Position(object):
 	def get_name(self):
 		return self.name
 
+	def get_align(self):
+		return self.align
+
+	def set_align(self, align):
+		self.align = align
+
 	def get_relative_from(self):
 		return self.relative_from
 
@@ -568,9 +598,13 @@ class Position(object):
 
 	def get_xml(self):
 		value = list()
-		value.append('%s<%s relativeFrom="%s">' % (self.get_tab(), self.get_name(), self.get_relative_from()))
-		value.append('%s<wp:posOffset>%s</wp:posOffset>' % (self.get_tab(1), self.get_position()))
-		value.append('%s</%s>' % (self.get_tab(), self.get_name()))
+		if self.get_position() is not None:
+			value.append('%s<wp:posOffset>%s</wp:posOffset>' % (self.get_tab(1), self.get_position()))
+		if self.get_align() is not None:
+			value.append('%s<wp:align>%s</wp:align>' % (self.get_tab(1), self.get_align()))
+		if value:
+			value.insert(0, '%s<%s relativeFrom="%s">' % (self.get_tab(), self.get_name(), self.get_relative_from()))
+			value.append('%s</%s>' % (self.get_tab(), self.get_name()))
 
 		return self.separator.join(value)
 
@@ -589,7 +623,9 @@ class PositionRelative(object):
 		self.separator = ''
 		self.indent = 0
 		self.relative_from = relative_from
-		self.position = position * 635
+		self.position = position
+		if self.position is not None:
+			self.position *= 635
 
 	def get_parent(self):
 		return self.parent
@@ -620,13 +656,18 @@ class PositionRelative(object):
 		return self.position
 
 	def set_position(self, position):
-		self.position = position * 635
+		if position is not None:
+			position *= 635
+		self.position = position
 
 	def get_xml(self):
 		value = list()
-		value.append('%s<%s relativeFrom="%s">' % (self.get_tab(), self.get_name(), self.get_relative_from()))
-		value.append('%s<%s>%s</%s>' % (self.get_tab(1), self.get_tag(), self.get_position(), self.get_tag()))
-		value.append('%s</%s>' % (self.get_tab(), self.get_name()))
+		if self.get_position() is not None:
+			value.append('%s<%s>%s</%s>' % (self.get_tab(1), self.get_tag(), self.get_position(), self.get_tag()))
+
+		if value:
+			value.insert(0, '%s<%s relativeFrom="%s">' % (self.get_tab(), self.get_name(), self.get_relative_from()))
+			value.append('%s</%s>' % (self.get_tab(), self.get_name()))
 
 		return self.separator.join(value)
 
@@ -666,7 +707,7 @@ class Extent(object):
 	def get_xml(self):
 		value = list()
 		value.append('%s<%s cx="%s" cy="%s"/>' % (self.get_tab(), self.get_name(), str(self.get_size()[0] * 635),
-													str(self.get_size()[1] * 635)))
+		                                          str(self.get_size()[1] * 635)))
 
 		return self.separator.join(value)
 
@@ -727,11 +768,11 @@ class EffectExent(object):
 	def get_xml(self):
 		value = list()
 		value.append('%s<%s l="%s" t="%s" r="%s" b="%s"/>' % (self.get_tab(),
-																self.get_name(),
-																self.get_left(),
-																self.get_top(),
-																self.get_right(),
-																self.get_bottom()))
+		                                                      self.get_name(),
+		                                                      self.get_left(),
+		                                                      self.get_top(),
+		                                                      self.get_right(),
+		                                                      self.get_bottom()))
 
 		return self.separator.join(value)
 
@@ -817,9 +858,9 @@ class DocPr(object):
 	def get_xml(self):
 		value = list()
 		value.append('%s<%s id="%s" name="%s"/>' % (self.get_tab(),
-													self.get_name(),
-													str(self.get_shape_id()),
-													self.get_shape_name()))
+		                                            self.get_name(),
+		                                            str(self.get_shape_id()),
+		                                            self.get_shape_name()))
 
 		return self.separator.join(value)
 
@@ -1388,7 +1429,7 @@ class Txbx(object):
 		return p
 
 
-class Shape_body(object):
+class ShapeBody(object):
 	def __init__(self, auto_fit=True):
 		self.name = 'wps:bodyPr'
 		self.parent = None
@@ -1524,7 +1565,7 @@ class Pict(object):
 class ShapeType(object):
 
 	def __init__(self, w14_anchor_id="3454B481", _id="_x0000_t202", coordsize="21600,21600", o_spt="202",
-					path="m,l,21600r21600,l21600,xe"):
+	             path="m,l,21600r21600,l21600,xe"):
 		self.name = 'v:shapetype'
 		self.parent = None
 		self.tab = ''
@@ -1745,22 +1786,22 @@ class FallShape(object):
 		args = list()
 
 		if self.get_id():
-			args.append('id="'+self.get_id()+'"')
+			args.append('id="' + self.get_id() + '"')
 
 		if self.get_o_spid():
-			args.append('o:spid="'+self.get_o_spid()+'"')
+			args.append('o:spid="' + self.get_o_spid() + '"')
 
 		if self.get_type():
-			args.append('type="'+self.get_type()+'"')
+			args.append('type="' + self.get_type() + '"')
 
 		if self.get_style():
-			args.append('style="'+self.get_style()+'"')
+			args.append('style="' + self.get_style() + '"')
 
 		if self.get_o_gfxdata():
-			args.append('o:gfxdata="'+self.get_o_gfxdata()+'"')
+			args.append('o:gfxdata="' + self.get_o_gfxdata() + '"')
 
 		if self.get_stroked():
-			args.append('stroked="'+self.get_type()+'"')
+			args.append('stroked="' + self.get_type() + '"')
 
 		value = list()
 		value.append('%s<%s %s>' % (self.get_tab(), self.get_name(), ' '.join(args)))

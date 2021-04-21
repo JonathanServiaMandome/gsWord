@@ -136,23 +136,23 @@ class Document:
 			footer_ = self.parts.get('footer1')
 		return footer_
 
-	def Table(self, parent, data=(), titles=(), column_width=None, horizontal_alignment=(), borders=None):
+	def new_table(self, parent, data=(), titles=(), column_width=None, horizontal_alignment=(), borders=None):
 		self.idx += 1
 		return parts.word.elements.table.Table(parent, self.idx, data, titles, column_width, horizontal_alignment,
 												borders)
 
-	def Paragraph(self, parent, idx, text=(), horizontal_alignment='j', font_format='', font_size=None, null=False):
+	def new_paragraph(self, parent, text=(), horizontal_alignment='j', font_format='', font_size=None, null=False):
 		self.idx += 1
-		return parts.word.elements.paragraph.Paragraph(parent, idx, text, horizontal_alignment, font_format, font_size,
+		return parts.word.elements.paragraph.Paragraph(parent, self.idx, text, horizontal_alignment, font_format, font_size,
 														nulo=null)
 
-	def Image(self, parent, path, width, heigth):
+	def new_image(self, parent, path, width, heigth, anchor='inline', horizontal_alignment='l'):
 		self.idx += 1
-		pa = parts.word.elements.paragraph.Paragraph(None, self.idx)
-		pa.AddPicture(parent, path, width, heigth)
+		pa = parts.word.elements.paragraph.Paragraph(None, self.idx, horizontal_alignment=horizontal_alignment)
+		pa.AddPicture(parent, path, width, heigth, anchor)
 		return pa
 
-	def EmptyDocument(self, headers=True):
+	def empty_document(self, headers=True):
 		# ./word
 		self.parts["font_table"] = word.fonttable.FontTable(self)
 		self.idx += 1
@@ -221,7 +221,7 @@ class Document:
 		return doc_rels
 
 	# noinspection PyBroadException
-	def Save(self):
+	def save(self):
 		# ./word/rels
 		self.parts["document_rels"] = self.CreateDocumentRels()
 
@@ -249,10 +249,8 @@ class Document:
 
 			if not hasattr(part, 'get_xml'):
 				continue
-			try:
-				zout.writestr(part.get_name(), part.get_xml())
-			except Exception:
-				raise ValueError(part.get_xml())
+
+			zout.writestr(part.get_name(), part.get_xml())
 
 			if hasattr(part, 'get_Images'):
 				for img in part.get_Images():

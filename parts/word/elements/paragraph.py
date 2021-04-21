@@ -22,7 +22,6 @@ class ImagePart:
 
 
 class Properties(object):
-
 	class FormatList(object):
 		def __init__(self, parent, level='1', _type='1'):
 			self.name = 'numPr'
@@ -341,50 +340,50 @@ class Properties(object):
 			self.top = None
 			if 'top' in dc.keys():
 				self.top = self.Element(self, 'top', dc['top'].get('value', ''), dc['top'].get('sz', ''),
-										dc['top'].get('space', ''), dc['top'].get('shadow', ''),
-										dc['top'].get('color', ''))
+				                        dc['top'].get('space', ''), dc['top'].get('shadow', ''),
+				                        dc['top'].get('color', ''))
 			elif 'all' in dc.keys():
 				self.top = self.Element(self, 'top', dc['all'].get('value', ''), dc['all'].get('sz', ''),
-										dc['all'].get('space', ''), dc['all'].get('shadow', ''),
-										dc['all'].get('color', ''))
+				                        dc['all'].get('space', ''), dc['all'].get('shadow', ''),
+				                        dc['all'].get('color', ''))
 
 			self.bottom = None
 			if 'bottom' in dc.keys():
 				self.bottom = self.Element(self, 'bottom', dc['bottom'].get('value', ''),
-											dc['bottom'].get('sz', ''),
-											dc['bottom'].get('space', ''), dc['bottom'].get('shadow', ''),
-											dc['bottom'].get('color', ''))
+				                           dc['bottom'].get('sz', ''),
+				                           dc['bottom'].get('space', ''), dc['bottom'].get('shadow', ''),
+				                           dc['bottom'].get('color', ''))
 			elif 'all' in dc.keys():
 				self.bottom = self.Element(self, 'bottom', dc['all'].get('value', ''), dc['all'].get('sz', ''),
-											dc['all'].get('space', ''), dc['all'].get('shadow', ''),
-											dc['all'].get('color', ''))
+				                           dc['all'].get('space', ''), dc['all'].get('shadow', ''),
+				                           dc['all'].get('color', ''))
 
 			self.left = None
 			if 'left' in dc.keys():
 				self.left = self.Element(self, 'left', dc['left'].get('value', ''), dc['left'].get('sz', ''),
-											dc['left'].get('space', ''), dc['left'].get('shadow', ''),
-											dc['left'].get('color', ''))
+				                         dc['left'].get('space', ''), dc['left'].get('shadow', ''),
+				                         dc['left'].get('color', ''))
 			elif 'all' in dc.keys():
 				self.left = self.Element(self, 'left', dc['all'].get('value', ''), dc['all'].get('sz', ''),
-											dc['all'].get('space', ''), dc['all'].get('shadow', ''),
-											dc['all'].get('color', ''))
+				                         dc['all'].get('space', ''), dc['all'].get('shadow', ''),
+				                         dc['all'].get('color', ''))
 
 			self.right = None
 			if 'right' in dc.keys():
 				self.right = self.Element(self, 'right', dc['right'].get('value', ''), dc['right'].get('sz', ''),
-											dc['right'].get('space', ''), dc['right'].get('shadow', ''),
-											dc['right'].get('color', ''))
+				                          dc['right'].get('space', ''), dc['right'].get('shadow', ''),
+				                          dc['right'].get('color', ''))
 			elif 'all' in dc.keys():
 				self.right = self.Element(self, 'right', dc['all'].get('value', ''), dc['all'].get('sz', ''),
-											dc['all'].get('space', ''), dc['all'].get('shadow', ''),
-											dc['all'].get('color', ''))
+				                          dc['all'].get('space', ''), dc['all'].get('shadow', ''),
+				                          dc['all'].get('color', ''))
 
 			self.between = None
 			if 'between' in dc.keys():
 				self.between = self.Element(self, 'between', dc['between'].get('value', ''),
-											dc['between'].get('sz', ''),
-											dc['between'].get('space', ''), dc['between'].get('shadow', ''),
-											dc['between'].get('color', ''))
+				                            dc['between'].get('sz', ''),
+				                            dc['between'].get('space', ''), dc['between'].get('shadow', ''),
+				                            dc['between'].get('color', ''))
 
 			self.parent = parent
 			self.tab = self.parent.tab
@@ -755,8 +754,6 @@ class Paragraph(object):
 		self.textId = '77777777'
 		self.paraId = '0577C6EC'
 		self.rsidRPr = ''
-
-		'''Elementos'''
 		self.bookmarkStart = None  # Falta
 		self.bookmarkEnd = None  # Falta
 		self.fldSimple = None  # Falta
@@ -766,15 +763,14 @@ class Paragraph(object):
 
 		self.elements = list()
 
-		print getattr(_text, 'name', ''), _text
 		if getattr(_text, 'name', '') == 'r':
 			if font_size is not None:
 				_text.get_properties().set_font_size(font_size)
 			self.elements.append(_text)
 		elif getattr(_text, 'name', '') in ['drawing', 'shape']:
 			self.elements.append(_text)
-			# self.get_properties().set_horizontal_alignment(None)
-		else:
+		# self.get_properties().set_horizontal_alignment(None)
+		elif _text is not None:
 			if type(_text) == str:
 				_text = [_text]
 			for k in range(len(_text)):
@@ -793,7 +789,7 @@ class Paragraph(object):
 				else:
 					self.elements.append(text.Text(self, txt, font_format=ff, font_size=font_size))
 
-	def AddPicture(self, parent, path, width, height):
+	def AddPicture(self, parent, path, width, height, anchor='inline'):
 		is_body = parent.tag == 'w:body'
 
 		document = parent.get_parent()
@@ -818,11 +814,11 @@ class Paragraph(object):
 				document.AddPartRel(name_part)
 			rel = document.get_Part(name_part)
 			rel.AddPart(target,
-						{"Id": "rId%d" % rid,
-							"Type": "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image"})
+			            {"Id": "rId%d" % rid,
+			             "Type": "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image"})
 			rel.AddImage(target, img)
 
-		pict = pictures.Picture(self, rid, path, width, height)
+		pict = pictures.Picture(self, rid, path, width, height, anchor=anchor)
 		self.elements.append(pict)
 		return pict
 
@@ -891,7 +887,7 @@ class Paragraph(object):
 	def add_text(self, txt, font_format='', font_size=10):
 		self.elements.append(text.Text(self, txt, font_format=font_format, font_size=font_size))
 		return self.elements[-1]
-	
+
 	def get_properties(self):
 		return self.properties
 
@@ -903,6 +899,9 @@ class Paragraph(object):
 
 	def set_spacing(self, dc):
 		self.get_properties().set_spacing(dc)
+
+	def add_element(self, _element):
+		self.elements.append(_element)
 
 	def IsNulo(self):
 		return self.nulo

@@ -67,7 +67,7 @@ class Part:
 		self.attributes.append('xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk"')
 		self.attributes.append('xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml"')
 		self.attributes.append('xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"')
-		#self.attributes.append('mc:Ignorable="w14 w15 w16se w16cid wp14"')
+		# self.attributes.append('mc:Ignorable="w14 w15 w16se w16cid wp14"')
 		self.attributes.append('mc:Ignorable="w14 w15 w16se w16cid w16 w16cex w16sdtdh wp14"')
 
 		self.elements = list()
@@ -122,11 +122,12 @@ class Part:
 
 		''' Si no hay ningún elemento se añade un párrafo en blanco '''
 		if not self.get_Elements():
-			value.append('%s<w:p w:rsidR="%s" w:rsidRDefault="%s">' % (self.get_tab(), self.rsidR, self.rsidRDefault))
+			pass
+			'''value.append('%s<w:p w:rsidR="%s" w:rsidRDefault="%s">' % (self.get_tab(), self.rsidR, self.rsidRDefault))
 			value.append('%s<w:pPr>' % self.get_tab(2))
 			value.append('%s<w:pStyle w:val="Encabezado"/>' % self.get_tab(3))
 			value.append('%s</w:pPr>' % self.get_tab(2))
-			value.append('%s</w:p>' % self.get_tab())
+			value.append('%s</w:p>' % self.get_tab())'''
 		else:
 			for element in self.get_Elements():
 				value.append(element.get_xml())

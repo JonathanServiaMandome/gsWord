@@ -51,11 +51,11 @@ class Picture(object):
 			def get_xml_old(self):
 				value = list()
 				value.append('%s<a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">' %
-								(self.get_tab()))
+				             (self.get_tab()))
 				value.append('%s<a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture">' %
-								(self.get_tab(1)))
+				             (self.get_tab(1)))
 				value.append('%s<pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">' %
-								(self.get_tab(2)))
+				             (self.get_tab(2)))
 				value.append('%s<pic:nvPicPr>' % (self.get_tab(3)))
 				value.append('%s<pic:cNvPr id="%d" name="%s"/>' % (self.get_tab(4), self.get_RId(), self.get_name()))
 				value.append('%s<pic:cNvPicPr/>' % (self.get_tab(4)))
@@ -92,11 +92,11 @@ class Picture(object):
 			def get_xml(self):
 				value = list()
 				value.append('%s<a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">' %
-								(self.get_tab()))
+				             (self.get_tab()))
 				value.append('%s<a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture">' %
-								(self.get_tab(1)))
+				             (self.get_tab(1)))
 				value.append('%s<pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">' %
-								(self.get_tab(2)))
+				             (self.get_tab(2)))
 				value.append('%s<pic:nvPicPr>' % (self.get_tab(3)))
 				value.append('%s<pic:cNvPr id="%d" name="%s"/>' % (self.get_tab(4), self.get_RId(), self.get_name()))
 				value.append('%s<pic:cNvPicPr/>' % (self.get_tab(4)))
@@ -157,7 +157,7 @@ class Picture(object):
 			self.separator = parent.separator
 			self.indent = parent.indent + 1
 			self.inline = {'distT': 0, 'distB': 0, 'distL': 0, 'distR': 0, 'simplePos': 0,
-						'wp14:anchorId': "56601072", 'wp14:editId': "0C39F830"}
+			               'wp14:anchorId': "56601072", 'wp14:editId': "0C39F830"}
 			width *= 635
 			height *= 635
 			self.extent = {'cx': width, 'cy': height}
@@ -217,17 +217,17 @@ class Picture(object):
 			t += 'distT="%d" distB="%d" ' % (self.get_inline()['distT'], self.get_inline()['distB'])
 			t += 'distL="%d" distR="%d" ' % (self.get_inline()['distL'], self.get_inline()['distR'])
 			t += 'wp14:anchorId="%s" wp14:editId="%s">' % (
-					self.get_inline()['wp14:anchorId'], self.get_inline()['wp14:editId'])
+				self.get_inline()['wp14:anchorId'], self.get_inline()['wp14:editId'])
 			value.append(t)
 
 			value.append('%s<wp:extent cx="%s" cy="%s"/>' % (
 				self.get_tab(1), self.get_extent()['cx'], self.get_extent()['cy']))
 			value.append('%s<wp:effectExtent l="%s" t="%s" r="%s" b="%s"/>' %
-							(self.get_tab(1), self.get_effect_extent()['l'], self.get_effect_extent()['t'],
-							self.get_effect_extent()['r'], self.get_effect_extent()['b']))
+			             (self.get_tab(1), self.get_effect_extent()['l'], self.get_effect_extent()['t'],
+			              self.get_effect_extent()['r'], self.get_effect_extent()['b']))
 			value.append('%s<wp:docPr id="%s" name="%s" descr="%s"/>' %
-							(self.get_tab(1), self.get_id_picture(), self.get_name_picture(),
-							self.get_description_picture()))
+			             (self.get_tab(1), self.get_id_picture(), self.get_name_picture(),
+			              self.get_description_picture()))
 
 			# value.append(self.get_graphicFrame().get_xml())
 			value.append(self.get_graphic_frame_pr().get_xml())
@@ -285,11 +285,11 @@ class Picture(object):
 			def get_xml_old(self):
 				value = list()
 				value.append('%s<a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">' %
-								(self.get_tab()))
+				             (self.get_tab()))
 				value.append('%s<a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture">' %
-								(self.get_tab(1)))
+				             (self.get_tab(1)))
 				value.append('%s<pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">' %
-								(self.get_tab(2)))
+				             (self.get_tab(2)))
 				value.append('%s<pic:nvPicPr>' % (self.get_tab(3)))
 				value.append('%s<pic:cNvPr id="%d" name="%s"/>' % (self.get_tab(4), self.get_RId(), self.get_name()))
 				value.append('%s<pic:cNvPicPr/>' % (self.get_tab(4)))
@@ -326,11 +326,11 @@ class Picture(object):
 			def get_xml(self):
 				value = list()
 				value.append('%s<a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">' %
-								(self.get_tab()))
+				             (self.get_tab()))
 				value.append('%s<a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture">' %
-								(self.get_tab(1)))
+				             (self.get_tab(1)))
 				value.append('%s<pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">' %
-								(self.get_tab(2)))
+				             (self.get_tab(2)))
 				value.append('%s<pic:nvPicPr>' % (self.get_tab(3)))
 				value.append('%s<pic:cNvPr id="%d" name="%s"/>' % (self.get_tab(4), self.get_RId(), self.get_name()))
 				value.append('%s<pic:cNvPicPr/>' % (self.get_tab(4)))
@@ -461,7 +461,7 @@ class Picture(object):
 
 		class Position(object):
 			def __init__(self, parent, orientation='horizontal', relative_from='paragraph', align=None,
-							position_offset=None):
+			             position_offset=None):
 				self.orientation = orientation
 				self.name = ''
 				self.set_name(orientation)
@@ -518,7 +518,7 @@ class Picture(object):
 				if self.get_Align() is not None:
 					value.append('%s<wp:align>%s</wp:align>' % (self.get_tab(1), self.get_Align()))
 				if self.get_PositionOffset() is not None:
-					value.append('%s<wp:posOffset>%d</wp:posOffset>' % (self.get_tab(1), self.get_PositionOffset()))
+					value.append('%s<wp:posOffset>%d</wp:posOffset>' % (self.get_tab(1), self.get_PositionOffset()*635))
 				value.append('%s</%s>' % (self.get_tab(), self.get_name()))
 				return self.separator.join(value)
 
@@ -584,8 +584,8 @@ class Picture(object):
 			self.separator = parent.separator
 			self.indent = parent.indent + 1
 			self.anchor = {'distT': 0, 'distB': 0, 'distL': 114300, 'distR': 114300, 'simplePos': 0,
-						'relativeHeight': 251658240, 'behindDoc': 0, 'locked': 0, 'layoutInCell': 1,
-						'allowOverlap': 1, 'wp14:anchorId': "68AB4B87", 'wp14:editId': "0BEDF127"}
+			               'relativeHeight': 251658240, 'behindDoc': 0, 'locked': 0, 'layoutInCell': 1,
+			               'allowOverlap': 1, 'wp14:anchorId': "68AB4B87", 'wp14:editId': "0BEDF127"}
 			width *= 635
 			height *= 635
 			self.simple_position = {'x': 4595854, 'y': 453224}
@@ -609,24 +609,32 @@ class Picture(object):
 			t += 'distT="%d" distB="%d" ' % (self.get_Anchor()['distT'], self.get_Anchor()['distB'])
 			t += 'distL="%d" distR="%d" ' % (self.get_Anchor()['distL'], self.get_Anchor()['distR'])
 			t += 'simplePos="%d" relativeHeight="%d" ' % (
-												self.get_Anchor()['simplePos'], self.get_Anchor()['relativeHeight'])
+				self.get_Anchor()['simplePos'], self.get_Anchor()['relativeHeight'])
 			t += 'behindDoc="%d" locked="%d" ' % (self.get_Anchor()['behindDoc'], self.get_Anchor()['locked'])
 			t += 'layoutInCell="%d" allowOverlap="%d" ' % (
-												self.get_Anchor()['layoutInCell'], self.get_Anchor()['allowOverlap'])
-			t += 'wp14:anchorId="%s" wp14:editId="%s">' % (self.get_Anchor()['wp14:anchorId'], self.get_Anchor()['wp14:editId'])
+				self.get_Anchor()['layoutInCell'], self.get_Anchor()['allowOverlap'])
+			t += 'wp14:anchorId="%s" wp14:editId="%s">' % (
+			self.get_Anchor()['wp14:anchorId'], self.get_Anchor()['wp14:editId'])
 			value.append(t)
 			value.append('%s<wp:simplePos x="%d" y="%d"/>' %
-											(self.get_tab(1), self.get_SimplePosition()['x'], self.get_SimplePosition()['y']))
+			             (self.get_tab(1), self.get_SimplePosition()['x'], self.get_SimplePosition()['y']))
 			value.append(self.get_PositionHorizontal().get_xml())
 			value.append(self.get_PositionVertical().get_xml())
 
-			value.append('%s<wp:extent cx="%s" cy="%s"/>' % (self.get_tab(1), self.get_Extent()['cx'], self.get_Extent()['cy']))
+			value.append(
+				'%s<wp:extent cx="%s" cy="%s"/>' % (self.get_tab(1), self.get_Extent()['cx'], self.get_Extent()['cy']))
 			value.append('%s<wp:effectExtent l="%s" t="%s" r="%s" b="%s"/>' %
-							(self.get_tab(1), self.get_effect_extent()['l'], self.get_effect_extent()['t'],
-							self.get_effect_extent()['r'], self.get_effect_extent()['b']))
-			value.append('%s<wp:wrapSquare wrapText="%s"/>' % (self.get_tab(1), self.get_WrapSquare()))
+			             (self.get_tab(1), self.get_effect_extent()['l'], self.get_effect_extent()['t'],
+			              self.get_effect_extent()['r'], self.get_effect_extent()['b']))
+
+			if self.get_WrapSquare():
+				value.append('%s<wp:wrapSquare wrapText="%s"/>' % (self.get_tab(1), self.get_WrapSquare()))
+			else:
+				value.append("%s<wp:wrapNone/>" % self.get_tab(1))
+
 			value.append('%s<wp:docPr id="%s" name="%s" descr="%s"/>' %
-							(self.get_tab(1), self.get_id_picture(), self.get_name_picture(), self.get_description_picture()))
+			             (self.get_tab(1), self.get_id_picture(), self.get_name_picture(),
+			              self.get_description_picture()))
 
 			# value.append(self.get_graphicFrame().get_xml())
 			value.append(self.get_graphic_frame_pr().get_xml())
@@ -741,15 +749,17 @@ class Picture(object):
 		def get_name(self):
 			return self.name
 
-	def __init__(self, parent, rid, name, width, height):
+	def __init__(self, parent, rid, name, width, height, anchor='inline'):
 		self.name = 'drawing'
 		self.parent = parent
 		self.tab = parent.tab
 		self.separator = parent.separator
 		self.indent = parent.indent + 1
 
-		# self.properties = self.Properties(self, rid, name, width, height)
-		self.properties = self.InlineProperties(self, rid, name, width, height)
+		if anchor == 'inline':
+			self.properties = self.InlineProperties(self, rid, name, width, height)
+		else:
+			self.properties = self.Properties(self, rid, name, width, height)
 
 	def get_tab(self, number=0):
 		return self.tab * (self.indent + number)

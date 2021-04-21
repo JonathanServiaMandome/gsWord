@@ -1,7 +1,18 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-ENCODING = 'iso-8859-1'
+# ENCODING = 'ISO-8859-1'
+ENCODING = 'latin-1'
+
+def sanitize(text):
+	if type(text) != str:
+		text = str(text)
+
+	if type(text) is not unicode:
+		text = text.decode(ENCODING).encode('utf-8')
+
+	return text.replace('%EURO%', '€').replace('&', '&amp;').replace(
+		'<', '&lt;').replace('>', '&gt;')
 
 class Properties(object):
 	class Color(object):
@@ -727,36 +738,32 @@ class Text(object):
 			within the t element is to be handled. 
 			Possible values are preserve and default.
 			If whitespace within a run needs to be preserved, it is important that this attribute be set to preserve. 
-			See the XML 1.0 specification at � 2.10.'''
+			See the XML 1.0 specification at 2.10.'''
 
 			self.space = space
 
 		def set_text(self, text):
-			if type(text) is not unicode:
-				text = text.decode(ENCODING).encode('utf-8').replace('%EURO%', '€').replace('&', '&amp;').replace(
-					'<', '&lt;').replace('>', '&gt;')
-
-			self.text = text
+			self.text = sanitize(text)
 
 		def get_parent(self):
 			return self.parent
 
 		def get_text(self):
 			text = self.text
-
 			for key in self.document.get_variables():
 				var = eval(repr(self.document.get_variable(key)))
-
 				if type(var) not in (tuple, list):
-					if type(var) != str:
-						var = unicode(var)
-					else:
-						var = var.decode(ENCODING).encode('utf-8').replace('%EURO%', '€').replace('&', '&amp;').replace(
-							'<', '&lt;').replace('>', '&gt;')
-					text = text.replace(key, str(var))
+					var = sanitize(var)
+					text.replace(key, var)
+			return text
+
+		def get_text_(self):
+			text = self.text
+			'''if type(var) not in (tuple, list):
+					var = sanitize(var)
+					text = text.replace(key, var).decode(ENCODING).encode('utf-8')
 				else:
-					text = text.decode(ENCODING).encode('utf-8').replace('%EURO%', '€').replace('&', '&amp;').replace(
-							'<', '&lt;').replace('>', '&gt;').split(' ')
+					text = text.decode(ENCODING).encode('utf-8').split(' ')
 
 					for i in range(len(text)):
 						if key not in text[i]:
@@ -773,9 +780,10 @@ class Text(object):
 
 						text[i] = _var
 
-					text = ' '.join(text)
+					text = ' '.join(text)'''
 
-			return text
+			return text.replace('%EURO%', '€').replace('&', '&amp;').replace(
+							'<', '&lt;').replace('>', '&gt;')
 
 		def get_name(self):
 			return self.name

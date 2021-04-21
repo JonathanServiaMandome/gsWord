@@ -26,7 +26,7 @@ def CertificadoSAT(partes, args):
 
 	_doc_word = document.Document(path_temp, f)
 	_doc_word._debug = True
-	_doc_word.EmptyDocument()
+	_doc_word.empty_document()
 	body = _doc_word.get_body()
 	header = _doc_word.get_DefaultHeader()
 	t = header.add_table([['1', document.new_page_number(header, 'Página ')]],
@@ -172,7 +172,7 @@ if __name__ == '__main__':
 	_doc_word = document.Document(path_temp, f)
 	_doc_word._debug = True
 	_doc_word.set_variables({'CL_DENO': [['Pedro','Marta', 'Maria'], ['PedroL','MartaL', 'MariaL']]})
-	_doc_word.EmptyDocument()
+	_doc_word.empty_document()
 	body = _doc_word.get_body()
 	header = _doc_word.get_DefaultHeader()
 	r_position=[]
@@ -181,6 +181,6 @@ if __name__ == '__main__':
 	header.add_paragraph(TextBox(header, 'CL_DENO/1/2 23232 CL_DENO/0/1', (50, 5000), (8000, 500), rotation=270, r_position=r_position,
 								 background_color='FFEFFF', horizontal_alignment='c', font_format='b', font_size=12))
 
-	_doc_word.Save()
+	_doc_word.save()
 
 	os.system('start ' + path_temp + f)

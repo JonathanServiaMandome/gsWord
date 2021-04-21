@@ -347,7 +347,7 @@ class Body(object):
 		self.get_active_section().elements.append(table)
 		return table
 
-	def AddSection(self, width=11906, height=16838, margin_top=1417, margin_rigth=1701, margin_left=1701,
+	def add_section(self, width=11906, height=16838, margin_top=1417, margin_rigth=1701, margin_left=1701,
 					margin_bottom=1417, margin_header=708, margin_footer=708, margin_gutter=0, cols_space=708,
 					line_pitch=360, orient=''):
 		section = self.Section(self, width, height, margin_top, margin_rigth, margin_left, margin_bottom, margin_header,
