@@ -105,23 +105,18 @@ def CertificadoSAT(partes, args, columnas_checks=GetColumnasACC_CK(), LineaToDc=
 					rg_check = lee_dc(lee_dc, gpx, 'contratos_checklists', cd_check)
 					if rg_check == 1:
 						error(cl, "No existe el checklist del contrato '%s'." % cd_check)
-					normativa = rg_check['CCK_NOR']
+					normativa = rg_check['CCK_NOR']['IDX']
 			else:
-				cd_check = rg_accion['ACC_CKG']
+				cd_check = rg_accion['ACC_CKG']['IDX']
 				# Si hay check del elemento
 				if cd_check:
 					rg_check = lee_dc(lee_dc, gpx, 'checklists', cd_check)
 					if rg_check == 1:
 						error(cl, "No existe el checklist '%s'." % cd_check)
-					normativa = rg_check['CK_NOR']
+					normativa = rg_check['CK_NOR']['IDX']
 
-			if normativa:
-				rg_normativa = lee_dc(lee_dc, gpx, 'normativa', normativa)
-				if rg_normativa == 1:
-					error(cl, "No existe la normativa '%s'." % normativa)
-			else:
-				rg_normativa = {}
-
+			rg_normativa = lee_dc(lee_dc, gpx, 'normativa', normativa)
+			print rg_normativa, normativa
 			_texto_antes, _texto_desupes, _tabla_resumen = '', '', ''
 			oficial = 'S'
 
@@ -687,7 +682,8 @@ def CertificadoSAT(partes, args, columnas_checks=GetColumnasACC_CK(), LineaToDc=
 					pass
 				continue
 		##
-
+		print checks_sin_normativa
+		print checks
 		# Se crea un documento en blanco
 		f = cd_parte + '.docx'
 		if True:

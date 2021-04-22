@@ -150,10 +150,10 @@ class Properties(object):
 				words - a single line beneath all non-space characters'''
 
 		'''Specifies that any lowercase characters are to be displayed as their uppercase equivalents. It cannot 
-		appear with smallCaps in the same text run: <w:caps w:val="true" />. This is a toggle property. '''
+		appear with smallCaps in the same text run: <w:caps w:val="true"/>. This is a toggle property. '''
 		self.caps = False
 
-		'''Specifies the color to be used to display text: <w:color w:val="FFFF00" /> Possible attributes are 
+		'''Specifies the color to be used to display text: <w:color w:val="FFFF00"/> Possible attributes are 
 		themeColor, themeShade, themeTint, and val. The val attribute specifies the color as a hex value in RRGGBB 
 		format, or auto may be specified to allow the consuming software to determine the color. '''
 		self.color = None
@@ -163,7 +163,7 @@ class Properties(object):
 		self.dstrike = False
 
 		'''Specifies that the content should be displayed as if it were embossed, making text appear as if it is 
-		raised off of the page: <w:emboss w:val="true" />. This is a toggle property. '''
+		raised off of the page: <w:emboss w:val="true"/>. This is a toggle property. '''
 		self.emboss = False
 
 		'''Specifies that the content should be displayed as it it were imprinted (or engraved) into the page: 
@@ -359,33 +359,33 @@ class Properties(object):
 		if self.underline() is not None:
 			value.append(self.underline().get_xml())
 		if self.caps:
-			value.append('%s<w:caps w:val="true" />' % (self.get_tab(1)))
+			value.append('%s<w:caps w:val="true"/>' % (self.get_tab(1)))
 		if self.color is not None:
-			value.append('%s<w:color w:val="%s" />' % (self.get_tab(1), self.get_color()))
+			value.append('%s<w:color w:val="%s"/>' % (self.get_tab(1), self.get_color()))
 		if self.dstrike:
-			value.append('%s<w:dstrike w:val="true" />' % (self.get_tab(1)))
+			value.append('%s<w:dstrike w:val="true"/>' % (self.get_tab(1)))
 		if self.emboss:
-			value.append('%s<w:emboss w:val="true" />' % (self.get_tab(1)))
+			value.append('%s<w:emboss w:val="true"/>' % (self.get_tab(1)))
 		if self.imprint:
-			value.append('%s<w:imprint w:val="true" />' % (self.get_tab(1)))
+			value.append('%s<w:imprint w:val="true"/>' % (self.get_tab(1)))
 		if self.outline:
-			value.append('%s<w:outline w:val="true" />' % (self.get_tab(1)))
+			value.append('%s<w:outline w:val="true"/>' % (self.get_tab(1)))
 		if self.rStyle:
-			value.append('%s<w:rStyle w:val="%s" />' % (self.get_tab(1), self.rStyle))
+			value.append('%s<w:rStyle w:val="%s"/>' % (self.get_tab(1), self.rStyle))
 		if self.shadow:
-			value.append('%s<w:shadow w:val="true" />' % (self.get_tab(1)))
+			value.append('%s<w:shadow w:val="true"/>' % (self.get_tab(1)))
 		if self.smallCaps:
-			value.append('%s<w:smallCaps w:val="true" />' % (self.get_tab(1)))
+			value.append('%s<w:smallCaps w:val="true"/>' % (self.get_tab(1)))
 		if self.strike:
-			value.append('%s<w:strike w:val="true" />' % (self.get_tab(1)))
+			value.append('%s<w:strike w:val="true"/>' % (self.get_tab(1)))
 		if self.sz:
-			value.append('%s<w:sz w:val="%s" />' % (self.get_tab(1), self.sz))
+			value.append('%s<w:sz w:val="%s"/>' % (self.get_tab(1), self.sz))
 		if self.szCs:
-			value.append('%s<w:szCs w:val="%s" />' % (self.get_tab(1), self.szCs))
+			value.append('%s<w:szCs w:val="%s"/>' % (self.get_tab(1), self.szCs))
 		if self.vanish:
 			value.append('%s<w:vanish/>' % (self.get_tab(1)))
 		if self.vertAlign:
-			value.append('%s<w:vertAlign w:val="%s" />' % (self.get_tab(1), self.vertAlign))
+			value.append('%s<w:vertAlign w:val="%s"/>' % (self.get_tab(1), self.vertAlign))
 
 		# Si no tiene ninguna propiedad este elemento no es necesario
 		if len(value) == 1:
@@ -556,7 +556,7 @@ class Text(object):
 			if self.val is None and self.pos is None:
 				value = '%s<%s />' % (self.get_tab(), self.name)
 			else:
-				value = '%s<w:%s w:val="%s" w:pos="%s" />' % (self.get_tab(), self.name, self.val, self.pos)
+				value = '%s<w:%s w:val="%s" w:pos="%s"/>' % (self.get_tab(), self.name, self.val, self.pos)
 			return value
 
 	class Br(object):
@@ -711,7 +711,7 @@ class Text(object):
 			return self.tab * (self.indent + number)
 
 		def get_xml(self):
-			value = '%s<%s w:font="%s w:char="%s" />' % (self.get_tab(), self.name, self.font, self.char)
+			value = '%s<%s w:font="%s w:char="%s"/>' % (self.get_tab(), self.name, self.font, self.char)
 			return value
 
 	class T(object):

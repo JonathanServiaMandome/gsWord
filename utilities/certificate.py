@@ -49,6 +49,9 @@ def CertificadoSAT(partes, args, columnas_checks=GetColumnasACC_CK(), LineaToDc=
 
 	def GetAcciones(cd_parte, parte, idioma, columnas_checks=columnas_checks, _LineaToDc=LineaToDc, cl=cl, gpx=gpx):
 		acciones_parte = i_selec(cl, gpx, 'acciones', 'ACC_NPAR', cd_parte, cd_parte)
+		acciones_parte = ['016232' ,'016233' ,'016234' ,'016235' ,'016236' ,'016237' ,'016238' ,'016239' ,'016240' ,
+		                  '016241' ,'016242' ,'016243' ,'016244' ,'016245' ,'016246' ,'016247' ,'016248' ,'016249' ,
+		                  '016251' ,'016252' ,'016253' ,'016254' ,'016255']
 		_checks = {}
 		_contratos_checks = {}
 		_tecnicos = []
@@ -81,7 +84,7 @@ def CertificadoSAT(partes, args, columnas_checks=GetColumnasACC_CK(), LineaToDc=
 
 					if campo == idioma['PTCI_N2EI']:
 						if relaciones:
-							r = lee_dc(lee_dc, gpx, relaciones, articulo[campo])
+							r = lee_dc(lee_dc, gpx, relaciones, articulo[campo], respu='n')
 							deno_n2 = r[FDC[gpx[1]][relaciones][2][0][0]]
 						else:
 							deno_n2 = ''
@@ -111,9 +114,9 @@ def CertificadoSAT(partes, args, columnas_checks=GetColumnasACC_CK(), LineaToDc=
 				cd_check = rg_accion['ACC_CKG']
 				# Si hay check del elemento
 				if cd_check:
-					rg_check = lee_dc(lee_dc, gpx, 'checklists', cd_check)
+					rg_check = lee_dc(lee_dc, gpx, 'checklists', cd_check['IDX'])
 					if rg_check == 1:
-						error(cl, "No existe el checklist '%s'." % cd_check)
+						error(cl, "No existe el checklist '%s'." % cd_check['IDX'])
 					normativa = rg_check['CK_NOR']
 
 			if normativa:
@@ -135,7 +138,7 @@ def CertificadoSAT(partes, args, columnas_checks=GetColumnasACC_CK(), LineaToDc=
 			          rg_normativa.get('NOR_TITNOR', ''),
 			          rg_normativa.get('NOR_IMP', ''), _texto_antes, _texto_desupes)
 
-			# print _clave
+
 			if _clave not in _checks.keys():
 				_checks[_clave] = {'BOLEANOS': [],
 				                   'OTROS': [],
@@ -337,10 +340,11 @@ def CertificadoSAT(partes, args, columnas_checks=GetColumnasACC_CK(), LineaToDc=
 
 	##
 
-	def FormateaLista(idioma, paragraph, level='1'):
-		paragraph.SetFormatList(level)
+	def FormateaLista(idioma, paragraph, level='1', _type='2'):
+
 		paragraph.set_font_size(idioma['PTCI_FSIZE'])
-		paragraph.get_properties().SetIndentation({'hanging': 250, 'ind': 150 * int(level)})
+		paragraph.get_properties().SetIndentation({'hanging': 350, 'ind': 200 * int(level)})
+		paragraph.SetFormatList(level, _type)
 		for t in paragraph.elements:
 			t.set_font(idioma['PTCI_FONT'])
 
@@ -355,56 +359,119 @@ def CertificadoSAT(partes, args, columnas_checks=GetColumnasACC_CK(), LineaToDc=
 
 	##
 
-	def Footer(doc_word, idioma, parte):
+	def Footer(doc_word, idioma, parte, _path_s):
 		footer = doc_word.get_DefaultFooter()
+		#footer.add_paragraph()
+		#footer.add_paragraph()
 
-		# deno_tec = "Federico Perez"
-		deno_tec = ''
-		tec_firma = parte['PT_TCF']
-		rg_tec_firma = lee_dc(lee_dc, gpx, 'personal', tec_firma)
-		if rg_tec_firma != 1:
-			deno_tec = parte['PT_TCF']['PE_DENO']
-			deno_tec += ' ' + parte['PT_TCF']['PE_DNI']
-			deno_tec += ' ' + parte['PT_TCF']['PE_NCOL']
+		pos_y = -1500
+		paragraph = doc_word.new_paragraph(footer, None)
+		text_box = TextBox(
+			footer,
+			size=(5000, 1900),
+			r_position=[
+				{'orientation': 'horizontal', 'position': 0, 'relative': 'column'},
+				{'orientation': 'vertical', 'position': pos_y, 'relative': 'paragraph'}
+			],
+			id_shape='Shape'
+		)
 
+		anchor = text_box.content.get_choice().get_drawing().element
+		for element in anchor.elements:
+			if getattr(element, 'name', '') == 'wp14:sizeRelH':
+				element.set_position(62)
+
+		ls = []
+		font_size = idioma['PTCI_FSIZE']
+		_paragraph = doc_word.new_paragraph(text_box, idioma['PTCI_TITSEL'], horizontal_alignment='c', font_format='b')
+		_paragraph.set_spacing({'after': '0', 'before': '0', 'line': '190'})
+		_paragraph.set_font_size(font_size)
+		for t in _paragraph.elements:
+			if hasattr(t, 'set_font'):
+				t.set_font(idioma['PTCI_FONT'])
+		ls.append(_paragraph)
+
+		sello = doc_word.new_image(footer, _path_s, 1500, 1000, anchor='inline', horizontal_alignment='c')
+
+		deno_tec = parte['PT_TCF']['PE_DENO']
+		deno_tec += ' ' + parte['PT_TCF']['PE_DNI']
+		deno_tec += ' ' + parte['PT_TCF']['PE_NCOL']
+
+		_paragraph2 = doc_word.new_paragraph(
+			text_box,
+			idioma['PTCI_PIESEL'] + deno_tec,
+			horizontal_alignment='c',
+			font_format='b'
+		)
+		_paragraph2.set_spacing({'after': '0', 'before': '0', 'line': '190','afterAutospacing': '0'})
+		_paragraph2.set_font_size(font_size)
+		for t in _paragraph2.elements:
+			if hasattr(t, 'set_font'):
+				t.set_font(idioma['PTCI_FONT'])
+
+		text_box.set_elements([_paragraph, sello, _paragraph2])
+		text_box.set_elements([_paragraph, _paragraph2])
+		paragraph.add_element(text_box)
+		# footer.elements.append(paragraph)
+
+		d_text_box = TextBox(
+			footer,
+			size=(5000, 1900),
+			r_position=[
+				{'orientation': 'horizontal', 'align': 'right', 'relative': 'page'},
+				{'orientation': 'vertical', 'position': pos_y, 'relative': 'paragraph'}
+			],
+			id_shape='Shape'
+		)
+
+		d_anchor = text_box.content.get_choice().get_drawing().element
+		for d_element in d_anchor.elements:
+			if getattr(d_element, 'name', '') == 'wp14:sizeRelH':
+				d_element.set_position(62)
+
+		d_ls = []
+		d_paragraph = doc_word.new_paragraph(
+			text_box,
+			idioma['PTCI_TITCLI'],
+			horizontal_alignment='c',
+			font_format='b'
+		)
+		d_paragraph.set_spacing({'after': '60', 'before': '60', 'line': '190'})
+		d_paragraph.set_font_size(font_size)
+		for d_t in d_paragraph.elements:
+			if hasattr(t, 'set_font'):
+				d_t.set_font(idioma['PTCI_FONT'])
+		ls.append(d_paragraph)
+
+		d_sello = doc_word.new_image(footer, _path_s, 1500, 1000, anchor='inline', horizontal_alignment='c')
+
+		# TODO cargar firma técnico
 		img_f = 1  # lee(cl,gpx,'imagenes-t',tec_firma)
-
 		if img_f not in [1, '']:
-			_path_f = path_temp + tec_firma
+			_path_f = path_temp + parte['PT_TCF']['IDX']
 			open(_path_f, 'wb').write(img_f)
 
-		paragraph_s = doc_word.new_image(footer, _path_s, 2000, 1210)
-		representante_cliente = ''
-		firma = [
-			[idioma['PTCI_TITSEL'], idioma['PTCI_TITCLI']],
-			[paragraph_s, ''],
-			[idioma['PTCI_PIESEL'] + deno_tec, idioma['PTCI_PIECLI'] + dc_parte['PT_REPR']]  # ,
-			# [None]
-		]
-		tabla_firma = footer.add_table(
-			firma,
-			column_width=[5000, 5000],
-			horizontal_alignment=['l', 'r']
-		)
-		for row in tabla_firma.get_rows():
-			row.get_cell(0).set_font_format('b')
-			for cell in row.get_cells():
-				cell.get_properties().set_vertical_alignment('center')
-				for p in cell.elements:
-					for t in p.elements:
-						if hasattr(t, 'set_font'):
-							t.set_font(idioma['PTCI_FONT'])
-		# tabla_firma.get_row(3).get_cell(0).get_properties().set_grid_span(4)
-		# tabla_firma.get_row(3).get_cell(0).add_rtf(idioma['PTCI_LOPD'])
-		tabla_firma.set_spacing({'after': '80', 'before': '120', 'line': '160'})
-		if img_f not in [1, '']:
-			_path_f = ''
-			tabla_firma.get_row(1).get_cell(3).elements = [doc_word.new_image(footer, _path_f, 600, 600)]
+		representante = parte['PT_REPR']
+		d_paragraph2 = doc_word.new_paragraph(text_box, idioma['PTCI_PIECLI'] + representante, horizontal_alignment='c',
+		                                      font_format='b')
 
+		d_paragraph2.set_spacing({'after': '60', 'before': '60', 'line': '190'})
+		d_paragraph2.set_font_size(font_size)
+		for dt in d_paragraph2.elements:
+			if hasattr(dt, 'set_font'):
+				dt.set_font(idioma['PTCI_FONT'])
+
+		d_text_box.set_elements([d_paragraph, d_sello, d_paragraph2])
+		d_text_box.set_elements([d_paragraph, d_paragraph2])
+		paragraph.add_element(d_text_box)
+		# footer.elements.append(paragraph)
+
+		footer.add_rtf(idioma['PTCI_LOPD'])
 	##
 
 	def Header(doc_word, idioma, _path_i, _path_d, merge_vars=merge_vars):
 		header = doc_word.get_DefaultHeader()
+		# header.add_paragraph(None)
 
 		paragraph_i = doc_word.new_paragraph(header, None)
 		picture_i = paragraph_i.AddPicture(header, _path_i, 1800, 1200, anchor='anchor')
@@ -413,7 +480,7 @@ def CertificadoSAT(partes, args, columnas_checks=GetColumnasACC_CK(), LineaToDc=
 		picture_i.get_properties().SetWrapSquare(None)
 
 		font_size = idioma['PTCI_FSIZE']
-		heigth_line = font_size * 20 + 20
+		heigth_line = font_size * 20 + 40
 		heigth = len(idioma['PTCI_HEAD']) * 280
 		text_box = TextBox(
 			header,
@@ -441,7 +508,7 @@ def CertificadoSAT(partes, args, columnas_checks=GetColumnasACC_CK(), LineaToDc=
 
 		num_pag_box = TextBox(
 			header,
-			size=(2000, 500),
+			size=(2500, 900),
 			r_position=[
 				{'orientation': 'horizontal', 'align': 'right', 'relative': 'margin'},
 				{'orientation': 'vertical', 'position': 1600, 'relative': 'page'}
@@ -449,17 +516,20 @@ def CertificadoSAT(partes, args, columnas_checks=GetColumnasACC_CK(), LineaToDc=
 		)
 		num_pag = document.new_page_number(header, idioma['PTCI_SUFPAG'])
 		num_pag.set_text_separator(idioma['PTCI_SEPPAG'])
-		num_pag_box.set_elements([num_pag])
+		p = doc_word.new_paragraph(header, merge_vars(idioma['PTCI_TITULO'], parte))
+		p.set_horizontal_alignment('r')
+		num_pag_box.set_elements([num_pag, p])
 		paragraph_i.add_element(num_pag_box)
 
 		certificate_box = TextBox(
 			header,
-			size=(4000, 400),
+			size=(8000, 900),
 			r_position=[
 				{'orientation': 'horizontal', 'align': 'left', 'relative': 'margin'},
 				{'orientation': 'vertical', 'position': 1600, 'relative': 'page'}
 			]
 		)
+
 		p = doc_word.new_paragraph(header, merge_vars(idioma['PTCI_TITULO'], parte))
 		certificate_box.set_elements([p])
 		paragraph_i.add_element(certificate_box)
@@ -480,8 +550,6 @@ def CertificadoSAT(partes, args, columnas_checks=GetColumnasACC_CK(), LineaToDc=
 		                        font_size=8)
 
 		header.add_paragraph(reg_mercantil)
-		header.add_paragraph('')
-		header.add_paragraph('')
 
 	##
 
@@ -533,8 +601,12 @@ def CertificadoSAT(partes, args, columnas_checks=GetColumnasACC_CK(), LineaToDc=
 			tabla_1.get_row(4).get_cell(0).get_properties().set_table_cell_width('100%')
 		FormateaTablaPrincipal(idioma, tabla_1, color_primario, color_secundario, False)
 
+		body.add_section(margin_rigth=953, margin_left=953, orient='')
+		section = body.get_active_section()
+		# Modifico los márgenes de la página para hacerlo mas estrecho
+		section.SetMargins({'left': 953, 'right': 953, 'top': 1000, 'header': 600, 'footer': 300})
 		# Apartado 3
-		titulo_elementos = '%d. %s' % (numero_norma, merge_vars(idioma['PTCI_TITDI'], parte))
+		titulo_elementos = '%d. %s' % (numero_norma, merge_vars(idioma['PTCI_TITEI'], parte))
 		FormateaTitulo(idioma, body.add_paragraph(titulo_elementos))
 		numero_norma += 1
 
@@ -545,7 +617,7 @@ def CertificadoSAT(partes, args, columnas_checks=GetColumnasACC_CK(), LineaToDc=
 			deno_grupo, familias = ln[:3]
 			FormateaLista(idioma, body.add_paragraph(deno_grupo), '0')
 			for deno_familia in familias:
-				FormateaLista(idioma, body.add_paragraph(deno_familia))
+				FormateaLista(idioma, body.add_paragraph(deno_familia), level='1', _type='2')
 
 		lista_checks_c = checks.keys()
 		lista_checks_c.sort()
@@ -707,6 +779,7 @@ def CertificadoSAT(partes, args, columnas_checks=GetColumnasACC_CK(), LineaToDc=
 		idx_cert = u_libres[ser_cert_complete]
 		parte['PT_NUMCERT'] = idx_cert
 		checks, contratos_checks, tecnicos, dc_observaciones, tipo_elementos = GetAcciones(cd_parte, parte, idioma)
+		print checks
 		# r = open('c:/users/jonathan/desktop/data_parte.txt', 'r').read()
 		# dc_parte, parte, checks, tecnicos, observaciones = eval(r)
 		checks_sin_normativa = []
@@ -748,19 +821,19 @@ def CertificadoSAT(partes, args, columnas_checks=GetColumnasACC_CK(), LineaToDc=
 		body = doc_word.get_body()
 		section = body.get_active_section()
 		# Modifico los márgenes de la página para hacerlo mas estrecho
-		section.SetMargins({'left': 953, 'right': 953, 'top': 1000, 'header': 600})
+		section.SetMargins({'left': 953, 'right': 953, 'top': 1000, 'header': 600, 'footer': 300})
 		# Header
 		Header(doc_word, idioma, _path_i, _path_d)
 		# footer
-		Footer(doc_word, idioma, parte)
+		Footer(doc_word, idioma, parte, _path_s)
 
-		body.add_section(margin_rigth=953, margin_left=953, orient='horizontal')
 		titulo = merge_vars(idioma['PTCI_TITULO'], parte)
 
 		p_titulo = body.add_paragraph(titulo)
 		FormateaTitulo(idioma, p_titulo)
 
 		lista_checks = checks.keys()
+		print lista_checks, checks
 		lista_checks.sort()
 		# Se renumeran las preguntas
 		for ln in lista_checks:
@@ -778,6 +851,7 @@ def CertificadoSAT(partes, args, columnas_checks=GetColumnasACC_CK(), LineaToDc=
 		for ln in lista_checks:
 			# Cada grupo de elementos empezará en una nueva sección y en una nueva página
 			n_norma, n_capitulo, cd_check_, titulo_norma, titulo_elemento, texto_antes, texto_despues = ln
+			print ln
 			if n_norma == 1:
 				continue
 			body.add_section(margin_rigth=953, margin_left=953, orient='')
@@ -839,12 +913,13 @@ def CertificadoSAT(partes, args, columnas_checks=GetColumnasACC_CK(), LineaToDc=
 				observaciones = ['']
 			else:
 				observaciones = [''] * len(dc_observaciones[ln])
-			tabla_obs = body.add_table(observaciones,
-			                           [idioma['PTCI_OBS']],
-			                           horizontal_alignment=['j'],
-			                           column_width=['100%'],
-			                           borders=borders_obs
-			                           )
+			tabla_obs = body.add_table(
+				observaciones,
+				[idioma['PTCI_OBS']],
+				horizontal_alignment=['j'],
+				column_width=['100%'],
+				borders=borders_obs
+			)
 			for i in range(len(dc_observaciones.get(ln, []))):
 
 				# tabla_obs.get_row(i+1).get_cell(0).elements=[]
@@ -870,7 +945,8 @@ def CertificadoSAT(partes, args, columnas_checks=GetColumnasACC_CK(), LineaToDc=
 				if imprimir_horizontal:
 					orient = 'landscape'
 				body.add_section(margin_rigth=953, margin_left=953, orient=orient)
-				v = body.get_active_section().get_width() - body.get_active_section().get_margin_rigth() - body.get_active_section().get_margin_left()
+				new_section = body.get_active_section()
+				v = new_section.get_width() - new_section.get_margin_rigth() - new_section.get_margin_left()
 
 				titulo_tabla = tabla_resumen['titulos']
 				anchos_tabla = tabla_resumen['anchos']
@@ -889,7 +965,8 @@ def CertificadoSAT(partes, args, columnas_checks=GetColumnasACC_CK(), LineaToDc=
 
 		file_ = open(path_temp + f, 'rb').read()
 		documentos_generados.append(file_)
-		rg_certificado = rg_vacio(gpx[1], 'partes_certificado')
+		rg_certificado = lee_dc(None, gpx, 'partes_certificado', '')
+		# rg_certificado = rg_vacio(gpx[1], 'partes_certificado')
 		rg_certificado['PTC_NPAR'] = cd_parte
 		rg_certificado['PTC_DOC'] = file_
 		serie_cer = parte['PT_SERC']['IDX']
@@ -911,4 +988,4 @@ def CertificadoSAT(partes, args, columnas_checks=GetColumnasACC_CK(), LineaToDc=
 if __name__ == '__main__':
 	Abre_Aplicacion('sat')
 	Abre_Empresa(gpx[0], gpx[1], gpx[2])
-	CertificadoSAT(['0000004599'], {})
+	CertificadoSAT(['0000004555'], {})

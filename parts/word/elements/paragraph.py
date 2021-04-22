@@ -550,7 +550,7 @@ class Properties(object):
 		self.pBdr = None
 
 		'''Specifies the style ID of a paragraph style (<w:pStyle w:val="TestParagraphStyle"/>)'''
-		self.pStyle = 'Principal'
+		self.pStyle = ''
 
 		'''Para hacer listas'''
 		self.numPr = None
@@ -926,11 +926,16 @@ class Paragraph(object):
 
 	def set_font_size(self, size):
 		for text in self.get_texts():
-			text.get_properties().set_font_size(size)
+			if hasattr(text, 'get_properties'):
+				if hasattr(text.get_properties(), 'set_font_size'):
+					text.get_properties().set_font_size(size)
 
 	def get_xml(self):
 		value = ['%s<w:%s' % (self.get_tab(), self.name)]
-
+		if self.parent and self.parent.name == 'w:ftr':
+			print self.elements
+		if not self.elements:
+			return value[0]+'/>'
 		if self.rsidR is not '':
 			value[0] += ' w:rsidR="%s"' % self.rsidR
 

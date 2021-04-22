@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import elements
+from parts.word import rtf
 
 
 class Part:
@@ -138,7 +139,7 @@ class Part:
 
 		return self.get_separator().join(value)
 
-	def add_paragraph(self, text, horizontal_alignment='', font_format='', font_size=None):
+	def add_paragraph(self, text='', horizontal_alignment='', font_format='', font_size=None):
 		self.get_parent().idx += 1
 		idx = self.get_parent().idx
 		paragraph = elements.paragraph.Paragraph(self, idx, text, horizontal_alignment, font_format,
@@ -153,6 +154,9 @@ class Part:
 		self.elements.append(table)
 		return table
 
+	def add_rtf(self, text):
+		_rtf = rtf.Rtf(text=text, parent=self)
+		_rtf.get_value('word')
 
 class Notes:
 	"""

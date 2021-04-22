@@ -962,7 +962,7 @@ class RowProperties(object):
 		'''
 		self.tblHeader = is_header
 
-		'''Specifies the height of the row. E.g, <w:trHeight w:hRule="exact" w: val="2189" />. If omitted, 
+		'''Specifies the height of the row. E.g, <w:trHeight w:hRule="exact" w: val="2189"/>. If omitted, 
 		the row is automatically resized to fit the content. The attributes are: hRule -- Specifies the meaning of 
 		the height. Possible values are atLeast (height should be at leasat the value specified), exact (height 
 		should be exactly the value specified), or auto (default value--height is determined based on the height 

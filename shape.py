@@ -6,7 +6,7 @@ from parts.word.elements import paragraph
 class TextBox(object):
 	def __init__(self, parent, text='', position=(0, 0), size=(0, 0), rotation=0, r_position=(), simple_position=(0, 0),
 	             background_color='FFFFFF', flip_vertical='', flip_horizontal='', horizontal_alignment='j',
-	             font_format='', font_size=None):
+	             font_format='', font_size=None, id_shape='_x0000_s1030'):
 		self.name = 'shape'
 		self.parent = parent
 		self.tab = parent.tab
@@ -44,6 +44,7 @@ class TextBox(object):
 		wrap_square.set_parent(anchor)
 		anchor.add_element(wrap_square)
 		parent.AddRelRId()
+
 		doc_pr = DocPr(parent.get_RelRId())
 		doc_pr.set_parent(anchor)
 		anchor.add_element(doc_pr)
@@ -94,7 +95,7 @@ class TextBox(object):
 		pict.add_element(shape_type)
 		shape_type.add_element({'v:stroke': {'joinstyle': "miter"}})
 		shape_type.add_element({'v:path': {'gradientshapeok': "t", 'o:connecttype': "rect"}})
-		fall_shape = FallShape(wrap='square')
+		fall_shape = FallShape(_id=id_shape, wrap='square')
 		pict.add_element(fall_shape)
 		text_box = Txbx()
 		text_box.name = 'v:textbox'
@@ -109,6 +110,11 @@ class TextBox(object):
 					if getattr(elem, 'name', '') == 'wps:txbx':
 						elem.elements = elements
 
+		'''pict = self.content.get_fall_back().get_pict()
+		for _element in pict.get_elements():
+			if getattr(_element, 'name', '') == 'v:shape':
+				_element.get_object().elements = elements'''
+
 	def add_element(self, _element):
 		anchor = self.content.get_choice().get_drawing().element
 		for element in anchor.elements:
@@ -116,6 +122,10 @@ class TextBox(object):
 				for elem in element.get_graphic_data().get_shape().get_elements():
 					if getattr(elem, 'name', '') == 'wps:txbx':
 						elem.elements.append(_element)
+		'''pict = self.content.get_fall_back().get_pict()
+		for _element in pict.get_elements():
+			if getattr(_element, 'name', '') == 'v:shape':
+				_element.get_object().elements.append(_element)'''
 
 	def get_separator(self):
 		return self.separator
@@ -445,49 +455,49 @@ class Anchor(object):
 		self.relative_height = relative_height
 
 	def get_xml(self):
-		args = list()
+		_args = list()
 
 		if self.get_dist_t():
-			args.append('distT="' + self.get_dist_t() + '"')
+			_args.append('distT="' + self.get_dist_t() + '"')
 
 		if self.get_dist_b():
-			args.append('distB="' + self.get_dist_b() + '"')
+			_args.append('distB="' + self.get_dist_b() + '"')
 
 		if self.get_dist_l():
-			args.append('distL="' + self.get_dist_l() + '"')
+			_args.append('distL="' + self.get_dist_l() + '"')
 
 		if self.get_dist_r():
-			args.append('distR="' + self.get_dist_r() + '"')
+			_args.append('distR="' + self.get_dist_r() + '"')
 
 		if self.get_simple_pos():
-			args.append('simplePos="' + self.get_simple_pos() + '"')
+			_args.append('simplePos="' + self.get_simple_pos() + '"')
 
 		if self.get_relative_height():
-			args.append('relativeHeight="' + self.get_relative_height() + '"')
+			_args.append('relativeHeight="' + self.get_relative_height() + '"')
 
 		if self.get_behind_doc():
-			args.append('behindDoc="' + self.get_behind_doc() + '"')
+			_args.append('behindDoc="' + self.get_behind_doc() + '"')
 
 		if self.get_locked():
-			args.append('locked="' + self.get_locked() + '"')
+			_args.append('locked="' + self.get_locked() + '"')
 
 		if self.get_layout_in_cell():
-			args.append('layoutInCell="' + self.get_layout_in_cell() + '"')
+			_args.append('layoutInCell="' + self.get_layout_in_cell() + '"')
 
 		if self.get_allow_overlap():
-			args.append('allowOverlap="' + self.get_allow_overlap() + '"')
+			_args.append('allowOverlap="' + self.get_allow_overlap() + '"')
 
 		if self.get_anchor_id():
-			args.append('anchorId="' + self.get_anchor_id() + '"')
+			_args.append('anchorId="' + self.get_anchor_id() + '"')
 
 		if self.get_wp14_edit_id():
-			args.append('wp14_editId="' + self.get_wp14_edit_id() + '"')
+			_args.append('wp14_editId="' + self.get_wp14_edit_id() + '"')
 
-		args = ' '.join(args)
-		if args:
-			args = ' ' + args
+		_args = ' '.join(_args)
+		if _args:
+			_args = ' ' + _args
 		value = list()
-		value.append('%s<%s%s>' % (self.get_tab(), self.get_name(), args))
+		value.append('%s<%s%s>' % (self.get_tab(), self.get_name(), _args))
 		for element in self.elements:
 			value.append(element.get_xml())
 		value.append('%s</%s>' % (self.get_tab(), self.get_name()))
@@ -1424,7 +1434,8 @@ class Txbx(object):
 			_x = _x.parent
 		_x.idx += 1
 		p = paragraph.Paragraph(self, _x.idx, text, horizontal_alignment, font_format, font_size, nulo=is_null)
-		p.get_properties().set_pstyle('')
+		if p.get_properties():
+			p.get_properties().set_pstyle('')
 		self.elements.append(p)
 		return p
 

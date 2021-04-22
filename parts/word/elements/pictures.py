@@ -62,7 +62,7 @@ class Picture(object):
 				value.append('%s</pic:nvPicPr>' % (self.get_tab(3)))
 				value.append('%s<pic:blipFill>' % (self.get_tab(3)))
 				# value.append('%s<a:blip r:embed="rId%d">' % (self.get_tab(4), self.get_RId()))
-				value.append('%s<a:blip r:embed="rId%d">' % (self.get_tab(4), 4))
+				value.append('%s<a:blip r:embed="rId1">' % (self.get_tab(4)))
 				value.append('%s<a:extLst>' % (self.get_tab(5)))
 				value.append('%s<a:ext uri="{28A0092B-C50C-407E-A947-70E740481C1C}">' % (self.get_tab(6)))
 				value.append(
@@ -103,7 +103,7 @@ class Picture(object):
 				value.append('%s</pic:nvPicPr>' % (self.get_tab(3)))
 				value.append('%s<pic:blipFill>' % (self.get_tab(3)))
 				# value.append('%s<a:blip r:embed="rId%d">' % (self.get_tab(4), self.get_RId()))
-				value.append('%s<a:blip r:embed="rId%d">' % (self.get_tab(4), self.get_RId()))
+				value.append('%s<a:blip r:embed="rId1">' % (self.get_tab(4)))
 				value.append('%s<a:extLst>' % (self.get_tab(5)))
 				value.append('%s<a:ext uri="{28A0092B-C50C-407E-A947-70E740481C1C}">' % (self.get_tab(6)))
 				value.append(
@@ -296,7 +296,7 @@ class Picture(object):
 				value.append('%s</pic:nvPicPr>' % (self.get_tab(3)))
 				value.append('%s<pic:blipFill>' % (self.get_tab(3)))
 				# value.append('%s<a:blip r:embed="rId%d">' % (self.get_tab(4), self.get_RId()))
-				value.append('%s<a:blip r:embed="rId%d">' % (self.get_tab(4), 4))
+				value.append('%s<a:blip r:embed="rId1">' % (self.get_tab(4)))
 				value.append('%s<a:extLst>' % (self.get_tab(5)))
 				value.append('%s<a:ext uri="{28A0092B-C50C-407E-A947-70E740481C1C}">' % (self.get_tab(6)))
 				value.append(
@@ -337,7 +337,7 @@ class Picture(object):
 				value.append('%s</pic:nvPicPr>' % (self.get_tab(3)))
 				value.append('%s<pic:blipFill>' % (self.get_tab(3)))
 				# value.append('%s<a:blip r:embed="rId%d">' % (self.get_tab(4), self.get_RId()))
-				value.append('%s<a:blip r:embed="rId%d">' % (self.get_tab(4), self.get_RId()))
+				value.append('%s<a:blip r:embed="rId1">' % (self.get_tab(4)))
 				value.append('%s<a:extLst>' % (self.get_tab(5)))
 				value.append('%s<a:ext uri="{28A0092B-C50C-407E-A947-70E740481C1C}">' % (self.get_tab(6)))
 				value.append(

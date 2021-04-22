@@ -16,7 +16,7 @@ MX = chr(30)
 
 cl = None
 GS_INS = "D:/Server"
-gpx = ('jonathan', 'sat', 'dgt')
+gpx = ('jonathan', 'sat', 'eja')
 apl = gpx[1]
 
 def error(cl, txt):
@@ -347,16 +347,17 @@ class DBcp:
 			hasta = ajus0(str(hasta), 5)
 		else:
 			desde, hasta = str(desde), str(hasta)
-		ers = 1
 		try:
 			ids = cursor.set_range(desde, sl_cod=1)
 			cds, idx = lista(ids, MX, 2)
+
 			if desde <= cds <= hasta:
 				res.append(idx)
+				ers=0
 			else:
 				ers = 1
-		finally:
-			pass
+		except:
+			ers = 1
 
 		while ers == 0:
 			try:
@@ -366,10 +367,11 @@ class DBcp:
 					res.append(idx)
 				else:
 					ers = 1
-			except:
+			except Exception as e:
 				ers = 1
 
 		del cursor
+
 		return res
 
 	def sincro(self):
@@ -444,20 +446,20 @@ class DBcpCursor:
 
 	def set(self, idx, flags=0, sl_cod=0):
 		rec = self.dbc.set(idx, flags)
-		return _extrae(rec, sl_cod)
+		return self._extrae(rec, sl_cod)
 
 	def set_range(self, idx, flags=0, sl_cod=0):
 		rec = self.dbc.set_range(idx, flags)
-		return _extrae(rec, sl_cod)
+		return self._extrae(rec, sl_cod)
 
 
-def _extrae(rec, sl_cod):
-	if rec is None:
-		raise ValueError('No existe clave')
-	else:
-		if sl_cod == 1:
-			return rec[0]
-		return rec[0], loads(rec[1])
+	def _extrae(rec, sl_cod):
+		if rec is None:
+			raise ValueError('No existe clave')
+		else:
+			if sl_cod == 1:
+				return rec[0]
+			return rec[0], loads(rec[1])
 
 
 
@@ -1442,16 +1444,29 @@ def lee_dc(lee_dc, _gpx, fi, idx, mode='value', rels='s', respu='n'):
 	_k = ((_gpx[0], _gpx[1], _gpx[2]), fi)
 
 
-	aux = lee(None, gpx, fi, idx)
-	# print fi, idx, aux
+	try:aux = lee(None, gpx, fi, idx)
+	except:
+		raise ValueError(_gpx, fi)
+	campos = FDC[_gpx[1]][fi][2]
 	if aux == 1:
 		rg = aux
 		if respu == 'n':
 			rg = {}
+			for _k in range(len(campos)):
+				name, deno, fmt, cols, relations, calculate = eval(repr(campos[_k][:6]))
+				val = ''
+				if cols:
+					val=[]
+				elif fmt in ['12345']:
+					val=0.
+				elif fmt == 'i':
+					val=0
+				elif fmt=='d':
+					val = None
+				rg[name] = val
 
 		return rg
 
-	campos = FDC[_gpx[1]][fi][2]
 	for _k in range(len(campos)):
 		name, deno, fmt, cols, relations, calculate = eval(repr(campos[_k][:6]))
 		if calculate:
