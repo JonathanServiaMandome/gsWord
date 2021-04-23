@@ -49,9 +49,9 @@ def CertificadoSAT(partes, args, columnas_checks=GetColumnasACC_CK(), LineaToDc=
 
 	def GetAcciones(cd_parte, parte, idioma, columnas_checks=columnas_checks, _LineaToDc=LineaToDc, cl=cl, gpx=gpx):
 		acciones_parte = i_selec(cl, gpx, 'acciones', 'ACC_NPAR', cd_parte, cd_parte)
-		acciones_parte = ['016232' ,'016233' ,'016234' ,'016235' ,'016236' ,'016237' ,'016238' ,'016239' ,'016240' ,
-		                  '016241' ,'016242' ,'016243' ,'016244' ,'016245' ,'016246' ,'016247' ,'016248' ,'016249' ,
-		                  '016251' ,'016252' ,'016253' ,'016254' ,'016255']
+		acciones_parte = ['016232', '016233', '016234', '016235', '016236', '016237', '016238', '016239', '016240',
+		                  '016241', '016242', '016243', '016244', '016245', '016246', '016247', '016248', '016249',
+		                  '016251', '016252', '016253', '016254', '016255']
 		_checks = {}
 		_contratos_checks = {}
 		_tecnicos = []
@@ -137,7 +137,6 @@ def CertificadoSAT(partes, args, columnas_checks=GetColumnasACC_CK(), LineaToDc=
 			_clave = (rg_normativa.get('NOR_NOR', 0), rg_normativa.get('NOR_CAP', 0), normativa['IDX'],
 			          rg_normativa.get('NOR_TITNOR', ''),
 			          rg_normativa.get('NOR_IMP', ''), _texto_antes, _texto_desupes)
-
 
 			if _clave not in _checks.keys():
 				_checks[_clave] = {'BOLEANOS': [],
@@ -360,9 +359,9 @@ def CertificadoSAT(partes, args, columnas_checks=GetColumnasACC_CK(), LineaToDc=
 	##
 
 	def Footer(doc_word, idioma, parte, _path_s):
-		footer = doc_word.get_DefaultFooter()
-		#footer.add_paragraph()
-		#footer.add_paragraph()
+		footer = doc_word.get_default_footer()
+		# footer.add_paragraph()
+		# footer.add_paragraph()
 
 		pos_y = -1500
 		paragraph = doc_word.new_paragraph(footer, None)
@@ -403,7 +402,7 @@ def CertificadoSAT(partes, args, columnas_checks=GetColumnasACC_CK(), LineaToDc=
 			horizontal_alignment='c',
 			font_format='b'
 		)
-		_paragraph2.set_spacing({'after': '0', 'before': '0', 'line': '190','afterAutospacing': '0'})
+		_paragraph2.set_spacing({'after': '0', 'before': '0', 'line': '190', 'afterAutospacing': '0'})
 		_paragraph2.set_font_size(font_size)
 		for t in _paragraph2.elements:
 			if hasattr(t, 'set_font'):
@@ -467,12 +466,14 @@ def CertificadoSAT(partes, args, columnas_checks=GetColumnasACC_CK(), LineaToDc=
 		# footer.elements.append(paragraph)
 
 		footer.add_rtf(idioma['PTCI_LOPD'])
+
 	##
 
 	def Header(doc_word, idioma, _path_i, _path_d, merge_vars=merge_vars):
-		header = doc_word.get_DefaultHeader()
+		header = doc_word.get_default_header()
+		header.add_table([['3', '5'] * 3])
 		# header.add_paragraph(None)
-
+		'''
 		paragraph_i = doc_word.new_paragraph(header, None)
 		picture_i = paragraph_i.AddPicture(header, _path_i, 1800, 1200, anchor='anchor')
 		picture_i.get_properties().SetPositionHorizontal(relative_from='margin', align='left')
@@ -549,7 +550,7 @@ def CertificadoSAT(partes, args, columnas_checks=GetColumnasACC_CK(), LineaToDc=
 		                        font_format='b',
 		                        font_size=8)
 
-		header.add_paragraph(reg_mercantil)
+		header.add_paragraph(reg_mercantil)'''
 
 	##
 
@@ -602,9 +603,10 @@ def CertificadoSAT(partes, args, columnas_checks=GetColumnasACC_CK(), LineaToDc=
 		FormateaTablaPrincipal(idioma, tabla_1, color_primario, color_secundario, False)
 
 		body.add_section(margin_rigth=953, margin_left=953, orient='')
-		section = body.get_active_section()
+		doc_word.add_header_section(4)
+		# section = body.get_active_section()
 		# Modifico los márgenes de la página para hacerlo mas estrecho
-		section.SetMargins({'left': 953, 'right': 953, 'top': 1000, 'header': 600, 'footer': 300})
+		# section.SetMargins({'left': 953, 'right': 953, 'top': 1000, 'header': 600, 'footer': 300})
 		# Apartado 3
 		titulo_elementos = '%d. %s' % (numero_norma, merge_vars(idioma['PTCI_TITEI'], parte))
 		FormateaTitulo(idioma, body.add_paragraph(titulo_elementos))
@@ -855,6 +857,7 @@ def CertificadoSAT(partes, args, columnas_checks=GetColumnasACC_CK(), LineaToDc=
 			if n_norma == 1:
 				continue
 			body.add_section(margin_rigth=953, margin_left=953, orient='')
+			doc_word.add_header_section(4)
 			if not _nor or _nor != n_norma:
 				_nor = str(numero_norma) + '. ' + titulo_norma
 				nn = numero_norma

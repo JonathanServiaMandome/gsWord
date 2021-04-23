@@ -28,7 +28,7 @@ def CertificadoSAT(partes, args):
 	_doc_word._debug = True
 	_doc_word.empty_document()
 	body = _doc_word.get_body()
-	header = _doc_word.get_DefaultHeader()
+	header = _doc_word.get_default_header()
 	t = header.add_table([['1', document.new_page_number(header, 'Página ')]],
 							column_width=[5000, 5000], horizontal_alignment=['c', 'r'])
 
@@ -38,10 +38,10 @@ def CertificadoSAT(partes, args):
 	r_position.append({'orientation':'vertical', 'position':0, 'relative': 'page'})
 	header.add_paragraph( TextBox(header, 'aaaaaaaaaaa', (500, 250), rotation=270, r_position=r_position,
 									horizontal_alignment='c', font_format='b', font_size=12) )
-	'''style = doc_word.get_Part('style').get_doc_defaluts().get_rpr_defaults()
+	'''style = doc_word.get_part('style').get_doc_defaluts().get_rpr_defaults()
 	style.get_values()['sz'] = 18
 	style.get_values()['szCs'] = 18
-	doc_word.get_Part('style').get_doc_defaluts().set_rpr_defaults(style)'''
+	doc_word.get_part('style').get_doc_defaluts().set_rpr_defaults(style)'''
 
 	# p.get_properties().set_pstyle('Principal')
 
@@ -174,7 +174,7 @@ if __name__ == '__main__':
 	_doc_word.set_variables({'CL_DENO': [['Pedro','Marta', 'Maria'], ['PedroL','MartaL', 'MariaL']]})
 	_doc_word.empty_document()
 	body = _doc_word.get_body()
-	header = _doc_word.get_DefaultHeader()
+	header = _doc_word.get_default_header()
 	r_position=[]
 	r_position.append({'orientation': 'horizontal', 'position': -5000, 'relative': 'column'})
 	r_position.append({'orientation': 'vertical', 'position': 6000, 'relative': 'paragraph'})

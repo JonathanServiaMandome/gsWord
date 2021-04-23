@@ -11,10 +11,10 @@ class ImagePart:
 		self.name = name
 		self.rId = 0
 
-	def SetRId(self, value):
+	def set_rid(self, value):
 		self.rId = value
 
-	def get_RId(self):
+	def get_rid(self):
 		return self.rId
 
 	def get_name(self):
@@ -709,11 +709,11 @@ class Properties(object):
 
 		if self.jc is not None:
 			value.append(self.jc.get_xml())
-		if self.textAlignment is not '':
+		if self.textAlignment:
 			value.append('%s<w:textAlignment w:val="%s"/>' % (self.get_tab(1), self.textAlignment))
-		if self.rPr is not None:
+		if self.rPr:
 			value.append(self.rPr.get_xml())
-		if self.sectPr is not None:
+		if self.sectPr:
 			value.append(self.sectPr.get_xml())
 		if self.shd is not None:
 			value.append(self.shd.get_xml())
@@ -795,28 +795,28 @@ class Paragraph(object):
 		document = parent.get_parent()
 		name = path.split('/')[-1]
 		extension = name.split('.')[-1]
-		document.get_ContentTypes().AddDefault(extension, 'ContentType="image/%s"' % extension)
+		document.get_content_types().AddDefault(extension, 'ContentType="image/%s"' % extension)
 		img = open(path, 'rb').read()
 
 		if is_body:
 			rid = document.idx
 			document.idx += 1
 			target = 'media/image%d.%s' % (rid, extension)
-			# document.AddPart(target, ImagePart(target))
-			document.AddImage(target, img, rid)
+			# document.add_part(target, ImagePart(target))
+			document.add_image(target, img, rid)
 		else:
 			name_part = parent.get_name().split('/')[-1]
 			rid = parent.get_RelRId()
 			parent.AddRelRId()
 			target = 'media/image%d.%s' % (rid, extension)
 
-			if name_part not in document.get_Parts().keys():
-				document.AddPartRel(name_part)
-			rel = document.get_Part(name_part)
-			rel.AddPart(target,
+			if name_part not in document.get_parts().keys():
+				document.add_part_rel(name_part)
+			rel = document.get_part(name_part)
+			rel.add_part(target,
 			            {"Id": "rId%d" % rid,
 			             "Type": "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image"})
-			rel.AddImage(target, img)
+			rel.add_image(target, img)
 
 		pict = pictures.Picture(self, rid, path, width, height, anchor=anchor)
 		self.elements.append(pict)

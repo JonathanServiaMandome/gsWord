@@ -87,14 +87,14 @@ class Font(object):
 	def get_parent(self):
 		return self.parent
 
-	def get_Tag(self):
+	def set_tag(self):
 		return self.tag
 
 	def get_tab(self, number=0):
 		return self.tab * (self.indent + number)
 
 	def get_xml(self):
-		value = ['%s<%s w:name="%s">' % (self.get_tab(), self.get_Tag(), self.get_FontName())]
+		value = ['%s<%s w:name="%s">' % (self.get_tab(), self.set_tag(), self.get_FontName())]
 
 		font = FONTS.get(self.get_FontName(), DEFAULT_FONT)
 		if font == 1:
@@ -106,5 +106,5 @@ class Font(object):
 		value.append('%s<w:sig w:usb0="%s" w:usb1="%s" w:usb2="%s" w:usb3="%s" w:csb0="%s" w:csb1="%s"/>' % (
 			self.get_tab(1), font['usb0'], font['usb1'], font['usb2'], font['usb3'], font['csb0'], font['csb1']))
 
-		value.append('%s</%s>' % (self.get_tab(), self.get_Tag()))
+		value.append('%s</%s>' % (self.get_tab(), self.set_tag()))
 		return self.separator.join(value)

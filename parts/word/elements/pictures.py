@@ -21,10 +21,10 @@ class Picture(object):
 			def get_Description(self):
 				return self.description
 
-			def get_RId(self):
+			def get_rid(self):
 				return self.rId
 
-			def SetRId(self, rid):
+			def set_rid(self, rid):
 				self.rId = rid
 
 			def get_name(self):
@@ -57,11 +57,11 @@ class Picture(object):
 				value.append('%s<pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">' %
 				             (self.get_tab(2)))
 				value.append('%s<pic:nvPicPr>' % (self.get_tab(3)))
-				value.append('%s<pic:cNvPr id="%d" name="%s"/>' % (self.get_tab(4), self.get_RId(), self.get_name()))
+				value.append('%s<pic:cNvPr id="%d" name="%s"/>' % (self.get_tab(4), self.get_rid(), self.get_name()))
 				value.append('%s<pic:cNvPicPr/>' % (self.get_tab(4)))
 				value.append('%s</pic:nvPicPr>' % (self.get_tab(3)))
 				value.append('%s<pic:blipFill>' % (self.get_tab(3)))
-				# value.append('%s<a:blip r:embed="rId%d">' % (self.get_tab(4), self.get_RId()))
+				# value.append('%s<a:blip r:embed="rId%d">' % (self.get_tab(4), self.get_rid()))
 				value.append('%s<a:blip r:embed="rId1">' % (self.get_tab(4)))
 				value.append('%s<a:extLst>' % (self.get_tab(5)))
 				value.append('%s<a:ext uri="{28A0092B-C50C-407E-A947-70E740481C1C}">' % (self.get_tab(6)))
@@ -98,11 +98,11 @@ class Picture(object):
 				value.append('%s<pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">' %
 				             (self.get_tab(2)))
 				value.append('%s<pic:nvPicPr>' % (self.get_tab(3)))
-				value.append('%s<pic:cNvPr id="%d" name="%s"/>' % (self.get_tab(4), self.get_RId(), self.get_name()))
+				value.append('%s<pic:cNvPr id="%d" name="%s"/>' % (self.get_tab(4), self.get_rid(), self.get_name()))
 				value.append('%s<pic:cNvPicPr/>' % (self.get_tab(4)))
 				value.append('%s</pic:nvPicPr>' % (self.get_tab(3)))
 				value.append('%s<pic:blipFill>' % (self.get_tab(3)))
-				# value.append('%s<a:blip r:embed="rId%d">' % (self.get_tab(4), self.get_RId()))
+				# value.append('%s<a:blip r:embed="rId%d">' % (self.get_tab(4), self.get_rid()))
 				value.append('%s<a:blip r:embed="rId1">' % (self.get_tab(4)))
 				value.append('%s<a:extLst>' % (self.get_tab(5)))
 				value.append('%s<a:ext uri="{28A0092B-C50C-407E-A947-70E740481C1C}">' % (self.get_tab(6)))
@@ -255,10 +255,10 @@ class Picture(object):
 			def get_Description(self):
 				return self.description
 
-			def get_RId(self):
+			def get_rid(self):
 				return self.rId
 
-			def SetRId(self, rid):
+			def set_rid(self, rid):
 				self.rId = rid
 
 			def get_name(self):
@@ -291,11 +291,11 @@ class Picture(object):
 				value.append('%s<pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">' %
 				             (self.get_tab(2)))
 				value.append('%s<pic:nvPicPr>' % (self.get_tab(3)))
-				value.append('%s<pic:cNvPr id="%d" name="%s"/>' % (self.get_tab(4), self.get_RId(), self.get_name()))
+				value.append('%s<pic:cNvPr id="%d" name="%s"/>' % (self.get_tab(4), self.get_rid(), self.get_name()))
 				value.append('%s<pic:cNvPicPr/>' % (self.get_tab(4)))
 				value.append('%s</pic:nvPicPr>' % (self.get_tab(3)))
 				value.append('%s<pic:blipFill>' % (self.get_tab(3)))
-				# value.append('%s<a:blip r:embed="rId%d">' % (self.get_tab(4), self.get_RId()))
+				# value.append('%s<a:blip r:embed="rId%d">' % (self.get_tab(4), self.get_rid()))
 				value.append('%s<a:blip r:embed="rId1">' % (self.get_tab(4)))
 				value.append('%s<a:extLst>' % (self.get_tab(5)))
 				value.append('%s<a:ext uri="{28A0092B-C50C-407E-A947-70E740481C1C}">' % (self.get_tab(6)))
@@ -332,11 +332,11 @@ class Picture(object):
 				value.append('%s<pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">' %
 				             (self.get_tab(2)))
 				value.append('%s<pic:nvPicPr>' % (self.get_tab(3)))
-				value.append('%s<pic:cNvPr id="%d" name="%s"/>' % (self.get_tab(4), self.get_RId(), self.get_name()))
+				value.append('%s<pic:cNvPr id="%d" name="%s"/>' % (self.get_tab(4), self.get_rid(), self.get_name()))
 				value.append('%s<pic:cNvPicPr/>' % (self.get_tab(4)))
 				value.append('%s</pic:nvPicPr>' % (self.get_tab(3)))
 				value.append('%s<pic:blipFill>' % (self.get_tab(3)))
-				# value.append('%s<a:blip r:embed="rId%d">' % (self.get_tab(4), self.get_RId()))
+				# value.append('%s<a:blip r:embed="rId%d">' % (self.get_tab(4), self.get_rid()))
 				value.append('%s<a:blip r:embed="rId1">' % (self.get_tab(4)))
 				value.append('%s<a:extLst>' % (self.get_tab(5)))
 				value.append('%s<a:ext uri="{28A0092B-C50C-407E-A947-70E740481C1C}">' % (self.get_tab(6)))

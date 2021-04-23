@@ -2,19 +2,30 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bb430744-0a77-41b3-85db-7aa05c86df10" name="Default Changelist" comment="Initial commit">
+      <change afterPath="$PROJECT_DIR$/utilities/test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/document.py" beforeDir="false" afterPath="$PROJECT_DIR$/document.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/document_old.py" beforeDir="false" afterPath="$PROJECT_DIR$/document_old.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/parts/content_types.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/content_types.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/parts/docProps/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/docProps/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/parts/docProps/core.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/docProps/core.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/parts/rels/rels.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/rels/rels.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/parts/word/body.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/word/body.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/parts/word/documentrels/documentRels.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/word/documentrels/documentRels.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/parts/word/elements/paragraph.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/word/elements/paragraph.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/parts/word/elements/pictures.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/word/elements/pictures.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/parts/word/elements/table.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/word/elements/table.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/parts/word/elements/text.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/word/elements/text.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/parts/word/elements/shape.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/word/elements/shape.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/parts/word/font.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/word/font.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/parts/word/fonttable.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/word/fonttable.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/parts/word/part.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/word/part.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shape.py" beforeDir="false" afterPath="$PROJECT_DIR$/shape.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/style.txt" beforeDir="false" afterPath="$PROJECT_DIR$/style.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utilities/aa_funciones.py" beforeDir="false" afterPath="$PROJECT_DIR$/utilities/aa_funciones.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/parts/word/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/word/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/parts/word/styles.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/word/styles.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/parts/word/styles_b.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/word/styles_b.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/parts/word/theme/theme1.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/word/theme/theme1.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/parts/word/websettings.py" beforeDir="false" afterPath="$PROJECT_DIR$/parts/word/websettings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utilities/cert.py" beforeDir="false" afterPath="$PROJECT_DIR$/utilities/cert.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utilities/certificate.py" beforeDir="false" afterPath="$PROJECT_DIR$/utilities/certificate.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utilities/db.py" beforeDir="false" afterPath="$PROJECT_DIR$/utilities/db.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utilities/rotor.py" beforeDir="false" afterPath="$PROJECT_DIR$/utilities/rotor.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,6 +49,10 @@
       <filtered-out-file-type name="TAG" />
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
+  </component>
+  <component name="HierarchyBrowserManager">
+    <option name="IS_AUTOSCROLL_TO_SOURCE" value="true" />
+    <option name="SORT_ALPHABETICALLY" value="true" />
   </component>
   <component name="ProjectId" id="1YoWvu3StHFphm3MrCE5vUqspqP" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -68,27 +83,6 @@
     </key>
   </component>
   <component name="RunManager" selected="Python.certificate">
-    <configuration name="Main (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="gsWord" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="F:\gsWord\main.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="cert" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="gsWord" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -131,6 +125,27 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="document" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="gsWord" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/document.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="gsWord" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -152,7 +167,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="shape (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="gsWord" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -160,11 +175,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/utilities" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/shape.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/utilities/test.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -176,10 +191,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.certificate" />
+        <item itemvalue="Python.test" />
+        <item itemvalue="Python.document" />
         <item itemvalue="Python.main" />
         <item itemvalue="Python.cert" />
-        <item itemvalue="Python.Main (1)" />
-        <item itemvalue="Python.shape (1)" />
       </list>
     </recent_temporary>
   </component>
@@ -233,7 +248,14 @@
       <option name="project" value="LOCAL" />
       <updated>1618441384472</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Certificado">
+      <created>1619130470510</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1619130470510</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -269,7 +291,8 @@
     <MESSAGE value="Initial commit" />
     <MESSAGE value="Cuadros de textos básicos" />
     <MESSAGE value="Formato de texto en los cuadros de texto" />
-    <option name="LAST_COMMIT_MESSAGE" value="Formato de texto en los cuadros de texto" />
+    <MESSAGE value="Certificado" />
+    <option name="LAST_COMMIT_MESSAGE" value="Certificado" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -285,14 +308,19 @@
           <option name="timeStamp" value="94" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/document.py</url>
-          <line>252</line>
-          <option name="timeStamp" value="107" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/parts/word/elements/paragraph.py</url>
           <line>827</line>
           <option name="timeStamp" value="108" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/parts/word/body.py</url>
+          <line>362</line>
+          <option name="timeStamp" value="112" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/parts/word/body.py</url>
+          <line>67</line>
+          <option name="timeStamp" value="113" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

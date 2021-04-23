@@ -153,7 +153,7 @@ class App(object):
 	def get_name(self):
 		return self.name
 
-	def get_Tag(self):
+	def set_tag(self):
 		return self.tag
 
 	def DefaultValues(self):
@@ -177,7 +177,7 @@ class App(object):
 	def get_xml(self):
 		value = list()
 		value.append(self.get_xmlHeader())
-		value.append('<%s xmlns="%s" xmlns:vt="%s">' % (self.get_Tag(), self.get_xmlNS(), self.get_xmlNSVT()))
+		value.append('<%s xmlns="%s" xmlns:vt="%s">' % (self.set_tag(), self.get_xmlNS(), self.get_xmlNSVT()))
 
 		value.append('%s<Template>%s</Template>' % (self.tab, self.get_Template()))
 		value.append('%s<TotalTime>%d</TotalTime>' % (self.tab, self.get_TotalTime()))
@@ -200,6 +200,6 @@ class App(object):
 		value.append('%s<HyperlinksChanged>%s</HyperlinksChanged>' % (self.tab, self.get_HyperlinksChanged()))
 		value.append('%s<AppVersion>%s</AppVersion>' % (self.tab, self.get_AppVersion()))
 
-		value.append('</%s>' % self.get_Tag())
+		value.append('</%s>' % self.set_tag())
 		value.append('')
 		return self.separator.join(value)

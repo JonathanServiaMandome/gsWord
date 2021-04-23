@@ -1067,7 +1067,7 @@ if __name__ == '__main__':
 	from document import Document
 	parent = Document('c:users/jonathan/desktop/pyword/','t.docx')
 	parent.EmptyDocument()
-	header = parent.get_DefaultHeader()
+	header = parent.get_default_header()
 	x = AlternateContent(header, text='ccccccccc')
 	header.add_paragraph(x)
 	'''sr = {'vertical': {}}

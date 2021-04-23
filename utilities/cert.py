@@ -350,7 +350,7 @@ def CertificadoSAT(partes, args, columnas_checks=GetColumnasACC_CK(), LineaToDc=
 	##
 
 	def Footer(doc_word, idioma):
-		footer = doc_word.get_DefaultFooter()
+		footer = doc_word.get_default_footer()
 
 		# deno_tec = "Federico Perez"
 		deno_tec = ''
@@ -398,7 +398,7 @@ def CertificadoSAT(partes, args, columnas_checks=GetColumnasACC_CK(), LineaToDc=
 	##
 
 	def Header(doc_word, idioma):
-		header = doc_word.get_DefaultHeader()
+		header = doc_word.get_default_header()
 		print header
 		# paragraph = header.add_paragraph('')
 		# paragraph.AddPicture(header, _path_i, 2000,1300)

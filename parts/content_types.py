@@ -51,28 +51,28 @@ class ContentType(object):
 	def get_tab(self):
 		return self.tab
 
-	def get_Tag(self):
+	def set_tag(self):
 		return self.tag
 
 	def get_name(self):
 		return self.name
 
 	def get_xml(self):
-		value = [self.get_xmlHeader(), '<%s xmlns="%s">' % (self.get_Tag(), self.get_xmlNS())]
+		value = [self.get_xmlHeader(), '<%s xmlns="%s">' % (self.set_tag(), self.get_xmlNS())]
 
 		for target in self.get_Default().keys():
 			value.append(
 				self.tab + '<Default Extension="%s" %s/>' % (
 					target, self.get_Default()[target]))
 
-		for part_name in self.get_parent().get_Parts():
+		for part_name in self.get_parent().get_parts():
 			if part_name in ['rels', 'document_rels']:
 				continue
-			part = self.get_parent().get_Part(part_name)
+			part = self.get_parent().get_part(part_name)
 			if hasattr(part, 'ContentType'):
 				value.append('%s<Override PartName="/%s" ContentType="%s"/>' % (
 					self.get_tab(), part.get_name(), part.ContentType()))
 
-		value.append('</%s>' % self.get_Tag())
+		value.append('</%s>' % self.set_tag())
 		value.append('')
 		return self.separator.join(value)

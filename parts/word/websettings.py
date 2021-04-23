@@ -27,10 +27,10 @@ class WebSettings:
 
 		self.ignorable = 'w14 w15'
 
-	def get_RId(self):
+	def get_rid(self):
 		return self.rId
 
-	def SetRId(self, value):
+	def set_rid(self, value):
 		self.rId = value
 
 	def ContentType(self):
@@ -72,7 +72,7 @@ class WebSettings:
 	def get_parent(self):
 		return self.parent
 
-	def get_Tag(self):
+	def set_tag(self):
 		return self.tag
 
 	def get_name(self):
@@ -91,10 +91,10 @@ class WebSettings:
 		value.append(self.get_xmlHeader())
 		value.append(
 			'<%s xmlns:mc="%s" xmlns:r="%s" xmlns:w="%s" xmlns:w14="%s" xmlns:w15="%s" mc:Ignorable="%s">' % (
-				self.get_Tag(), self.get_xmlNSbyName('mc'), self.get_xmlNSbyName('r'), self.get_xmlNSbyName('w'),
+				self.set_tag(), self.get_xmlNSbyName('mc'), self.get_xmlNSbyName('r'), self.get_xmlNSbyName('w'),
 				self.get_xmlNSbyName('w14'), self.get_xmlNSbyName('w15'), self.get_Ignorable()))
 		value.append(Value_('w:optimizeForBrowser', self.get_OptimizeForBrowser()))
 		value.append(Value_('w:allowPNG', self.get_AllowPNG()))
-		value.append('</%s>' % (self.get_Tag()))
+		value.append('</%s>' % (self.set_tag()))
 		value.append('')
 		return self.separator.join(value)

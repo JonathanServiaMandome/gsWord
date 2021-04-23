@@ -48,10 +48,10 @@ class Settings:
 		self.chartTrackingRefBased = ''
 		self.docId = ''
 
-	def get_RId(self):
+	def get_rid(self):
 		return self.rId
 
-	def SetRId(self, value):
+	def set_rid(self, value):
 		self.rId = value
 
 	def ContentType(self):
@@ -117,10 +117,10 @@ class Settings:
 	def get_parent(self):
 		return self.parent
 
-	def get_Tag(self):
+	def set_tag(self):
 		return self.tag
 
-	def get_Tag(self):
+	def set_tag(self):
 		return self.tag
 
 	def get_name(self):
@@ -139,11 +139,11 @@ class Settings:
 		value.append(self.get_xmlHeader())
 		value.append(
 			'<w:%s xmlns:mc="%s" xmlns:r="%s" xmlns:w="%s" xmlns:w14="%s" xmlns:w15="%s" mc:Ignorable="%s" >' % (
-				self.get_Tag(), self.get_xmlNSbyName('mc'), self.get_xmlNSbyName('r'), self.get_xmlNSbyName('w'),
+				self.set_tag(), self.get_xmlNSbyName('mc'), self.get_xmlNSbyName('r'), self.get_xmlNSbyName('w'),
 				self.get_xmlNSbyName('w14'), self.get_xmlNSbyName('w15'), self.get_Ignorable()))
 		# value.append(Value_('optimizeForBrowser', self.get_OptimizeForBrowser()))
 		# value.append(Value_('allowPNG', self.get_AllowPNG()))
-		value.append('/<w:%s>' % (self.get_Tag()))
+		value.append('/<w:%s>' % (self.set_tag()))
 		return self.separator.join(value)
 
 	def get_xml(self):

@@ -20,10 +20,10 @@ class Style:
 		if not self.separator:
 			self.xml_header += '\n'
 
-	def get_RId(self):
+	def get_rid(self):
 		return self.rId
 
-	def SetRId(self, value):
+	def set_rid(self, value):
 		self.rId = value
 
 	def ContentType(self):
@@ -41,7 +41,7 @@ class Style:
 	def get_name(self):
 		return self.name
 
-	def get_Tag(self):
+	def set_tag(self):
 		return self.tag
 
 	def DefaultValues(self):
@@ -479,9 +479,9 @@ class Style:
 		value.append(self.get_xmlHeader())
 		"""value.append(
 			'<w:%s xmlns:mc="%s" xmlns:r="%s" xmlns:w="%s" xmlns:w14="%s" xmlns:w15="%s" mc:Ignorable="%s" >' % (
-				self.get_Tag(), self.get_xmlNSbyName('mc'), self.get_xmlNSbyName('r'),
+				self.set_tag(), self.get_xmlNSbyName('mc'), self.get_xmlNSbyName('r'),
 				self.get_xmlNSbyName('w'), self.get_xmlNSbyName('w14'),
 				self.get_xmlNSbyName('w15'), self.get_Ignorable()))"""
 
-		value.append('</%s>' % self.get_Tag())
+		value.append('</%s>' % self.set_tag())
 		return self.separator.join(value)

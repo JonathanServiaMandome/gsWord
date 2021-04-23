@@ -134,7 +134,7 @@ class Core(object):
 	def get_name(self):
 		return self.name
 
-	def get_Tag(self):
+	def set_tag(self):
 		return self.tag
 
 	def DefaultValues(self):
@@ -160,7 +160,7 @@ class Core(object):
 		value = list()
 		value.append(self.get_xmlHeader())
 		value.append('<%s xmlns:cp="%s" xmlns:dc="%s" xmlns:dcterms="%s" xmlns:dcmitype="%s" xmlns:xsi="%s">' % (
-			self.get_Tag(), self.get_XmlnsCp(), self.get_XmlnsDc(), self.get_Dcterms(), self.get_Dcmitype(), self.get_Xsi()))
+			self.set_tag(), self.get_XmlnsCp(), self.get_XmlnsDc(), self.get_Dcterms(), self.get_Dcmitype(), self.get_Xsi()))
 
 		value.append(Value_('dc:title', self.get_Title()))
 		value.append(Value_('dc:subject', self.get_Subject()))
@@ -175,6 +175,6 @@ class Core(object):
 		value.append(Value_('dcterms:created', now.strftime("%Y-%m-%dT%H:%M:%SZ"), ' xsi:type="dcterms:W3CDTF"'))
 		value.append(Value_('dcterms:modified', now.strftime("%Y-%m-%dT%H:%M:%SZ"), ' xsi:type="dcterms:W3CDTF"'))
 
-		value.append('</%s>' % self.get_Tag())
+		value.append('</%s>' % self.set_tag())
 		value.append('')
 		return self.separator.join(value)

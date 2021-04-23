@@ -13,21 +13,21 @@ class Rels(object):
 		self.tab = self.parent.get_tab()
 		self.parts = {}
 
-	def get_Parts(self):
+	def get_parts(self):
 		return self.parts
 
-	def SetParts(self, dc):
+	def set_parts(self, dc):
 		self.parts = dc
 
-	def AddPart(self, name, value):
+	def add_part(self, name, value):
 		if name in self.parts.keys():
 			raise ValueError("La parte %s ya está añadida al documento." % name)
 		self.parts[name] = value
 
-	def get_Part(self, name):
+	def get_part(self, name):
 		return self.parts[name]
 
-	def SetPart(self, name, dc):
+	def set_part(self, name, dc):
 		self.parts[name] = dc
 
 	def get_xmlNS(self):
@@ -45,7 +45,7 @@ class Rels(object):
 	def get_parent(self):
 		return self.parent
 
-	def get_Tag(self):
+	def set_tag(self):
 		return self.tag
 
 	def get_name(self):
@@ -58,17 +58,17 @@ class Rels(object):
 										"Type": "http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties"},
 				"word/document.xml": {"Id": "rId1",
 										"Type": "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument"}}
-		self.SetParts(ids)
+		self.set_parts(ids)
 
 	def get_xml(self):
-		value = [self.get_xmlHeader(), '<%s xmlns="%s">' % (self.get_Tag(), self.get_xmlNS())]
+		value = [self.get_xmlHeader(), '<%s xmlns="%s">' % (self.set_tag(), self.get_xmlNS())]
 
-		for target in self.get_Parts():
-			dc = self.get_Part(target)
+		for target in self.get_parts():
+			dc = self.get_part(target)
 			value.append(
 				self.tab + '<Relationship Id="%s" Type="%s" Target="%s"/>' % (
 					dc.get('Id', ''), dc.get('Type', ''), target))
 
-		value.append('</%s>' % self.get_Tag())
+		value.append('</%s>' % self.set_tag())
 		value.append('')
 		return self.separator.join(value)
