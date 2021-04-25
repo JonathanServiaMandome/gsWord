@@ -792,7 +792,9 @@ class Paragraph(object):
 	def AddPicture(self, parent, path, width, height, anchor='inline'):
 		is_body = parent.tag == 'w:body'
 
-		document = parent.get_parent()
+		document = self
+		while getattr(document, 'tag', '') != 'document':
+			document = document.parent
 		name = path.split('/')[-1]
 		extension = name.split('.')[-1]
 		document.get_content_types().AddDefault(extension, 'ContentType="image/%s"' % extension)
@@ -802,25 +804,27 @@ class Paragraph(object):
 			rid = document.idx
 			document.idx += 1
 			target = 'media/image%d.%s' % (rid, extension)
-			# document.add_part(target, ImagePart(target))
+			document.add_part(target, ImagePart(target))
 			document.add_image(target, img, rid)
 		else:
 			name_part = parent.get_name().split('/')[-1]
+
 			rid = parent.get_RelRId()
 			parent.AddRelRId()
+
 			target = 'media/image%d.%s' % (rid, extension)
 
 			if name_part not in document.get_parts().keys():
 				document.add_part_rel(name_part)
 			rel = document.get_part(name_part)
-			rel.add_part(target,
-			            {"Id": "rId%d" % rid,
-			             "Type": "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image"})
+			rel.add_part(
+				target,
+				{"Id": "rId%d" % rid, "Type": "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image"})
 			rel.add_image(target, img)
 
 		pict = pictures.Picture(self, rid, path, width, height, anchor=anchor)
 		self.elements.append(pict)
-		return pict
+		return self
 
 	def get_tab(self, number=0):
 		return self.tab * (self.indent + number)
@@ -932,10 +936,9 @@ class Paragraph(object):
 
 	def get_xml(self):
 		value = ['%s<w:%s' % (self.get_tab(), self.name)]
-		if self.parent and self.parent.name == 'w:ftr':
-			print self.elements
+
 		if not self.elements:
-			return value[0]+'/>'
+			return value[0] + '/>'
 		if self.rsidR is not '':
 			value[0] += ' w:rsidR="%s"' % self.rsidR
 
@@ -952,8 +955,6 @@ class Paragraph(object):
 		value.append(self.get_properties().get_xml())
 
 		'''
-		self.bookmarkStart=None#Falta
-		self.bookmarkEnd=None#Falta
 		self.fldSimple=None#Falta
 		self.hyperlink=None#Falta
 		'''

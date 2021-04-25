@@ -1,8 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
+from time import sleep
 from zipfile import ZipFile  # , ZIP_DEFLATED
 # from shutil import copyfile
+from shutil import rmtree
 
 import os
 
@@ -151,13 +152,13 @@ class Document:
 		self.parts[name] = value
 
 	def add_header_section(self, type_part='default'):
-
 		self.header_num += 1
 		self.parts["header%d" % self.header_num] = word.part.Part(self, 'hdr', self.header_num, type_part)
 		self.parts["header%d" % self.header_num].set_rid(self.idx)
 		section = self.get_part('body').get_active_section()
 		section.add_header_reference(type_part, self.idx)
 		self.idx += 1
+		return self.parts["header%d" % self.header_num]
 
 	def empty_document(self, headers=True):
 		# ./word
@@ -176,8 +177,8 @@ class Document:
 		self.parts["body"] = word.body.Body(self)
 		section = self.parts["body"].add_section()
 		if headers:
-			# for _type in ['even', 'default', 'first']:
-			for _type in ['default']:
+			for _type in ['even', 'default', 'first']:
+
 				self.header_num += 1
 				self.parts["header%d" % self.header_num] = word.part.Part(self, 'hdr', self.header_num, _type)
 				self.parts["header%d" % self.header_num].set_rid(self.idx)
@@ -190,14 +191,14 @@ class Document:
 				section.add_footer_reference(_type, self.idx)
 				self.idx += 1
 
-			self.parts["footernotes"] = word.part.Notes(self, 'footernotes')
-			self.parts["footernotes"].set_rid(self.idx)
+			self.parts["footnotes"] = word.part.Notes(self, 'footnotes')
+			self.parts["footnotes"].set_rid(self.idx)
 			self.idx += 1
 			self.parts["endnotes"] = word.part.Notes(self, 'endnotes')
 			self.parts["endnotes"].set_rid(self.idx)
 			self.idx += 1
 
-		print section.get_HeaderReferences()
+
 		# ./word/theme
 		self.parts["theme1"] = word.theme1.Theme1(self)
 		self.parts["theme1"].DefaultValues()
@@ -234,6 +235,7 @@ class Document:
 			      "Type": 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/%s' % name_}
 			doc_rels.add_part(name, dc)
 
+
 		for img in self.get_images():
 			dc = {'Id': 'rId%d' % img[2],
 			      "Type": 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image'}
@@ -243,9 +245,13 @@ class Document:
 	# noinspection PyBroadException
 	def save(self):
 		# ./word/rels
+		if self._debug:
+			if os.path.exists(self.get_path() + 'temp/'):
+				rmtree(self.get_path() + 'temp/')
+
 		self.parts["document_rels"] = self.create_document_rels()
 
-		# self.parts["body"].AddPrincipalSection()
+		self.parts["body"].AddPrincipalSection()
 		try:
 			os.makedirs(self.get_path())
 		except Exception:
@@ -266,6 +272,10 @@ class Document:
 		for img in self.get_images():
 			zout.writestr('word/' + img[0], img[1])
 
+			if self._debug:
+				with open(self.get_path() + 'temp/word/' + img[0], 'wb') as file_part:
+					file_part.write(img[1])
+
 		for part in self.parts.items():
 			name, part = part
 
@@ -274,9 +284,17 @@ class Document:
 
 			zout.writestr(part.get_name(), part.get_xml())
 
-			if hasattr(part, 'get_Images'):
+			if hasattr(part, 'get_images'):
 				for img in part.get_images():
 					zout.writestr('word/' + img[0], img[1])
+					if self._debug:
+						try:
+							os.makedirs(self.get_path() + 'temp/word/media/')
+						except Exception:
+							pass
+
+						with open(self.get_path() + 'temp/word/' + img[0], 'wb') as file_part:
+							file_part.write(img[1])
 
 			if self._debug:
 				try:

@@ -19,6 +19,7 @@ class Body(object):
 			self.rsidRDefault = '000F5F75'
 			self.rsidP = '000F5F75'
 			self.rsidSect = ''
+			self.parent = parent
 			self.tab = parent.tab
 			self.indent = parent.indent + 1
 			self.separator = parent.separator
@@ -41,6 +42,12 @@ class Body(object):
 			self.first = False
 			self.page_break = False
 			self.elements = list()
+
+		def get_name(self):
+			return self.tag
+
+		def get_parent(self):
+			return self.parent
 
 		def get_xml(self):
 			value = list()
@@ -293,7 +300,7 @@ class Body(object):
 	def get_XmlHeader(self):
 		return self.xml_header
 
-	def ContentType(self):
+	def get_content_types(self):
 		return self.content_type
 
 	def get_tab(self, number=0):

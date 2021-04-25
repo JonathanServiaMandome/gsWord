@@ -116,7 +116,7 @@ def CertificadoSAT(partes, args, columnas_checks=GetColumnasACC_CK(), LineaToDc=
 					normativa = rg_check['CK_NOR']['IDX']
 
 			rg_normativa = lee_dc(lee_dc, gpx, 'normativa', normativa)
-			print rg_normativa, normativa
+
 			_texto_antes, _texto_desupes, _tabla_resumen = '', '', ''
 			oficial = 'S'
 
@@ -399,7 +399,6 @@ def CertificadoSAT(partes, args, columnas_checks=GetColumnasACC_CK(), LineaToDc=
 
 	def Header(doc_word, idioma):
 		header = doc_word.get_default_header()
-		print header
 		# paragraph = header.add_paragraph('')
 		# paragraph.AddPicture(header, _path_i, 2000,1300)
 		# paragraph = header.add_paragraph('dfr')
@@ -682,8 +681,7 @@ def CertificadoSAT(partes, args, columnas_checks=GetColumnasACC_CK(), LineaToDc=
 					pass
 				continue
 		##
-		print checks_sin_normativa
-		print checks
+
 		# Se crea un documento en blanco
 		f = cd_parte + '.docx'
 		if True:

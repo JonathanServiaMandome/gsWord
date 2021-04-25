@@ -680,6 +680,9 @@ class Cell(object):
 
 		if isinstance(data, Table):
 			self.elements.append(data)
+		elif getattr(data, 'name', '') == 'drawing':
+			data.parent = self
+			par = self.add_paragraph(data)
 		elif getattr(data, 'name', '') == 'sdt':
 			data.parent = self
 			self.elements.append(data)
@@ -699,7 +702,6 @@ class Cell(object):
 						self.elements.append(txt)
 					else:
 						self.add_paragraph(txt, horizontal_alignment)
-					# self.elements.append(Paragraph.Paragraph(self, -1, txt, horizontal_alignment))
 
 	def add_paragraph(self, _text=(), horizontal_alignment='j', font_format='', font_size=None, is_null=False):
 		x = self
@@ -1115,6 +1117,7 @@ class Row(object):
 				elif getattr(txt, 'name', '') == 'p':
 					c = Cell(self, k, [txt], jc)
 					self.cells.append(c)
+
 				else:
 					self.cells.append(Cell(self, k, txt, jc))
 

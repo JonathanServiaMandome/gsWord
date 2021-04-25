@@ -1,9 +1,10 @@
 # coding=utf-8
-import document
 from db import error, Trae_Fila, lee, rg_vacio, gpx, cl, copia_rg, FDC, GS_INS, u_libre, Busca_Prox, Fecha, i_selec, \
 	Abre_Aplicacion, Abre_Empresa
 from db import Int, Num, lista, Num_aFecha, lee_dc
 from aa_funciones import Serie, GetColumnasACC_CK, LineaToDc
+
+import document
 from shape import TextBox
 
 
@@ -469,9 +470,26 @@ def CertificadoSAT(partes, args, columnas_checks=GetColumnasACC_CK(), LineaToDc=
 
 	##
 
-	def Header(doc_word, idioma, _path_i, _path_d, merge_vars=merge_vars):
-		header = doc_word.get_default_header()
-		header.add_table([['3', '5'] * 3])
+	def Header(header, doc_word, idioma, _path_i, _path_d, merge_vars=merge_vars):
+		paragraph_i = doc_word.new_paragraph(header, None)
+		picture_i = paragraph_i.AddPicture(header, _path_i, 1800, 1200, anchor='inline')
+		paragraph_d = doc_word.new_paragraph(header, None)
+		picture_d = paragraph_d.AddPicture(header, _path_d, 1800, 1200, anchor='inline')
+
+		ls = list()
+		for line in idioma['PTCI_HEAD']:
+			paragraph = doc_word.new_paragraph(header, line[0], horizontal_alignment='l', font_format='b')
+			paragraph.set_spacing({'after': '60', 'before': '60', 'line': 200})
+			paragraph.set_font_size(10)
+			for t in paragraph.elements:
+				t.set_font(idioma['PTCI_FONT'])
+			ls.append(paragraph)
+
+		header.add_table(
+			[[paragraph_i, ls, paragraph_d]],
+			column_width=[2000, 6000, 2000],
+			horizontal_alignment=['l', 'l', 'r']
+		)
 		# header.add_paragraph(None)
 		'''
 		paragraph_i = doc_word.new_paragraph(header, None)
@@ -603,7 +621,8 @@ def CertificadoSAT(partes, args, columnas_checks=GetColumnasACC_CK(), LineaToDc=
 		FormateaTablaPrincipal(idioma, tabla_1, color_primario, color_secundario, False)
 
 		body.add_section(margin_rigth=953, margin_left=953, orient='')
-		doc_word.add_header_section(4)
+		'''header2 = doc_word.add_header_section()
+		Header(header2, doc_word, idioma, _path_i, _path_d)'''
 		# section = body.get_active_section()
 		# Modifico los márgenes de la página para hacerlo mas estrecho
 		# section.SetMargins({'left': 953, 'right': 953, 'top': 1000, 'header': 600, 'footer': 300})
@@ -781,7 +800,7 @@ def CertificadoSAT(partes, args, columnas_checks=GetColumnasACC_CK(), LineaToDc=
 		idx_cert = u_libres[ser_cert_complete]
 		parte['PT_NUMCERT'] = idx_cert
 		checks, contratos_checks, tecnicos, dc_observaciones, tipo_elementos = GetAcciones(cd_parte, parte, idioma)
-		print checks
+
 		# r = open('c:/users/jonathan/desktop/data_parte.txt', 'r').read()
 		# dc_parte, parte, checks, tecnicos, observaciones = eval(r)
 		checks_sin_normativa = []
@@ -825,9 +844,10 @@ def CertificadoSAT(partes, args, columnas_checks=GetColumnasACC_CK(), LineaToDc=
 		# Modifico los márgenes de la página para hacerlo mas estrecho
 		section.SetMargins({'left': 953, 'right': 953, 'top': 1000, 'header': 600, 'footer': 300})
 		# Header
-		Header(doc_word, idioma, _path_i, _path_d)
+		header = doc_word.get_default_header()
+		# Header(header, doc_word, idioma, _path_i, _path_d)
 		# footer
-		Footer(doc_word, idioma, parte, _path_s)
+		# Footer(doc_word, idioma, parte, _path_s)
 
 		titulo = merge_vars(idioma['PTCI_TITULO'], parte)
 
@@ -835,7 +855,7 @@ def CertificadoSAT(partes, args, columnas_checks=GetColumnasACC_CK(), LineaToDc=
 		FormateaTitulo(idioma, p_titulo)
 
 		lista_checks = checks.keys()
-		print lista_checks, checks
+
 		lista_checks.sort()
 		# Se renumeran las preguntas
 		for ln in lista_checks:
@@ -853,11 +873,11 @@ def CertificadoSAT(partes, args, columnas_checks=GetColumnasACC_CK(), LineaToDc=
 		for ln in lista_checks:
 			# Cada grupo de elementos empezará en una nueva sección y en una nueva página
 			n_norma, n_capitulo, cd_check_, titulo_norma, titulo_elemento, texto_antes, texto_despues = ln
-			print ln
+
 			if n_norma == 1:
 				continue
 			body.add_section(margin_rigth=953, margin_left=953, orient='')
-			doc_word.add_header_section(4)
+
 			if not _nor or _nor != n_norma:
 				_nor = str(numero_norma) + '. ' + titulo_norma
 				nn = numero_norma

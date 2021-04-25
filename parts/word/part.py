@@ -59,10 +59,10 @@ class Part:
 		self.attributes.append('xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"')
 		self.attributes.append('xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml"')
 		self.attributes.append('xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml"')
-		self.attributes.append('xmlns:w16cex="http://schemas.microsoft.com/office/word/2018/wordml/cex"') #
+		self.attributes.append('xmlns:w16cex="http://schemas.microsoft.com/office/word/2018/wordml/cex"')  #
 		self.attributes.append('xmlns:w16cid="http://schemas.microsoft.com/office/word/2016/wordml/cid"')
-		self.attributes.append('xmlns:w16="http://schemas.microsoft.com/office/word/2018/wordml"') #
-		self.attributes.append('xmlns:w16sdtdh="http://schemas.microsoft.com/office/word/2020/wordml/sdtdatahash"') #
+		self.attributes.append('xmlns:w16="http://schemas.microsoft.com/office/word/2018/wordml"')  #
+		self.attributes.append('xmlns:w16sdtdh="http://schemas.microsoft.com/office/word/2020/wordml/sdtdatahash"')  #
 		self.attributes.append('xmlns:w16se="http://schemas.microsoft.com/office/word/2015/wordml/symex"')
 		self.attributes.append('xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup"')
 		self.attributes.append('xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk"')
@@ -143,7 +143,7 @@ class Part:
 		self.get_parent().idx += 1
 		idx = self.get_parent().idx
 		paragraph = elements.paragraph.Paragraph(self, idx, text, horizontal_alignment, font_format,
-													font_size)
+		                                         font_size)
 		self.elements.append(paragraph)
 		return paragraph
 
@@ -157,6 +157,7 @@ class Part:
 	def add_rtf(self, text):
 		_rtf = rtf.Rtf(text=text, parent=self)
 		_rtf.get_value('word')
+
 
 class Notes:
 	"""
