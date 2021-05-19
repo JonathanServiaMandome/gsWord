@@ -810,6 +810,9 @@ class Paragraph(object):
 			name_part = parent.get_name().split('/')[-1]
 
 			rid = parent.get_RelRId()
+			rid = document.idx
+			document.idx += 1
+			print rid, name_part
 			parent.AddRelRId()
 
 			target = 'media/image%d.%s' % (rid, extension)

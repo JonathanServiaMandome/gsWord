@@ -1,9 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from time import sleep
+
 from zipfile import ZipFile  # , ZIP_DEFLATED
 # from shutil import copyfile
-from shutil import rmtree
 
 import os
 
@@ -13,6 +12,7 @@ from parts import content_types
 from parts import rels
 from parts import word
 
+
 from pagenumber import PageNumber
 
 
@@ -21,9 +21,8 @@ def new_page_number(parent, title):
 
 
 class Document:
+
 	def __init__(self, ruta_plantilla='', plantilla_=''):
-		self.header_num = 0
-		self.footer_num = 0
 		self.tab = '\t'
 		self.separator = '\n'
 		self.tag = 'document'
@@ -38,30 +37,40 @@ class Document:
 		self.rId = 1
 		self.parts = dict()
 
-		self.idx = 1
+		self.idx = 0
+		self.idx_header = 1
+		self.idx_footer = 1
 		self.images = list()
 		self.indent = 0
 
-	def get_images(self):
+	def get_Images(self):
 		return self.images
 
-	def add_image(self, target, image, rid):
+	def AddImage(self, target, image, rid):
 		self.images.append([target, image, rid])
 
-	def get_rid(self):
+	def get_RId(self):
 		"""Devuelve el RId"""
 		return self.rId
 
-	def get_content_types(self):
+	def AddRId(self):
+		self.rId += 1
+
+	def get_ContentTypes(self):
 		return self.content_types
 
-	def get_parts(self):
+	def get_Parts(self):
 		return self.parts
 
-	def set_parts(self, dc):
+	def SetParts(self, dc):
 		self.parts = dc
 
-	def add_part_rel(self, name):
+	def AddPart(self, name, value):
+		if name in self.parts.keys():
+			raise ValueError("La parte %s ya está añadida al documento." % name)
+		self.parts[name] = value
+
+	def AddPartRel(self, name):
 		if name in self.parts.keys():
 			raise ValueError("La parte %s ya está añadida al documento." % name)
 		rel = parts.documentrels.documentRels.DocumentRels(self)
@@ -69,22 +78,22 @@ class Document:
 
 		self.parts[name] = rel
 
-	def get_part(self, name):
+	def get_Part(self, name):
 		return self.parts[name]
 
-	def set_part(self, name, dc):
+	def SetPart(self, name, dc):
 		self.parts[name] = dc
 
-	def get_path(self):
+	def get_RutaPlantilla(self):
 		return self.ruta_plantilla
 
-	def get_file_name(self):
+	def get_Plantilla(self):
 		return self._plantilla
 
-	def set_path(self, value):
+	def SetRutaPlantilla(self, value):
 		self.ruta_plantilla = value
 
-	def set_file_name(self, value):
+	def SetPlantilla(self, value):
 		self._plantilla = value
 
 	def get_variables(self):
@@ -103,12 +112,12 @@ class Document:
 		return self.tab
 
 	def get_name(self):
-		return self.set_tag()
+		return self.get_tag()
 
 	def get_tag(self):
 		return self.tag
 
-	def set_tag(self):
+	def get_Tag(self):
 		return self.tag
 
 	def get_separator(self):
@@ -117,13 +126,13 @@ class Document:
 	def get_body(self):
 		return self.parts["body"]
 
-	def get_default_header(self):
+	def get_DefaultHeader(self):
 		header_ = self.parts.get('header2')
 		if header_ is None:
 			header_ = self.parts.get('header1')
 		return header_
 
-	def get_default_footer(self):
+	def get_DefaultFooter(self):
 		footer_ = self.parts.get('footer2')
 		if footer_ is None:
 			footer_ = self.parts.get('footer1')
@@ -132,13 +141,12 @@ class Document:
 	def new_table(self, parent, data=(), titles=(), column_width=None, horizontal_alignment=(), borders=None):
 		self.idx += 1
 		return parts.word.elements.table.Table(parent, self.idx, data, titles, column_width, horizontal_alignment,
-		                                       borders)
+												borders)
 
 	def new_paragraph(self, parent, text=(), horizontal_alignment='j', font_format='', font_size=None, null=False):
 		self.idx += 1
-		return parts.word.elements.paragraph.Paragraph(parent, self.idx, text, horizontal_alignment, font_format,
-		                                               font_size,
-		                                               nulo=null)
+		return parts.word.elements.paragraph.Paragraph(parent, self.idx, text, horizontal_alignment, font_format, font_size,
+														nulo=null)
 
 	def new_image(self, parent, path, width, heigth, anchor='inline', horizontal_alignment='l'):
 		self.idx += 1
@@ -146,63 +154,52 @@ class Document:
 		pa.AddPicture(parent, path, width, heigth, anchor)
 		return pa
 
-	def add_part(self, name, value):
-		if name in self.parts.keys():
-			raise ValueError("La parte %s ya está añadida al documento." % name)
-		self.parts[name] = value
-
-	def add_header_section(self, type_part='default'):
-		self.header_num += 1
-		self.parts["header%d" % self.header_num] = word.part.Part(self, 'hdr', self.header_num, type_part)
-		self.parts["header%d" % self.header_num].set_rid(self.idx)
-		section = self.get_part('body').get_active_section()
-		section.add_header_reference(type_part, self.idx)
-		self.idx += 1
-		return self.parts["header%d" % self.header_num]
-
 	def empty_document(self, headers=True):
 		# ./word
 		self.parts["font_table"] = word.fonttable.FontTable(self)
-		self.parts["font_table"].set_rid(self.idx)
 		self.idx += 1
 		self.parts["settings"] = word.settings.Settings(self)
-		self.parts["settings"].set_rid(self.idx)
 		self.idx += 1
 		self.parts["web_settings"] = word.websettings.WebSettings(self)
-		self.parts["web_settings"].set_rid(self.idx)
 		self.idx += 1
 		self.parts["style"] = word.styles.Styles(self)
 		self.idx += 1
-
 		self.parts["body"] = word.body.Body(self)
-		section = self.parts["body"].add_section()
+		section = self.parts["body"].get_active_section()
 		if headers:
-			for _type in ['even', 'default', 'first']:
-
-				self.header_num += 1
-				self.parts["header%d" % self.header_num] = word.part.Part(self, 'hdr', self.header_num, _type)
-				self.parts["header%d" % self.header_num].set_rid(self.idx)
-				section.add_header_reference(_type, self.idx)
-				self.idx += 1
-
-				self.footer_num += 1
-				self.parts["footer%d" % self.footer_num] = word.part.Part(self, 'ftr', self.footer_num, _type)
-				self.parts["footer%d" % self.header_num].set_rid(self.idx)
-				section.add_footer_reference(_type, self.idx)
-				self.idx += 1
-
-			self.parts["footnotes"] = word.part.Notes(self, 'footnotes')
-			self.parts["footnotes"].set_rid(self.idx)
+			self.parts["header1"] = word.part.Part(self, 'hdr', 1, 'even')
+			section.AddHeaderReference(self.parts["header1"].get_TypeReference(), self.parts["header1"])
+			self.idx += 1
+			self.idx_header += 1
+			self.parts["header2"] = word.part.Part(self, 'hdr', 2, 'default')
+			section.AddHeaderReference(self.parts["header2"].get_TypeReference(), self.parts["header2"])
+			self.idx += 1
+			self.idx_header += 1
+			self.parts["footer1"] = word.part.Part(self, 'ftr', 1, 'even')
+			section.AddFooterReference(self.parts["footer1"].get_TypeReference(), self.parts["footer1"])
+			self.idx += 1
+			self.idx_footer += 1
+			self.parts["footer2"] = word.part.Part(self, 'ftr', 2, 'default')
+			section.AddFooterReference(self.parts["footer2"].get_TypeReference(), self.parts["footer2"])
+			self.idx += 1
+			self.idx_footer += 1
+			self.parts["header3"] = word.part.Part(self, 'hdr', 3, 'first')
+			section.AddHeaderReference(self.parts["header3"].get_TypeReference(), self.parts["header3"])
+			self.idx += 1
+			self.idx_header += 1
+			self.parts["footer3"] = word.part.Part(self, 'ftr', 3, 'first')
+			section.AddFooterReference(self.parts["footer3"].get_TypeReference(), self.parts["footer3"])
+			self.idx += 1
+			self.idx_footer += 1
+			self.parts["footernotes"] = word.part.Notes(self, 'footernotes')
 			self.idx += 1
 			self.parts["endnotes"] = word.part.Notes(self, 'endnotes')
-			self.parts["endnotes"].set_rid(self.idx)
 			self.idx += 1
 
 
 		# ./word/theme
 		self.parts["theme1"] = word.theme1.Theme1(self)
 		self.parts["theme1"].DefaultValues()
-		self.parts["theme1"].set_rid(self.idx)
 		self.idx += 1
 		# ./rels
 		self.parts["rels"] = rels.Rels(self)
@@ -213,16 +210,15 @@ class Document:
 		self.parts["core"] = parts.docProps.core.Core(self)
 		self.parts["core"].DefaultValues()
 
-	def create_document_rels(self):
+	def CreateDocumentRels(self):
 		doc_rels = word.documentRels.DocumentRels(self)
 
-		for part_name in self.get_parts().keys():
-			part = self.get_part(part_name)
+		for part_name in self.get_Parts().keys():
+			part = self.get_Part(part_name)
 
-			if hasattr(part, 'set_rid'):
-				pass
-				# part.set_rid(self.rId)
-				# self.rId += 1
+			if hasattr(part, 'SetRId'):
+				part.SetRId(self.rId)
+				self.rId += 1
 			else:
 				continue
 			name = part.get_name().replace('word/', '')
@@ -231,50 +227,50 @@ class Document:
 				name_ = name_.split('.')[0]
 			while name_[-1].isdigit():
 				name_ = name_[:-1]
-			dc = {'Id': 'rId%d' % part.get_rid(),
-			      "Type": 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/%s' % name_}
-			doc_rels.add_part(name, dc)
+			dc = {'Id': 'rId%d' % part.get_RId(),
+				"Type": 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/%s' % name_}
+			doc_rels.AddPart(name, dc)
 
-
-		for img in self.get_images():
+		for img in self.get_Images():
 			dc = {'Id': 'rId%d' % img[2],
-			      "Type": 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image'}
-			doc_rels.add_part(img[0], dc)
+				"Type": 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image'}
+			doc_rels.AddPart(img[0], dc)
 		return doc_rels
+
+	def new_header(self, section,  _type='default'):
+		number = self.idx_header
+		self.idx_header += 1
+		self.parts["header%d" % number] = word.part.Part(self, 'hdr', number, _type)
+
+		section.AddHeaderReference(self.parts["header%d" % number].get_TypeReference(), self.parts["header%d" % number])
+
+		self.parts["header%d" % number].SetRId((100*number)+200)
+
+		return self.parts["header%d" % number]
 
 	# noinspection PyBroadException
 	def save(self):
 		# ./word/rels
-		if self._debug:
-			if os.path.exists(self.get_path() + 'temp/'):
-				rmtree(self.get_path() + 'temp/')
+		self.parts["document_rels"] = self.CreateDocumentRels()
 
-		self.parts["document_rels"] = self.create_document_rels()
-
-		self.parts["body"].AddPrincipalSection()
+		#self.parts["body"].AddPrincipalSection()
 		try:
-			os.makedirs(self.get_path())
+			os.makedirs(self.get_RutaPlantilla())
 		except Exception:
 			pass
 
 		try:
-			zout = ZipFile(self.get_path() + self.get_file_name(), 'w')
+			zout = ZipFile(self.get_RutaPlantilla() + self.get_Plantilla(), 'w')
 		except IOError as e:
 			if e.args and e.args[0] == 13:
-				raise ValueError("Tiene abierto un documento con el mismo nombre y en la misma ubicación.")
-			elif e.args and e.args[0] == 32:
 				raise ValueError("Tiene abierto un documento con el mismo nombre y en la misma ubicación.")
 			else:
 				raise ValueError(e)
 		except Exception as e:
 			raise ValueError(e)
 
-		for img in self.get_images():
+		for img in self.get_Images():
 			zout.writestr('word/' + img[0], img[1])
-
-			if self._debug:
-				with open(self.get_path() + 'temp/word/' + img[0], 'wb') as file_part:
-					file_part.write(img[1])
 
 		for part in self.parts.items():
 			name, part = part
@@ -284,43 +280,35 @@ class Document:
 
 			zout.writestr(part.get_name(), part.get_xml())
 
-			if hasattr(part, 'get_images'):
-				for img in part.get_images():
+			if hasattr(part, 'get_Images'):
+				for img in part.get_Images():
 					zout.writestr('word/' + img[0], img[1])
-					if self._debug:
-						try:
-							os.makedirs(self.get_path() + 'temp/word/media/')
-						except Exception:
-							pass
-
-						with open(self.get_path() + 'temp/word/' + img[0], 'wb') as file_part:
-							file_part.write(img[1])
 
 			if self._debug:
 				try:
-					os.makedirs(self.get_path() + 'temp/')
+					os.makedirs(self.get_RutaPlantilla() + 'temp/')
 				except Exception:
 					pass
 
 				try:
 					part_split = part.get_name().split('/')
-					os.makedirs(self.get_path() + 'temp/' + '/'.join(part_split[:-1]))
+					os.makedirs(self.get_RutaPlantilla() + 'temp/'+'/'.join(part_split[:-1]))
 				except Exception:
 					pass
-				with open(self.get_path() + 'temp/' + part.get_name(), 'w') as file_part:
+				with open(self.get_RutaPlantilla() + 'temp/' + part.get_name(), 'w') as file_part:
 					file_part.write(part.get_xml())
 
-		zout.writestr(self.get_content_types().get_name(), self.get_content_types().get_xml())
+		zout.writestr(self.get_ContentTypes().get_name(), self.get_ContentTypes().get_xml())
 
 		if self._debug:
-			with open(self.get_path() + 'temp/' + self.get_content_types().get_name(), 'w') as file_part:
-				file_part.write(self.get_content_types().get_xml())
+			with open(self.get_RutaPlantilla() + 'temp/' + self.get_ContentTypes().get_name(), 'w') as file_part:
+				file_part.write(self.get_ContentTypes().get_xml())
 		zout.close()
 
 	def get_xml(self):
 		value = list()
 		value.append('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>')
-		value.append('</w:%s>' % self.set_tag())
+		value.append('</w:%s>' % self.get_Tag())
 		try:
 			open('c:/users/jonathan/desktop/body.txt', 'w').write(self.separator.join(value))
 			os.system('start c:/users/jonathan/desktop/body.txt')

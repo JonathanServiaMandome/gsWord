@@ -223,7 +223,8 @@ class RtfRow:
 				self.widths = self.parent.get_widths()
 			for k in range(len(self.cells)):
 				cell = self.cells[k]
-				cell.set_width(self.widths[k])
+				try:cell.set_width(self.widths[k])
+				except:print self.widths,[k]
 				cell.get_value(mode, row)
 			row.set_vertical_alignment(va)
 
@@ -296,7 +297,7 @@ class RtfTable:
 				total_with = 0
 				for width in self.widths:
 					_w = int(width) - w
-					w_rtf = float(self.rtf.size[0]) - float(self.rtf.margins[0]) - float(self.rtf.margins[1])
+					w_rtf = 8294 # float(self.rtf.size[0]) - float(self.rtf.margins[0]) - float(self.rtf.margins[1])
 					_w = int(round((_w * 100.) / w_rtf, 0))
 					total_with += _w
 					w = int(width)
@@ -315,11 +316,17 @@ class RtfTable:
 				return value
 
 			cw = []
+
 			for k in range(len(self.rows[0].get_widths())):
 				if k == 0:
-					cw.append(int(self.rows[0].get_widths()[k]))
+					# cw.append(int(self.rows[0].get_widths()[k]))
+					_w = int(self.rows[0].get_widths()[k])
 				else:
-					cw.append(int(self.rows[0].get_widths()[k]) - int(self.rows[0].get_widths()[k-1]))
+					# cw.append(int(self.rows[0].get_widths()[k]) - int(self.rows[0].get_widths()[k - 1]))
+					_w = int(self.rows[0].get_widths()[k]) - int(self.rows[0].get_widths()[k - 1])
+				w_rtf = 8294  # float(self.rtf.size[0]) - float(self.rtf.margins[0]) - float(self.rtf.margins[1])
+				_w = int(round((_w * 100.) / w_rtf, 0))
+				cw.append(str(_w)+'%')
 
 			value = self.parent.parent.add_table()
 
@@ -362,9 +369,9 @@ class RtfParagraph:
 			dc[key] = eval(repr(self.__dict__[key]))
 		value = str()
 		for t in self.texts:
-			value += '\t-\t\t\t\t' + t.__str__()+'\n'
-			
-		return self.name+'\n'+str(dc) + '-----\n' + value + '\n'
+			value += '\t-\t\t\t\t' + t.__str__() + '\n'
+
+		return self.name + '\n' + str(dc) + '-----\n' + value + '\n'
 
 	def set_horizontal_alignment(self, alignment):
 		self.horizontal_alignment = alignment
@@ -432,7 +439,7 @@ class RtfParagraph:
 
 class RtfText:
 	def __init__(self, rtf, parent, text='', bold=False, italic=False, underline=False, font_size=10., font_color=1,
-					font=1, highlight=None):
+	             font=1, highlight=None):
 		self.name = 'RtfText'
 		self.text = text
 		self.bold = bold
@@ -912,7 +919,7 @@ class Rtf:
 				_font_size = self.default_font_size
 			return [_font, _font_size, _font_color, _background, _find]
 
-		def table(_type, _value, _ini_table, _key_border, _background, _is_row):
+		def table(_type, _value, _ini_table, _key_border, _background, _is_row, _last_type):
 			if _type == 'trowd':
 				if not _ini_table:
 					self.elements.append(
@@ -920,6 +927,9 @@ class Rtf:
 					)
 					_ini_table = True
 					self.elements[-1].add_row()
+
+			elif _type == 'intbl':
+				_ini_table = True
 
 			elif _type == 'trgaph':
 				self.elements[-1].set_horizontal_gap(_value)
@@ -933,9 +943,9 @@ class Rtf:
 				elif _type == 'clbrdrb':
 					_key_border = 'bottom'
 				elif _type == 'clbrdrl':
-					_key_border = 'left'
+					_key_border = 'start'
 				elif _type == 'clbrdrr':
-					_key_border = 'right'
+					_key_border = 'end'
 
 				if _key_border:
 					self.elements[-1].rows[-1].borders[-1][_key_border] = 1
@@ -958,15 +968,28 @@ class Rtf:
 				self.elements[-1].rows[-1].number_cells += 1
 
 			elif _type == 'row':
-				self.elements[-1].add_row()
+				el = self.elements[-1]
+				el.add_row()
 				_is_row = True
 
 			elif _type == 'pard' and _is_row:
-				_ini_table = False
-				if not self.elements[-1].rows[-1].cells:
-					del self.elements[-1].rows[-1]
-
-			return [_key_border, _background, _ini_table, _is_row]
+				#_ini_table = False
+				print self.elements[-1].rows[-1].cells
+				el = self.elements[-1]
+				if not hasattr(el, 'rows'):
+					_is_row = False
+				elif not el.rows[-1].cells:
+					del el.rows[-1]
+				elif len(el.rows[-1].cells)==1:
+					if not el.rows[-1].cells[0].paragraphs:
+						del el.rows[-1]
+			try:
+				pass
+				'''print len(self.elements[-1].rows)
+				for r in self.elements[-1].rows:
+					print '\t',len(r.cells)'''
+			except:pass
+			return [_key_border, _background, _ini_table, _is_row, _type]
 
 		font = 1
 		font_size = self.default_font_size
@@ -993,6 +1016,7 @@ class Rtf:
 
 		keys_1 = dc.keys()
 		keys_1.sort()
+
 		for key in keys_1:
 			_id, _bloc = key
 			if _bloc != 'body':
@@ -1002,15 +1026,17 @@ class Rtf:
 			keys_2 = dc[key].keys()
 			keys_2.sort()
 			for key2 in keys_2:
+				_x = ''.join(dc[key][key2])
+				if len(_x) > 100:
+					_x = _x[100:]
 				_id_element, _type, _value = key2
-				last_type = _type
 
 				bold, italic, underline, h_alignment, find = font_format(_type, _value, bold, italic, underline,
-																			h_alignment)
+				                                                         h_alignment)
 				font, font_size, font_color, background, find = font_style(_type, _value, font, font_size, font_color,
-																			background, find)
-				key_border, background, ini_table, is_row = table(_type, _value, ini_table, key_border, background,
-																	is_row)
+				                                                           background, find)
+				key_border, background, ini_table, is_row, last_type = table(_type, _value, ini_table, key_border, background,
+				                                                  is_row, last_type)
 
 				txt = ''.join(dc[key][key2])
 
@@ -1023,6 +1049,7 @@ class Rtf:
 					aux = txt.split('\n')
 				else:
 					aux = [txt]
+
 
 				if _type == 'li':
 					li = _value
@@ -1051,11 +1078,15 @@ class Rtf:
 						n_par += 1
 					elif ini_table:
 						self.elements[-1].rows[-1].add_cell()
-					continue
+					if txt and not self.elements:
+						pass
+					else:
+						continue
 
 				elif _type == 'highlight':
 					highlight = _value
 
+				print "<%s>" % key2[1], 'ini_table: (%s) is_row: (%s)' % (ini_table, is_row), (_x,), aux
 				for a in range(len(aux)):
 					ke2 = str((key2[0] + '-' + str(a), key2[1], key2[2]))
 					d[ke][ke2] = aux[a]
@@ -1068,7 +1099,7 @@ class Rtf:
 						if self.elements[-1].name == 'RtfParagraph':
 							self.elements[-1].texts.append(
 								RtfText(self, self.elements[-1], aux[a], bold, italic, underline, font_size,
-										font_color, font, highlight)
+								        font_color, font, highlight)
 							)
 						if self.elements[-1].name == 'RtfTable':
 
@@ -1077,7 +1108,7 @@ class Rtf:
 									RtfParagraph(self, self.elements[-1].rows[-1].cells[-1], h_alignment))
 
 							txt_cell = RtfText(self, self.elements[-1].rows[-1].cells[-1].paragraphs[-1], aux[a],
-												bold, italic, underline, font_size, font_color, font, highlight)
+							                   bold, italic, underline, font_size, font_color, font, highlight)
 
 							highlight = None
 

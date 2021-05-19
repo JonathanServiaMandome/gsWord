@@ -1242,9 +1242,9 @@ def Serie(serie, fecha, cl=cl, gpx=gpx):
 	if rg == 1:
 		error(cl, "No existe la serie '%s'." % serie)
 
-	if rg["SER_POST"] == 'A':
+	if rg.get("SER_POST") == 'A':
 		serie += Num_aFecha(fecha, 'as')[-2:]
-	elif rg["SER_POST"] == 'M':
+	elif rg.get("SER_POST") == 'M':
 		serie += Num_aFecha(fecha, 'ms')
 	return serie
 

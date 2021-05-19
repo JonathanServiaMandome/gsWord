@@ -1,8 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-import document
+
 import elements
-from parts.word import rtf
+import rtf
 
 
 class Part:
@@ -59,10 +59,10 @@ class Part:
 		self.attributes.append('xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"')
 		self.attributes.append('xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml"')
 		self.attributes.append('xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml"')
-		self.attributes.append('xmlns:w16cex="http://schemas.microsoft.com/office/word/2018/wordml/cex"')  #
+		self.attributes.append('xmlns:w16cex="http://schemas.microsoft.com/office/word/2018/wordml/cex"') #
 		self.attributes.append('xmlns:w16cid="http://schemas.microsoft.com/office/word/2016/wordml/cid"')
-		self.attributes.append('xmlns:w16="http://schemas.microsoft.com/office/word/2018/wordml"')  #
-		self.attributes.append('xmlns:w16sdtdh="http://schemas.microsoft.com/office/word/2020/wordml/sdtdatahash"')  #
+		self.attributes.append('xmlns:w16="http://schemas.microsoft.com/office/word/2018/wordml"') #
+		self.attributes.append('xmlns:w16sdtdh="http://schemas.microsoft.com/office/word/2020/wordml/sdtdatahash"') #
 		self.attributes.append('xmlns:w16se="http://schemas.microsoft.com/office/word/2015/wordml/symex"')
 		self.attributes.append('xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup"')
 		self.attributes.append('xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk"')
@@ -79,10 +79,10 @@ class Part:
 	def get_TypeReference(self):
 		return self.type_reference
 
-	def set_rid(self, value):
+	def SetRId(self, value):
 		self.rId = value
 
-	def get_rid(self):
+	def get_RId(self):
 		return self.rId
 
 	def AddRelRId(self):
@@ -97,7 +97,7 @@ class Part:
 	def ContentType(self):
 		return self.content_type
 
-	def set_tag(self):
+	def get_Tag(self):
 		return self.tag
 
 	def get_name(self):
@@ -119,7 +119,7 @@ class Part:
 		value = list()
 
 		value.append(self.get_xmlHeader())
-		value.append('<%s %s>' % (self.set_tag(), ' '.join(self.attributes)))
+		value.append('<%s %s>' % (self.get_Tag(), ' '.join(self.attributes)))
 
 		''' Si no hay ningún elemento se añade un párrafo en blanco '''
 		if not self.get_Elements():
@@ -134,7 +134,7 @@ class Part:
 				value.append(element.get_xml())
 
 		# value.append('<w:pPr> <w:pStyle w:val = "Encabezado"/> </w:pPr>')
-		value.append('</%s>' % self.set_tag())
+		value.append('</%s>' % self.get_Tag())
 		value.append('')
 
 		return self.get_separator().join(value)
@@ -143,7 +143,7 @@ class Part:
 		self.get_parent().idx += 1
 		idx = self.get_parent().idx
 		paragraph = elements.paragraph.Paragraph(self, idx, text, horizontal_alignment, font_format,
-		                                         font_size)
+													font_size)
 		self.elements.append(paragraph)
 		return paragraph
 
@@ -157,7 +157,6 @@ class Part:
 	def add_rtf(self, text):
 		_rtf = rtf.Rtf(text=text, parent=self)
 		_rtf.get_value('word')
-
 
 class Notes:
 	"""
@@ -174,16 +173,16 @@ class Notes:
 		self.indent = 1
 		self.parent = parent
 
-	def get_rid(self):
+	def get_RId(self):
 		return self.rId
 
-	def set_rid(self, value):
+	def SetRId(self, value):
 		self.rId = value
 
 	def ContentType(self):
 		return self.content_type
 
-	def set_tag(self):
+	def get_Tag(self):
 		return self.tag
 
 	def get_name(self):
@@ -197,7 +196,7 @@ class Notes:
 
 	def get_xml(self):
 		txt = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n'
-		txt += '<%s xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas"' % self.set_tag()
+		txt += '<%s xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas"' % self.get_Tag()
 		txt += ' xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"'
 		txt += ' xmlns:o="urn:schemas-microsoft-com:office:office"'
 		txt += ' xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"'
@@ -217,7 +216,7 @@ class Notes:
 
 		value = list()
 		value.append(txt)
-		value.append('<%s w:type="separator" w:id="-1">' % self.set_tag()[:-1])
+		value.append('<%s w:type="separator" w:id="-1">' % self.get_Tag()[:-1])
 
 		value.append('<w:p w:rsidR="000E0AE3" w:rsidRDefault="000E0AE3" w:rsidP="00D4598A">')
 		value.append('<w:pPr>')
@@ -237,7 +236,7 @@ class Notes:
 		value.append('<w:continuationSeparator/>')
 		value.append('</w:r>')
 		value.append('</w:p>')
-		value.append('</%s>' % self.set_tag()[:-1])
-		value.append('</%s>' % self.set_tag())
+		value.append('</%s>' % self.get_Tag()[:-1])
+		value.append('</%s>' % self.get_Tag())
 		value.append('')
 		return self.separator.join(value)

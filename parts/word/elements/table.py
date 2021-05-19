@@ -1042,10 +1042,10 @@ class RowProperties(object):
 		return self.cantSplit
 
 	def splittable(self):
-		self.cantSplit = True
+		self.cantSplit = False
 
 	def not_splittable(self):  # ok
-		self.cantSplit = False
+		self.cantSplit = True
 
 	def is_hidden(self):
 		return self.hidden

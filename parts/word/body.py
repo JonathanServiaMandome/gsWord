@@ -19,10 +19,9 @@ class Body(object):
 			self.rsidRDefault = '000F5F75'
 			self.rsidP = '000F5F75'
 			self.rsidSect = ''
-			self.parent = parent
 			self.tab = parent.tab
-			self.indent = parent.indent + 1
 			self.separator = parent.separator
+			self.indent = 4
 			self.header_references = list()
 			self.footer_references = list()
 			self.width = width
@@ -43,12 +42,6 @@ class Body(object):
 			self.page_break = False
 			self.elements = list()
 
-		def get_name(self):
-			return self.tag
-
-		def get_parent(self):
-			return self.parent
-
 		def get_xml(self):
 			value = list()
 			if self.first:
@@ -64,11 +57,11 @@ class Body(object):
 			for reference in self.get_HeaderReferences():
 				value.append(
 					'%s<w:headerReference w:type="%s" r:id="rId%d"/>' % (
-						self.get_tab(1), reference[0], reference[1]))
+						self.get_tab(1), reference[0], reference[1].get_RId()))
 			for reference in self.get_FooterReferences():
 				value.append(
 					'%s<w:footerReference w:type="%s" r:id="rId%d"/>' % (
-						self.get_tab(1), reference[0], reference[1]))
+						self.get_tab(1), reference[0], reference[1].get_RId()))
 			orient = ''
 			if self.get_Orient():
 				orient = ' w:orient="%s"' % self.get_Orient()
@@ -139,13 +132,13 @@ class Body(object):
 		def get_HeaderReferences(self):
 			return self.header_references
 
-		def add_header_reference(self, type_reference, part):
+		def AddHeaderReference(self, type_reference, part):
 			self.header_references.append([type_reference, part])
 
 		def get_FooterReferences(self):
 			return self.footer_references
 
-		def add_footer_reference(self, type_reference, part):
+		def AddFooterReference(self, type_reference, part):
 			self.footer_references.append([type_reference, part])
 
 		def get_LinePitch(self):
@@ -291,22 +284,21 @@ class Body(object):
 		self.rsidR = '00253112'
 		self.rsidRDefault = '00253112'
 		self.rsidSect = None
-		self.active_section = None
-		self.sections = list()
-		'''if sections:
+
+		if sections:
 			self.sections = [self.AddPrincipalSection()]
-			self.active_section = self.sections[-1]'''
+			self.active_section = self.sections[-1]
 
 	def get_XmlHeader(self):
 		return self.xml_header
 
-	def get_content_types(self):
+	def ContentType(self):
 		return self.content_type
 
 	def get_tab(self, number=0):
 		return self.tab * (self.indent + number)
 
-	def set_tag(self):
+	def get_Tag(self):
 		return self.tag
 
 	def get_name(self):
@@ -330,13 +322,13 @@ class Body(object):
 		value.append(self.get_XmlHeader())
 		value.append('<w:document %s>' % ' '.join(self.attributes))
 
-		value.append('%s<%s>' % (self.get_tab(), self.set_tag()))
+		value.append('%s<%s>' % (self.get_tab(), self.get_Tag()))
 
 		for section in self.get_Sections():
 			for element in section.get_Elements():
 				value.append(element.get_xml())
 			value.append(section.get_xml())
-		value.append('%s</%s>' % (self.get_tab(), self.set_tag()))
+		value.append('%s</%s>' % (self.get_tab(), self.get_Tag()))
 		value.append('</w:document>')
 		value.append('')
 
@@ -372,19 +364,7 @@ class Body(object):
 							line_pitch=360, orient=''):
 		section = self.Section(self, width, height, margin_top, margin_rigth, margin_left, margin_bottom, margin_header,
 								margin_footer, margin_gutter, cols_space, line_pitch, orient)
-		parts = self.get_parent().get_parts()
 
-		for part_name in parts:
-
-			if part_name.startswith('header'):
-				part = self.get_parent().get_part(part_name)
-				if hasattr(part, 'get_TypeReference'):
-					section.add_header_reference(part.get_TypeReference(), part)
-
-			elif part_name.startswith('footer') and part_name is not 'footernotes':
-				part = self.get_parent().get_part(part_name)
-				if hasattr(part, 'get_TypeReference'):
-					section.add_footer_reference(part.get_TypeReference(), part)
 
 		return section
 

@@ -6,7 +6,7 @@ from parts.word.elements import paragraph
 class TextBox(object):
 	def __init__(self, parent, text='', position=(0, 0), size=(0, 0), rotation=0, r_position=(), simple_position=(0, 0),
 	             background_color='FFFFFF', flip_vertical='', flip_horizontal='', horizontal_alignment='j',
-	             font_format='', font_size=None, id_shape='_x0000_s1030'):
+	             font_format='', font_size=None):
 		self.name = 'shape'
 		self.parent = parent
 		self.tab = parent.tab
@@ -43,9 +43,11 @@ class TextBox(object):
 		wrap_square = WrapSquare()
 		wrap_square.set_parent(anchor)
 		anchor.add_element(wrap_square)
-		parent.AddRelRId()
-
-		doc_pr = DocPr(parent.get_RelRId())
+		_x = self
+		while getattr(_x, 'tag', '') != 'document':
+			_x = _x.parent
+		_x.idx += 1
+		doc_pr = DocPr(_x.idx)
 		doc_pr.set_parent(anchor)
 		anchor.add_element(doc_pr)
 		graphic_frame = CNvGraphicFramePr()
@@ -95,7 +97,7 @@ class TextBox(object):
 		pict.add_element(shape_type)
 		shape_type.add_element({'v:stroke': {'joinstyle': "miter"}})
 		shape_type.add_element({'v:path': {'gradientshapeok': "t", 'o:connecttype': "rect"}})
-		fall_shape = FallShape(_id=id_shape, wrap='square')
+		fall_shape = FallShape(wrap='square')
 		pict.add_element(fall_shape)
 		text_box = Txbx()
 		text_box.name = 'v:textbox'
@@ -110,11 +112,6 @@ class TextBox(object):
 					if getattr(elem, 'name', '') == 'wps:txbx':
 						elem.elements = elements
 
-		'''pict = self.content.get_fall_back().get_pict()
-		for _element in pict.get_elements():
-			if getattr(_element, 'name', '') == 'v:shape':
-				_element.get_object().elements = elements'''
-
 	def add_element(self, _element):
 		anchor = self.content.get_choice().get_drawing().element
 		for element in anchor.elements:
@@ -122,10 +119,6 @@ class TextBox(object):
 				for elem in element.get_graphic_data().get_shape().get_elements():
 					if getattr(elem, 'name', '') == 'wps:txbx':
 						elem.elements.append(_element)
-		'''pict = self.content.get_fall_back().get_pict()
-		for _element in pict.get_elements():
-			if getattr(_element, 'name', '') == 'v:shape':
-				_element.get_object().elements.append(_element)'''
 
 	def get_separator(self):
 		return self.separator
@@ -1434,8 +1427,7 @@ class Txbx(object):
 			_x = _x.parent
 		_x.idx += 1
 		p = paragraph.Paragraph(self, _x.idx, text, horizontal_alignment, font_format, font_size, nulo=is_null)
-		if p.get_properties():
-			p.get_properties().set_pstyle('')
+		p.get_properties().set_pstyle('')
 		self.elements.append(p)
 		return p
 
