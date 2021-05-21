@@ -16,7 +16,7 @@ MX = chr(30)
 
 cl = None
 GS_INS = "D:/Server"
-gpx = ('jonathan', 'sat', 'eja')
+gpx = ('jonathan', 'sat', 'dgt')
 apl = gpx[1]
 
 def error(cl, txt):

@@ -106,9 +106,12 @@ class RtfCell:
 
 			value = ''.join(value)
 		elif mode == 'word':
+
 			cell = word_object.add_cell([], horizontal_alignment='l')
-			cell.get_properties().set_shading(get_color(self.rtf, self.parent.get_colors().pop(0)))
-			# cell = Table.Cell(word_object, len(word_object.cells) + 1, [])
+			print self.parent.name, self.parent.get_colors()
+			if self.parent.get_colors():
+				cell.get_properties().set_shading(get_color(self.rtf, self.parent.get_colors().pop(0)))
+
 			for paragraph in self.paragraphs:
 				paragraph.get_value(mode, word_object=cell)
 		return value
@@ -116,6 +119,7 @@ class RtfCell:
 
 class RtfRow:
 	def __init__(self, rtf, parent):
+		self.name = 'RtfRow'
 		self.rtf = rtf
 		self.parent = parent
 		self.indent = parent.indent + 2
@@ -177,6 +181,9 @@ class RtfRow:
 	def add_cell(self):
 		self.cells.append(RtfCell(self.rtf, self))
 
+	def insert_cell(self):
+		self.cells.insert(0, RtfCell(self.rtf, self))
+
 	def __str__(self):
 		value = str()
 		dc = dict()
@@ -223,8 +230,8 @@ class RtfRow:
 				self.widths = self.parent.get_widths()
 			for k in range(len(self.cells)):
 				cell = self.cells[k]
-				try:cell.set_width(self.widths[k])
-				except:print self.widths,[k]
+				if len(self.get_widths()) > k:
+					cell.set_width(self.widths[k])
 				cell.get_value(mode, row)
 			row.set_vertical_alignment(va)
 
@@ -249,6 +256,7 @@ class RtfTable:
 		self.rtf = rtf
 		self.horizontal_gap = '60'
 		self.left = '0'
+		self.number_cells = 0
 
 	def get_widths(self):
 		return self.widths
@@ -297,7 +305,7 @@ class RtfTable:
 				total_with = 0
 				for width in self.widths:
 					_w = int(width) - w
-					w_rtf = 8294 # float(self.rtf.size[0]) - float(self.rtf.margins[0]) - float(self.rtf.margins[1])
+					w_rtf = 8294  # float(self.rtf.size[0]) - float(self.rtf.margins[0]) - float(self.rtf.margins[1])
 					_w = int(round((_w * 100.) / w_rtf, 0))
 					total_with += _w
 					w = int(width)
@@ -326,7 +334,7 @@ class RtfTable:
 					_w = int(self.rows[0].get_widths()[k]) - int(self.rows[0].get_widths()[k - 1])
 				w_rtf = 8294  # float(self.rtf.size[0]) - float(self.rtf.margins[0]) - float(self.rtf.margins[1])
 				_w = int(round((_w * 100.) / w_rtf, 0))
-				cw.append(str(_w)+'%')
+				cw.append(str(_w) + '%')
 
 			value = self.parent.parent.add_table()
 
@@ -345,6 +353,9 @@ class RtfTable:
 
 	def add_row(self):
 		self.rows.append(RtfRow(self.rtf, self))
+
+	def insert_row(self):
+		self.rows.insert(0, RtfRow(self.rtf, self))
 
 
 class RtfParagraph:
@@ -919,7 +930,7 @@ class Rtf:
 				_font_size = self.default_font_size
 			return [_font, _font_size, _font_color, _background, _find]
 
-		def table(_type, _value, _ini_table, _key_border, _background, _is_row, _last_type):
+		def table_old(_type, _value, _ini_table, _key_border, _background, _is_row, _last_type):
 			if _type == 'trowd':
 				if not _ini_table:
 					self.elements.append(
@@ -973,22 +984,16 @@ class Rtf:
 				_is_row = True
 
 			elif _type == 'pard' and _is_row:
-				#_ini_table = False
-				print self.elements[-1].rows[-1].cells
+				# _ini_table = False
 				el = self.elements[-1]
 				if not hasattr(el, 'rows'):
 					_is_row = False
 				elif not el.rows[-1].cells:
 					del el.rows[-1]
-				elif len(el.rows[-1].cells)==1:
+				elif len(el.rows[-1].cells) == 1:
 					if not el.rows[-1].cells[0].paragraphs:
 						del el.rows[-1]
-			try:
-				pass
-				'''print len(self.elements[-1].rows)
-				for r in self.elements[-1].rows:
-					print '\t',len(r.cells)'''
-			except:pass
+
 			return [_key_border, _background, _ini_table, _is_row, _type]
 
 		font = 1
@@ -1017,6 +1022,7 @@ class Rtf:
 		keys_1 = dc.keys()
 		keys_1.sort()
 
+		data_table = []
 		for key in keys_1:
 			_id, _bloc = key
 			if _bloc != 'body':
@@ -1035,10 +1041,114 @@ class Rtf:
 				                                                         h_alignment)
 				font, font_size, font_color, background, find = font_style(_type, _value, font, font_size, font_color,
 				                                                           background, find)
-				key_border, background, ini_table, is_row, last_type = table(_type, _value, ini_table, key_border, background,
-				                                                  is_row, last_type)
+				'''key_border, background, ini_table, is_row, last_type_ = table(_type, _value, ini_table, key_border,
+				                                                              background,
+				                                                              is_row, last_type)'''
 
 				txt = ''.join(dc[key][key2])
+				if _type == 'trowd' and not ini_table:
+					ini_table = True
+				if ini_table:
+					_back_ = background
+					if _type == 'pard':
+						last_type = _type
+					elif _type in ['par', 'lang']:
+						if last_type == 'pard':
+							ini_table = False
+							if data_table:
+								table_ = RtfTable(self, self)
+
+								_key_border = None
+								for i in range(len(data_table) - 1, -1, -1):
+									if data_table[i][0] == 'row':
+										table_.insert_row()
+									elif data_table[i][0] == 'cell':
+										table_.rows[0].insert_cell()
+
+									if data_table[i][2]:
+
+										if not table_.rows[0].cells[0].paragraphs:
+											table_.rows[0].cells[0].paragraphs.insert(
+												0,
+												RtfParagraph(
+													self,
+													table_.rows[0].cells[0],
+													h_alignment
+												)
+											)
+
+										txt_cell = RtfText(
+											self,
+											table_.rows[0].cells[0].paragraphs[0],
+											data_table[i][2],
+											bold,
+											italic,
+											underline,
+											font_size,
+											font_color,
+											font,
+											highlight
+										)
+
+										highlight = None
+
+										table_.rows[0].cells[0].paragraphs[0].texts.insert(0, txt_cell)
+
+								n_row = 0
+								for i in range(len(data_table)):
+
+									if data_table[i][0] == 'row':
+										n_row += 1
+
+									elif data_table[i][0] == 'clcbpat':
+										_back_ = data_table[i][1]
+
+									elif data_table[i][0] == 'trgaph':
+										table_.set_horizontal_gap(data_table[i][1])
+
+									elif data_table[i][0] == 'trleft':
+										table_.set_left(data_table[i][1])
+
+									elif data_table[i][0].startswith('clbrdr'):
+										if data_table[i][0] == 'clbrdrt':
+											_key_border = 'top'
+										elif data_table[i][0] == 'clbrdrb':
+											_key_border = 'bottom'
+										elif data_table[i][0] == 'clbrdrl':
+											_key_border = 'start'
+										elif data_table[i][0] == 'clbrdrr':
+											_key_border = 'end'
+
+										if _key_border:
+											table_.rows[n_row].borders[-1][_key_border] = 1
+
+									elif data_table[i][0] == 'cell':
+										if not table_.rows[n_row].borders and n_row:
+											table_.rows[n_row].borders = eval(repr(table_.rows[n_row - 1].borders))
+										if not table_.rows[n_row].colors and n_row:
+											table_.rows[n_row].colors = eval(repr(table_.rows[n_row - 1].colors))
+									elif data_table[i][0] == 'brdrw':
+										table_.rows[n_row].borders[-1][_key_border] = data_table[i][1]
+
+									elif data_table[i][0].startswith('clvertal'):
+										if len(table_.rows) == 1:
+											table_.number_cells += 1
+										_is_row = False
+										table_.rows[n_row].borders.append({})
+										table_.rows[n_row].add_vertical_align(data_table[i][0][-1])
+										_key_border = None
+										_back_ = self.default_background
+
+									elif data_table[i][0] == 'cellx':
+										table_.rows[n_row].colors.append(_back_)
+										if n_row == 0:
+											table_.add_width(data_table[i][1])
+										table_.rows[n_row].number_cells += 1
+
+								self.elements.append(table_)
+						continue
+					data_table.append([_type, _value, txt])
+					continue
 
 				if _type in ['plain']:
 					if _value is None and not txt:
@@ -1049,7 +1159,6 @@ class Rtf:
 					aux = txt.split('\n')
 				else:
 					aux = [txt]
-
 
 				if _type == 'li':
 					li = _value
@@ -1073,20 +1182,27 @@ class Rtf:
 					else:
 						ini_paragraph = False
 
+				elif _type == 'intbl ' and last_type == 'pard':
+					is_row = True
+					if ini_table:
+						if len(self.elements[-1].rows[-1].cells) == self.elements[-1].number_cells:
+							self.elements[-1].add_row()
+
+						self.elements[-1].rows[-1].add_cell()
+
+
 				elif _type in ['pard']:
 					if ini_list:
 						n_par += 1
-					elif ini_table:
-						self.elements[-1].rows[-1].add_cell()
 					if txt and not self.elements:
 						pass
 					else:
+						last_type = _type
 						continue
 
 				elif _type == 'highlight':
 					highlight = _value
 
-				print "<%s>" % key2[1], 'ini_table: (%s) is_row: (%s)' % (ini_table, is_row), (_x,), aux
 				for a in range(len(aux)):
 					ke2 = str((key2[0] + '-' + str(a), key2[1], key2[2]))
 					d[ke][ke2] = aux[a]
@@ -1101,8 +1217,9 @@ class Rtf:
 								RtfText(self, self.elements[-1], aux[a], bold, italic, underline, font_size,
 								        font_color, font, highlight)
 							)
-						if self.elements[-1].name == 'RtfTable':
-
+						'''if self.elements[-1].name == 'RtfTable':
+							if not self.elements[-1].rows[-1].cells:
+								self.elements[-1].rows[-1].add_cell()
 							if not self.elements[-1].rows[-1].cells[-1].paragraphs:
 								self.elements[-1].rows[-1].cells[-1].paragraphs.append(
 									RtfParagraph(self, self.elements[-1].rows[-1].cells[-1], h_alignment))
@@ -1112,8 +1229,9 @@ class Rtf:
 
 							highlight = None
 
-							self.elements[-1].rows[-1].cells[-1].paragraphs[-1].texts.append(txt_cell)
+							self.elements[-1].rows[-1].cells[-1].paragraphs[-1].texts.append(txt_cell)'''
 
+				last_type = _type
 				forzar_salto_linea = False
 
 		return d

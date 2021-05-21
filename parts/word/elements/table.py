@@ -1140,7 +1140,8 @@ class Row(object):
 		for k in range(len(self.get_cells())):
 			cell = self.get_cell(k)
 			if type(borders) == list:
-				cell.set_cell_borders(borders[k])
+				if len(borders) > k:
+					cell.set_cell_borders(borders[k])
 			else:
 				cell.set_cell_borders(borders)
 
@@ -1179,7 +1180,8 @@ class Row(object):
 			if type(value) == str:
 				cell.set_vertical_alignment(value)
 			else:
-				cell.set_vertical_alignment(value[k])
+				if len(value) > k:
+					cell.set_vertical_alignment(value[k])
 			k += 1
 
 	def set_font_size(self, size):

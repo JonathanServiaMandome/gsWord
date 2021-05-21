@@ -797,7 +797,7 @@ class Paragraph(object):
 			document = document.parent
 		name = path.split('/')[-1]
 		extension = name.split('.')[-1]
-		document.get_content_types().AddDefault(extension, 'ContentType="image/%s"' % extension)
+		document.get_ContentTypes().AddDefault(extension, 'ContentType="image/%s"' % extension)
 		img = open(path, 'rb').read()
 
 		if is_body:

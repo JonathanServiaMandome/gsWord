@@ -637,6 +637,7 @@ def CertificadoSAT(partes, args, columnas_checks=GetColumnasACC_CK(), LineaToDc=
 
 			_text['FA_TXT'] = merge_vars(_text['FA_TXT'], parte)
 			FormateaTitulo(idioma, body.add_paragraph(str(numero_norma) + '. ' + _text['FA_DENO']))
+			#print '88888888888888888'
 			body.add_rtf(_text['FA_TXT'])
 			numero_norma += 1
 
@@ -999,7 +1000,7 @@ def CertificadoSAT(partes, args, columnas_checks=GetColumnasACC_CK(), LineaToDc=
 				txt_despues = rg_txt['FA_TXT']
 				#-body.add_rtf(txt_despues)
 
-			firma_sello(doc_word, body, _path_s, parte, idioma)
+			#firma_sello(doc_word, body, _path_s, parte, idioma)
 
 			tabla_resumen = checks[ln].get('RESUMEN', {})
 			if tabla_resumen.get('lineas', []):

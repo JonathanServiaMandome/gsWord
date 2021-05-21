@@ -12,7 +12,6 @@ from parts import content_types
 from parts import rels
 from parts import word
 
-
 from pagenumber import PageNumber
 
 
@@ -59,18 +58,18 @@ class Document:
 	def get_ContentTypes(self):
 		return self.content_types
 
-	def get_Parts(self):
+	def get_parts(self):
 		return self.parts
 
 	def SetParts(self, dc):
 		self.parts = dc
 
-	def AddPart(self, name, value):
+	def add_part(self, name, value):
 		if name in self.parts.keys():
 			raise ValueError("La parte %s ya está añadida al documento." % name)
 		self.parts[name] = value
 
-	def AddPartRel(self, name):
+	def add_part_rel(self, name):
 		if name in self.parts.keys():
 			raise ValueError("La parte %s ya está añadida al documento." % name)
 		rel = parts.documentrels.documentRels.DocumentRels(self)
@@ -78,7 +77,7 @@ class Document:
 
 		self.parts[name] = rel
 
-	def get_Part(self, name):
+	def get_part(self, name):
 		return self.parts[name]
 
 	def SetPart(self, name, dc):
@@ -141,12 +140,13 @@ class Document:
 	def new_table(self, parent, data=(), titles=(), column_width=None, horizontal_alignment=(), borders=None):
 		self.idx += 1
 		return parts.word.elements.table.Table(parent, self.idx, data, titles, column_width, horizontal_alignment,
-												borders)
+		                                       borders)
 
 	def new_paragraph(self, parent, text=(), horizontal_alignment='j', font_format='', font_size=None, null=False):
 		self.idx += 1
-		return parts.word.elements.paragraph.Paragraph(parent, self.idx, text, horizontal_alignment, font_format, font_size,
-														nulo=null)
+		return parts.word.elements.paragraph.Paragraph(parent, self.idx, text, horizontal_alignment, font_format,
+		                                               font_size,
+		                                               nulo=null)
 
 	def new_image(self, parent, path, width, heigth, anchor='inline', horizontal_alignment='l'):
 		self.idx += 1
@@ -196,7 +196,6 @@ class Document:
 			self.parts["endnotes"] = word.part.Notes(self, 'endnotes')
 			self.idx += 1
 
-
 		# ./word/theme
 		self.parts["theme1"] = word.theme1.Theme1(self)
 		self.parts["theme1"].DefaultValues()
@@ -213,8 +212,8 @@ class Document:
 	def CreateDocumentRels(self):
 		doc_rels = word.documentRels.DocumentRels(self)
 
-		for part_name in self.get_Parts().keys():
-			part = self.get_Part(part_name)
+		for part_name in self.get_parts().keys():
+			part = self.get_part(part_name)
 
 			if hasattr(part, 'SetRId'):
 				part.SetRId(self.rId)
@@ -227,24 +226,28 @@ class Document:
 				name_ = name_.split('.')[0]
 			while name_[-1].isdigit():
 				name_ = name_[:-1]
-			dc = {'Id': 'rId%d' % part.get_RId(),
-				"Type": 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/%s' % name_}
-			doc_rels.AddPart(name, dc)
+			dc = {
+				'Id': 'rId%d' % part.get_RId(),
+				"Type": 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/%s' % name_
+			}
+			doc_rels.add_part(name, dc)
 
 		for img in self.get_Images():
-			dc = {'Id': 'rId%d' % img[2],
-				"Type": 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image'}
-			doc_rels.AddPart(img[0], dc)
+			dc = {
+				'Id': 'rId%d' % img[2],
+				"Type": 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image'
+			}
+			doc_rels.add_part(img[0], dc)
 		return doc_rels
 
-	def new_header(self, section,  _type='default'):
+	def new_header(self, section, _type='default'):
 		number = self.idx_header
 		self.idx_header += 1
 		self.parts["header%d" % number] = word.part.Part(self, 'hdr', number, _type)
 
 		section.AddHeaderReference(self.parts["header%d" % number].get_TypeReference(), self.parts["header%d" % number])
 
-		self.parts["header%d" % number].SetRId((100*number)+200)
+		self.parts["header%d" % number].SetRId((100 * number) + 200)
 
 		return self.parts["header%d" % number]
 
@@ -253,7 +256,7 @@ class Document:
 		# ./word/rels
 		self.parts["document_rels"] = self.CreateDocumentRels()
 
-		#self.parts["body"].AddPrincipalSection()
+		# self.parts["body"].AddPrincipalSection()
 		try:
 			os.makedirs(self.get_RutaPlantilla())
 		except Exception:
@@ -292,7 +295,7 @@ class Document:
 
 				try:
 					part_split = part.get_name().split('/')
-					os.makedirs(self.get_RutaPlantilla() + 'temp/'+'/'.join(part_split[:-1]))
+					os.makedirs(self.get_RutaPlantilla() + 'temp/' + '/'.join(part_split[:-1]))
 				except Exception:
 					pass
 				with open(self.get_RutaPlantilla() + 'temp/' + part.get_name(), 'w') as file_part:
