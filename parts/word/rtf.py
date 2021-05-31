@@ -108,7 +108,7 @@ class RtfCell:
 		elif mode == 'word':
 
 			cell = word_object.add_cell([], horizontal_alignment='l')
-			print self.parent.name, self.parent.get_colors()
+
 			if self.parent.get_colors():
 				cell.get_properties().set_shading(get_color(self.rtf, self.parent.get_colors().pop(0)))
 
@@ -1033,8 +1033,6 @@ class Rtf:
 			keys_2.sort()
 			for key2 in keys_2:
 				_x = ''.join(dc[key][key2])
-				if len(_x) > 100:
-					_x = _x[100:]
 				_id_element, _type, _value = key2
 
 				bold, italic, underline, h_alignment, find = font_format(_type, _value, bold, italic, underline,
@@ -1045,14 +1043,16 @@ class Rtf:
 				                                                              background,
 				                                                              is_row, last_type)'''
 
+
 				txt = ''.join(dc[key][key2])
 				if _type == 'trowd' and not ini_table:
 					ini_table = True
+					ini_paragraph = False
 				if ini_table:
 					_back_ = background
 					if _type == 'pard':
 						last_type = _type
-					elif _type in ['par', 'lang']:
+					elif _type in ['par', 'lang0']:
 						if last_type == 'pard':
 							ini_table = False
 							if data_table:
@@ -1060,7 +1060,9 @@ class Rtf:
 
 								_key_border = None
 								for i in range(len(data_table) - 1, -1, -1):
+
 									if data_table[i][0] == 'row':
+
 										table_.insert_row()
 									elif data_table[i][0] == 'cell':
 										table_.rows[0].insert_cell()
@@ -1095,6 +1097,7 @@ class Rtf:
 										table_.rows[0].cells[0].paragraphs[0].texts.insert(0, txt_cell)
 
 								n_row = 0
+
 								for i in range(len(data_table)):
 
 									if data_table[i][0] == 'row':
@@ -1146,6 +1149,11 @@ class Rtf:
 										table_.rows[n_row].number_cells += 1
 
 								self.elements.append(table_)
+								if _type == 'par':
+									self.elements.append(RtfParagraph(self, self, h_alignment))
+									self.elements[-1].texts.append(
+										RtfText(self, self.elements[-1], '')
+									)
 						continue
 					data_table.append([_type, _value, txt])
 					continue
